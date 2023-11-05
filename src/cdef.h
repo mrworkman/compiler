@@ -301,18 +301,23 @@ typedef long double longdouble;
 #define LINEARALLOC     _WIN32  // if we can reserve address ranges
 
 // H_STYLE takes on one of these precompiled header methods
-enum
-{
-    H_NONE    = 1,       // no hydration/dehydration necessary
-    H_BIT0    = 2,       // bit 0 of the pointer determines if pointer
-                         // is dehydrated, an offset is added to
-                         // hydrate it
-    H_OFFSET  = 4,       // the address range of the pointer determines
-                         // if pointer is dehydrated, and an offset is
-                         // added to hydrate it. No dehydration necessary.
-    H_COMPLEX = 8,       // dehydrated pointers have bit 0 set, hydrated
-                         // pointers are in non-contiguous buffers
-};
+// enum
+// {
+//     H_NONE    = 1,       // no hydration/dehydration necessary
+//     H_BIT0    = 2,       // bit 0 of the pointer determines if pointer
+//                          // is dehydrated, an offset is added to
+//                          // hydrate it
+//     H_OFFSET  = 4,       // the address range of the pointer determines
+//                          // if pointer is dehydrated, and an offset is
+//                          // added to hydrate it. No dehydration necessary.
+//     H_COMPLEX = 8,       // dehydrated pointers have bit 0 set, hydrated
+//                          // pointers are in non-contiguous buffers
+// };
+#define H_NONE    1
+#define H_BIT0    2
+#define H_OFFSET  4
+#define H_COMPLEX 8
+
 
 // Do we need hydration code
 #define HYDRATE         (H_STYLE & (H_BIT0 | H_OFFSET | H_COMPLEX))
