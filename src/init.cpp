@@ -168,7 +168,7 @@ void datadef(symbol *s)
         switch (s->Sclass)
         {
             case SCauto:
-            case SCregister:
+            case SCregister: {
 #if TX86
                 if (s->Stype->Tty & mTYcs)
                 {   s->Sclass = SCstatic;
@@ -191,6 +191,7 @@ void datadef(symbol *s)
 
                 func_expadddtors(&curblock->Belem, marksi, endsi, 0, TRUE);
                 break;
+            }
             case SCunde:
                 assert(errcnt);         // only happens on errors
             case SCglobal:
@@ -584,7 +585,7 @@ STATIC void initializer(symbol *s)
                 s->Sdt = dtb.finish();
                 break;
             }
-        case SCcomdat:
+        case SCcomdat: {
             // No symbols that get this far have constructors
             assert(CPP);
             if (sinit == s && !localstatic)
@@ -616,6 +617,7 @@ STATIC void initializer(symbol *s)
             init_constructor(s,t,NULL,0,0x41,si);       /* call destructor, if any */
             init_staticctor = FALSE;
             break;
+        }
         case SCextern:
         case SCunde:
         case SCparameter:
@@ -1332,7 +1334,7 @@ STATIC elem * initstruct(type *t, DtBuilder& dtb, symbol *ss,targ_size_t offset)
                 sd[i].exp = poptelem(e1);       // fold out constants
                 break;
 
-            case SCmember:
+            case SCmember: {
                 if (!designated)
                 {
                     if (s->Smemoff == soffset)
@@ -1352,7 +1354,7 @@ STATIC elem * initstruct(type *t, DtBuilder& dtb, symbol *ss,targ_size_t offset)
                 sd[i].exp = initelem(s->Stype,dtb,ss,offset + soffset);
                 sd[i].dt = dtb.finish();
                 break;
-
+            }
             default:
                 assert(0);
         }

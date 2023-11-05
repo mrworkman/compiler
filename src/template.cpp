@@ -29,6 +29,8 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
+#include        "allocast.h"
+
 STATIC int template_isclasstemplate(int);
 STATIC void template_class_decl(Classsym *stag, param_t *temp_arglist, param_t *temp_arglist2, int member_template, unsigned access_specifier);
 STATIC void template_function_decl(Classsym *stag, param_t *temp_arglist, param_t *temp_arglist2, int member_template, unsigned access_specifier,

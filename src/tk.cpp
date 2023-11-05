@@ -21,10 +21,10 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#include        "filespec.c"
+#include        "filespec.cpp"
 
 #if !SPP
-#include        "vec.c"
+#include        "vec.cpp"
 
 #define malloc          ph_malloc
 #define calloc(x,y)     ph_calloc((x) * (y))
@@ -35,7 +35,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 #if !MEM_DEBUG
 #define MEM_NOMEMCOUNT 1
 #endif
-#include        "mem.c"
+#include        "mem.cpp"
 
 /*
 #define list_new()              ((list_t) ph_malloc(sizeof(struct LIST)))
@@ -44,6 +44,6 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 */
 
 //#define list_freelist cstate.CSlist_freelist
-#include        "list.c"
+#include        "list.cpp"
 
 

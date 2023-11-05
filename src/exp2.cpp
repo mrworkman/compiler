@@ -30,6 +30,8 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
+#include        "allocast.h"
+
 extern list_t symlist;                  // for C
 
 STATIC elem * exp2_paramchk(elem *e,type *t,int param);
@@ -1686,7 +1688,11 @@ elem *builtinFunc(elem *ec)
 #if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
         // In linux this is controlled by an option instead of adding defines to
         // change xxxxx to _inline_xxxx.
+        #ifdef __DMC__
         OPT_IS_SET(OPTfinline_functions)
+        #else
+        0
+        #endif
 #else
         // Look for _inline_xxxx() functions and replace with appropriate opcode
         (CPP || !(e->ET->Tflags & TFgenerated)) // function must be prototyped
@@ -4560,7 +4566,7 @@ ret:
 
 #define CASTTABMAX      (TYvoid + 1)
 
-#include "castab.c"
+#include "castab.cpp"
 
 /*************************
  * Cast e to type newt (no cast if newt is NULL).

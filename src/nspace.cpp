@@ -33,6 +33,8 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
+#include        "allocast.h"
+
 STATIC void using_directive();
 STATIC void using_add(Nspacesym *sn);
 STATIC void using_addx(Nspacesym *sn,Scope *sce);

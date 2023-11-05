@@ -28,6 +28,7 @@
 #include        "exh.h"
 #include        "allocast.h"
 #include        "scope.h"
+#include        "dt.h"
 #if TX86
 #include        "cgcv.h"
 #endif

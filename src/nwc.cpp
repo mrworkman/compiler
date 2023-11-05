@@ -32,6 +32,8 @@
 #include        "cgcv.h"
 #include        "scope.h"
 #include        "outbuf.h"
+#include        "dt.h"
+#include        "tk.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"

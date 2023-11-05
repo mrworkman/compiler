@@ -25,11 +25,13 @@
 #include        "type.h"
 #include        "exh.h"
 #include        "scope.h"
+#include        "dt.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
 #include        "cpp.h"
+#include        "allocast.h"
 
 STATIC elem *memptr_exp(void);
 STATIC elem *exp_new(int);

@@ -50,44 +50,44 @@ struct Msgtable msgtable[] =
 "Syntax:\n\
         SPP quelldatei [-oausgabe] { schalter }\n\
 -A  Strikt nach ANSI                    -D[macro[=text]] Makro definieren\n\
--EC Kommentare beibehalten              -EL #line-Anweisungen bergehen\n\
--Ipfad  Suchpfad fr #include           -j[0|1|2] Asiatische Zeichens„tze\n\
--J  Zeichen standardm„áig 'unsigned'\n\
+-EC Kommentare beibehalten              -EL #line-Anweisungen ï¿½bergehen\n\
+-Ipfad  Suchpfad fï¿½r #include           -j[0|1|2] Asiatische Zeichensï¿½tze\n\
+-J  Zeichen standardmï¿½ï¿½ig 'unsigned'\n\
 -m  Speichermodell\n\
 -o  Name der Ausgabedatei (.i)\n\
--u  Vordefinierte Makros unterdrcken   -v  Ausfhrliche Meldungen\n\
--w[n]  Warnung n unterdrcken           -x  Fehlermaximum abschalten",
+-u  Vordefinierte Makros unterdrï¿½cken   -v  Ausfï¿½hrliche Meldungen\n\
+-w[n]  Warnung n unterdrï¿½cken           -x  Fehlermaximum abschalten",
 
 "Usage:\n\
         fichier source SPP [-osortie] { commutateurs }\n\
 -A  ANSI pur\n\
--D[macro[=texte]] d‚finition d'une macro\n\
+-D[macro[=texte]] dï¿½finition d'une macro\n\
 -EC conserver les commentaires\n\
 -EL omettre directives #line \n\
 -Ichemin  #include chemin de recherche\n\
 -j[0|1|2] alphabets asiatiques \n\
--J  caractŠres non sign‚s par d‚faut \n\
--m  modŠle de m‚moire\n\
+-J  caractï¿½res non signï¿½s par dï¿½faut \n\
+-m  modï¿½le de mï¿½moire\n\
 -o  nom du fichier de sortie (.i)\n\
--u  suppression macros pr‚d‚finies\n\
--v  compilation complŠte\n\
+-u  suppression macros prï¿½dï¿½finies\n\
+-v  compilation complï¿½te\n\
 -w[n]  suppression des avertissements n\n\
--x  d‚sactivation erreurs",
+-x  dï¿½sactivation erreurs",
 
 #pragma dbcs(push,1)
-"Œ`®:\n\
-        SPP “ü—Í [-oo—Í] {-D[ƒ}ƒNƒ[=’l]]}\n\
-            [-m(smclv)] {-(AjJuvwx)} {-IƒpƒX}\n\
-“ü—Í    ƒ\[ƒXƒtƒ@ƒCƒ‹–¼\n\
--A  Œµ–§ANSI (Šg’£ƒL[ƒ[ƒh‚È‚µ)       -D  ƒ}ƒNƒ’è‹`\n\
--I  #includeŒŸõƒpƒX                    -j  2ƒoƒCƒg•¶š\n\
--J  •„†‚È‚µ‚Ìchar\n\
--ms  ƒR[ƒhAƒf[ƒ^—¼•ûƒXƒ‚[ƒ‹         -mm  ƒR[ƒh=ƒ‰[ƒWAƒf[ƒ^=ƒXƒ‚[ƒ‹\n\
--mc  ƒR[ƒh=ƒXƒ‚[ƒ‹Aƒf[ƒ^=ƒ‰[ƒW     -ml  ƒR[ƒhAƒf[ƒ^—¼•ûƒ‰[ƒW\n\
--mv  vcmƒ‚ƒfƒ‹\n\
--o  o—Íƒtƒ@ƒCƒ‹–¼(.i)\n\
--u  Šù’è‹`ƒ}ƒNƒ‚ğ’è‹`‚µ‚È‚¢            -v  Ú×î•ño—Í\n\
--w[n]  Œxn‚ğ”­s‚µ‚È‚¢                -x  Å‘åƒGƒ‰[”‚ğ–³Œø‚É‚·‚é",
+"ï¿½`ï¿½ï¿½:\n\
+        SPP ï¿½ï¿½ï¿½ï¿½ [-oï¿½oï¿½ï¿½] {-D[ï¿½}ï¿½Nï¿½ï¿½[=ï¿½l]]}\n\
+            [-m(smclv)] {-(AjJuvwx)} {-Iï¿½pï¿½X}\n\
+ï¿½ï¿½ï¿½ï¿½    ï¿½\ï¿½[ï¿½Xï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½\n\
+-A  ï¿½ï¿½ï¿½ï¿½ANSI (ï¿½gï¿½ï¿½ï¿½Lï¿½[ï¿½ï¿½ï¿½[ï¿½hï¿½È‚ï¿½)       -D  ï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½`\n\
+-I  #includeï¿½ï¿½ï¿½ï¿½ï¿½pï¿½X                    -j  2ï¿½oï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½\n\
+-J  ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½char\n\
+-ms  ï¿½Rï¿½[ï¿½hï¿½Aï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½         -mm  ï¿½Rï¿½[ï¿½h=ï¿½ï¿½ï¿½[ï¿½Wï¿½Aï¿½fï¿½[ï¿½^=ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½\n\
+-mc  ï¿½Rï¿½[ï¿½h=ï¿½Xï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Aï¿½fï¿½[ï¿½^=ï¿½ï¿½ï¿½[ï¿½W     -ml  ï¿½Rï¿½[ï¿½hï¿½Aï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½W\n\
+-mv  vcmï¿½ï¿½ï¿½fï¿½ï¿½\n\
+-o  ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½(.i)\n\
+-u  ï¿½ï¿½ï¿½ï¿½`ï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½È‚ï¿½            -v  ï¿½Ú×ï¿½ï¿½oï¿½ï¿½\n\
+-w[n]  ï¿½xï¿½ï¿½nï¿½ğ”­sï¿½ï¿½ï¿½È‚ï¿½                -x  ï¿½Å‘ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ğ–³Œï¿½ï¿½É‚ï¿½ï¿½ï¿½",
 #pragma dbcs(pop)
 #else
         "C/C++ Compiler",                                               // 0
@@ -98,9 +98,9 @@ struct Msgtable msgtable[] =
   { "bad_parameter",
         "unrecognized parameter '%s'",                  /*  1 C */
         "Unbekannter Parameter '%s'",                   /*  1 C */
-        "paramŠtre '%s' non reconnu",                   /*  1 C */
+        "paramï¿½tre '%s' non reconnu",                   /*  1 C */
         #pragma dbcs(push,1)
-        "•s³ƒpƒ‰ƒ[ƒ^ '%s'",                          /*  1 C */
+        "ï¿½sï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ '%s'",                          /*  1 C */
         #pragma dbcs(pop)
   },
   { "eof",
@@ -108,43 +108,43 @@ struct Msgtable msgtable[] =
         "Vorzeitiges Ende der Quelldatei",              /*  2   */
         "fin inattendue du fichier source",             /*  2   */
         //#pragma dbcs(push,1)
-        //"ƒ\[ƒXƒtƒ@ƒCƒ‹‚ÌI‚è‚É’B‚µ‚½",                 /*  2   */
+        //"ï¿½\ï¿½[ï¿½Xï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ÌIï¿½ï¿½É’Bï¿½ï¿½ï¿½ï¿½",                 /*  2   */
         //#pragma dbcs(pop)
         "\x83\x5c\x81\x5b\x83\x58\x83\x74\x83\x40\x83\x43\x83\x8b\x82\xcc\x8f\x49\x82\xe8\x82\xc9\x92\x42\x82\xb5\x82\xbd",
 
   },
   { "num2big",
         "number %s is too large",                       /*  3   */
-        "Zahl %s ist zu groá",                          /*  3   */
-        "nombre %s trop ‚lev‚",                         /*  3   */
+        "Zahl %s ist zu groï¿½",                          /*  3   */
+        "nombre %s trop ï¿½levï¿½",                         /*  3   */
         #pragma dbcs(push,1)
-        "”’l %s ‚ª‘å‚«‚·‚¬‚é",                         /*  3   */
+        "ï¿½ï¿½ï¿½l %s ï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                         /*  3   */
         #pragma dbcs(pop)
   },
   { "string2big",
         "max of %u characters in string exceeded",              /*  4   */
-        "Max. Anz. von %u Zeichen im String berschritten",     /*  4   */
-        "la longueur de la chaŒne d‚passe %u caractŠres",       /*  4   */
-        "•¶š—ñ‚Ì•¶š”‚ª‘½‚·‚¬‚é",                             /*  4   */
+        "Max. Anz. von %u Zeichen im String ï¿½berschritten",     /*  4   */
+        "la longueur de la chaï¿½ne dï¿½passe %u caractï¿½res",       /*  4   */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                             /*  4   */
   },
   { "ident2big",
         "identifier is longer than 254 chars",          /*  5   */
-        "Bezeichner l„nger als 254 Zeichen",            /*  5   */
-        "la longueur de l'identificateur d‚passe 254 caractŠres", /*  5 */
-        "¯•Êq‚Ì•¶š”‚ª 254 ˆÈã",                    /*  5   */
+        "Bezeichner lï¿½nger als 254 Zeichen",            /*  5   */
+        "la longueur de l'identificateur dï¿½passe 254 caractï¿½res", /*  5 */
+        "ï¿½ï¿½ï¿½Êqï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 254 ï¿½Èï¿½",                    /*  5   */
   },
         // Could be caused by extra U or L integer suffixes
   { "badtoken",
         "unrecognized token",                           /*  6 L */
         "Unbekanntes Token",                            /*  6 L */
-        "t‚moin non reconnu",                           /*  6 L */
-        "•s³‚Èƒg[ƒNƒ“",                               /*  6 L */
+        "tï¿½moin non reconnu",                           /*  6 L */
+        "ï¿½sï¿½ï¿½ï¿½Èƒgï¿½[ï¿½Nï¿½ï¿½",                               /*  6 L */
   },
   { "hexdigit",
         "'%c' is not a hex digit",                      /*  8   */
         "Hex-Ziffer erwartet",                          /*  8   */
-        "chiffre hexad‚cimal requis",                   /*  8   */
-        "16i‚Ì”š‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                 /*  8   */
+        "chiffre hexadï¿½cimal requis",                   /*  8   */
+        "16ï¿½iï¿½Ìï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                 /*  8   */
   },
   // Disallowed universal character name per C99 6.4.3 or C++98 2.2.
   // Also, under Win32, values larger than 0xFFFF are not representable.
@@ -165,9 +165,9 @@ struct Msgtable msgtable[] =
   { "badnumber",
         "number is not representable",                  /*  9   */
         "Zahl nicht darstellbar",                       /*  9   */
-        "impossible de repr‚senter ce nombre",          /*  9   */
+        "impossible de reprï¿½senter ce nombre",          /*  9   */
         //#pragma dbcs(push,1)
-        //"”’l‚ğ•\Œ»‚Å‚«‚È‚¢",                           /*  9   */
+        //"ï¿½ï¿½ï¿½lï¿½ï¿½\ï¿½ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",                           /*  9   */
         //#pragma dbcs(pop)
         "\x90\x94\x92\x6c\x82\xf0\x95\x5c\x8c\xbb\x82\xc5\x82\xab\x82\xc8\x82\xa2",
   },
@@ -175,49 +175,49 @@ struct Msgtable msgtable[] =
         "exponent expected",                            /* 10   */
         "Exponent erwartet",                            /* 10   */
         "exposant requis",                              /* 10   */
-        "w”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 10   */
+        "ï¿½wï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 10   */
   },
   { "nosource",
         "no input file specified",                      /* 11 C */
         "Keine Eingabedatei angegeben",                 /* 11 C */
-        "fichier d'entr‚e non sp‚cifi‚",                /* 11 C */
-        "“ü—Íƒtƒ@ƒCƒ‹‚Ìw’è‚ª‚È‚¢",                     /* 11 C */
+        "fichier d'entrï¿½e non spï¿½cifiï¿½",                /* 11 C */
+        "ï¿½ï¿½ï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½Ìwï¿½è‚ªï¿½È‚ï¿½",                     /* 11 C */
   },
   { "dashD",
         "bad -D switch, %s",                            /* 13 C */
-        "Ungltiger Schalter fr -D, %s",               /* 13 C */
+        "Ungï¿½ltiger Schalter fï¿½r -D, %s",               /* 13 C */
         "commutateur -D %s incorrect",                  /* 13 C */
-        "•s³ -D ƒXƒCƒbƒ`: %s",                         /* 13 C */
+        "ï¿½sï¿½ï¿½ -D ï¿½Xï¿½Cï¿½bï¿½`: %s",                         /* 13 C */
   },
   { "error",
         "Error: ",                                      /* 14   */
         "Fehler: ",                                     /* 14   */
         "Erreur : ",                                    /* 14   */
-        "ƒGƒ‰[: ",                                     /* 14   */
+        "ï¿½Gï¿½ï¿½ï¿½[: ",                                     /* 14   */
   },
   { "unknown_pragma",
         "unrecognized pragma",                          /* 16   */
         "Unbekanntes Pragma",                           /* 16   */
         "pragma non reconnu",                           /* 16   */
-        "•s³ƒvƒ‰ƒOƒ}",                                 /* 16   */
+        "ï¿½sï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Oï¿½}",                                 /* 16   */
   },
   { "bad_char",
         "illegal character, ascii %u decimal",          /* 17   */
-        "Unzul„ssiges Zeichen, ASCII %u dezimal",       /* 17   */
-        "caractŠre non autoris‚, ascii %u en d‚cimal",  /* 17   */
-        "•s³•¶š: ascii %u (10i)",                    /* 17   */
+        "Unzulï¿½ssiges Zeichen, ASCII %u dezimal",       /* 17   */
+        "caractï¿½re non autorisï¿½, ascii %u en dï¿½cimal",  /* 17   */
+        "ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ascii %u (10ï¿½i)",                    /* 17   */
   },
   { "rpar",
         "')' expected",                                 /* 18   */
         "')' erwartet",                                 /* 18   */
         "')' requis",                                   /* 18   */
-        "')' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 18   */
+        "')' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 18   */
   },
   { "param_rpar",
         "')' expected to close function parameter list with",
         "')' erwartet",
         "')' requis",
-        "')' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",
+        "')' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",
   },
   { "arg_ellipsis",
         "macro argument list arg... form is obsolete",
@@ -226,125 +226,125 @@ struct Msgtable msgtable[] =
         "identifier expected",                          /* 20   */
         "Bezeichner erwartet",                          /* 20   */
         "identificateur requis",                        /* 20   */
-        "¯•Êq‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* 20   */
+        "ï¿½ï¿½ï¿½Êqï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* 20   */
   },
   { "preprocess",
         "unrecognized preprocessing directive",         /* 21   */
-        "Unbekannte Pr„prozessoranweisung '#%s'",       /* 21   */
-        "instruction pr‚processeur '#%s' non reconnue", /* 21   */
-        "•s³ƒvƒŠƒvƒƒZƒbƒTw—ß '#%s'",                 /* 21   */
+        "Unbekannte Prï¿½prozessoranweisung '#%s'",       /* 21   */
+        "instruction prï¿½processeur '#%s' non reconnue", /* 21   */
+        "ï¿½sï¿½ï¿½ï¿½vï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Zï¿½bï¿½Tï¿½wï¿½ï¿½ '#%s'",                 /* 21   */
   },
   { "memmodels",
         "valid memory models are -m[tsmcrzlvfnpx]",     /* 22 C */
-        "Gltige Speichermodelle sind -m[tsmcrzlvfnpx]", /* 22 C */
-        "les modŠles de m‚moire autoris‚s sont -m[tsmcrzlvfnpx]",       /* 22 C */
-        "ƒƒ‚ƒŠƒ‚ƒfƒ‹‚Í -msA-mmA-mcA-ml ‚Ì‚¢‚¸‚ê‚©",  /* 22 C */
+        "Gï¿½ltige Speichermodelle sind -m[tsmcrzlvfnpx]", /* 22 C */
+        "les modï¿½les de mï¿½moire autorisï¿½s sont -m[tsmcrzlvfnpx]",       /* 22 C */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ -msï¿½A-mmï¿½A-mcï¿½A-ml ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ê‚©",  /* 22 C */
   },
   { "eol",
         "end of line expected",                         /* 23 P */
         "Zeilenende erwartet",                          /* 23 P */
         "fin de ligne requise",                         /* 23 P */
-        "s––‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 23 P */
+        "ï¿½sï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 23 P */
   },
   { "num",
         "integer constant expression expected",         /* 24   */
         "Konstanter Integer-Ausdruck erwartet",         /* 24   */
-        "expression de constante entiŠre requise",      /* 24   */
-        "®”‚Ì’è”®‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",               /* 24   */
+        "expression de constante entiï¿½re requise",      /* 24   */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Ì’è”ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",               /* 24   */
   },
   { "linnum",
         "line number expected",                         /* 25 P */
         "Zeilennummer erwartet",                        /* 25 P */
-        "num‚ro de ligne requis",                       /* 25 P */
-        "s”Ô†‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* 25 P */
+        "numï¿½ro de ligne requis",                       /* 25 P */
+        "ï¿½sï¿½Ôï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* 25 P */
   },
   { "2manyerrors",
         "too many errors",                              /* 27   */
         "Zu viele Fehler",                              /* 27   */
         "trop d'erreurs",                               /* 27   */
-        "ƒGƒ‰[‚ª‘½‚·‚¬‚é",                             /* 27   */
+        "ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                             /* 27   */
   },
   { "num_args",
         "%d actual arguments expected for %s, had %d",          /* 29   */
-        "%d Argumente fr %s erwartet, %d erhalten",            /* 29   */
+        "%d Argumente fï¿½r %s erwartet, %d erhalten",            /* 29   */
         "%d arguments effectifs requis pour %s, %d fournis",    /* 29   */
-        "%d ŒÂ‚Ìˆø”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢ (%s)",                   /* 29   */
+        "%d ï¿½Â‚Ìˆï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½ (%s)",                   /* 29   */
   },
   { "filespec",
         "filespec string expected",                     /* 30   */
-        "String fr Dateispezifikation erwartet",       /* 30   */
-        "chaŒne d'identification de fichier requise",   /* 30   */
-        "ƒtƒ@ƒCƒ‹–¼‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                 /* 30   */
+        "String fï¿½r Dateispezifikation erwartet",       /* 30   */
+        "chaï¿½ne d'identification de fichier requise",   /* 30   */
+        "ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                 /* 30   */
   },
   { "endif",
         "'#endif' found without '#if'",                 /* 31 P */
         "'#endif' ohne '#if'",                          /* 31 P */
-        "'#endif' d‚tect‚ sans '#if'",                  /* 31 P */
-        "'#if' ‚ª‚È‚¢‚Ì‚É '#endif' ‚ª‚ ‚Á‚½",           /* 31 P */
+        "'#endif' dï¿½tectï¿½ sans '#if'",                  /* 31 P */
+        "'#if' ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ì‚ï¿½ '#endif' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",           /* 31 P */
   },
   { "eof_endif",
         "end of file found before '#endif'",                    /* 32 P */
         "Dateiende vor '#endif'",                               /* 32 P */
-        "fin de fichier d‚tect‚e avant '#endif'",               /* 32 P */
-        "'#endif' ‚ªŒ©‚Â‚©‚ç‚È‚¢ŠÔ‚Éƒtƒ@ƒCƒ‹‚ÌI‚è‚É’B‚µ‚½",    /* 32 P */
+        "fin de fichier dï¿½tectï¿½e avant '#endif'",               /* 32 P */
+        "'#endif' ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ô‚Éƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ÌIï¿½ï¿½É’Bï¿½ï¿½ï¿½ï¿½",    /* 32 P */
   },
   { "else",
         "'#else' or '#elif' found without '#if'",       /* 33 P */
         "'#else' oder '#elif' ohne '#if'",              /* 33 P */
-        "''#else' ou '#elif' d‚tect‚ sans '#if'",       /* 33 P */
-        "'#if' ‚ª‚È‚¢‚Ì‚É '#else' ‚© '#elif' ‚ª‚ ‚Á‚½", /* 33 P */
+        "''#else' ou '#elif' dï¿½tectï¿½ sans '#if'",       /* 33 P */
+        "'#if' ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ì‚ï¿½ '#else' ï¿½ï¿½ '#elif' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", /* 33 P */
   },
         // Probably missing closing quote or )
   { "macarg",
         "unterminated macro argument",                  // 34 P
         "Nicht abgeschlossenes Makroargument",          // 34 P
         "argument de macro incomplet",                  // 34 P
-        "ƒ}ƒNƒˆø”‚ªI—¹‚µ‚Ä‚¢‚È‚¢",                   // 34 P
+        "ï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",                   // 34 P
   },
   { "align",
         // Alignment for struct members must be 1,2,4,8, etc.
         "alignment must be a power of 2",                       /* 35 P,C */
-        "Ausrichtung muá eine Potenz von 2 sein",               /* 35 P,C */
-        "l'alignement doit ˆtre une puissance de 2",            /* 35 P,C */
-        "ƒAƒ‰ƒCƒ“ƒƒ“ƒg‚Ìw’è‚Í2‚Ì™pæ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",      // 35 P,C
+        "Ausrichtung muï¿½ eine Potenz von 2 sein",               /* 35 P,C */
+        "l'alignement doit ï¿½tre une puissance de 2",            /* 35 P,C */
+        "ï¿½Aï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Ìwï¿½ï¿½ï¿½2ï¿½Ì™pï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",      // 35 P,C
   },
         // ANSI C 3.8.8
   { "undef",
         "macro '%s' can't be #undef'd or #define'd",                    /* 36 P */
         "'#undef' oder '#define' nicht anwendbar auf Makro '%s'",       /* 36 P */
-        "impossible d'appliquer #undef ou #define … la macro '%s'",     /* 36 P */
-        "ƒ}ƒNƒ '%s' ‚ğ #undef ‚Ü‚½‚Í #define ‚Å‚«‚È‚¢",                /* 36 P */
+        "impossible d'appliquer #undef ou #define ï¿½ la macro '%s'",     /* 36 P */
+        "ï¿½}ï¿½Nï¿½ï¿½ '%s' ï¿½ï¿½ #undef ï¿½Ü‚ï¿½ï¿½ï¿½ #define ï¿½Å‚ï¿½ï¿½È‚ï¿½",                /* 36 P */
   },
   { "rbra",
         "']' expected",                                 /* 38 S */
         "']' erwartet",                                 /* 38 S */
         "']' requis",                                   /* 38 S */
-        "']' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 38 S */
+        "']' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 38 S */
   },
   { "punctuation",
         "'=', ';' or ',' expected",                     /* 46 S */
         "'=', ';' oder ',' erwartet",                   /* 46 S */
         "'=', ';' ou ',' requis",                       /* 46 S */
-        "'='A';'A‚Ü‚½‚Í ',' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",      /* 46 S */
+        "'='ï¿½A';'ï¿½Aï¿½Ü‚ï¿½ï¿½ï¿½ ',' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",      /* 46 S */
   },
 
   { "multiple_def",
         "'%s' is already defined",                      /* 48 S,P */
         "'%s' ist bereits definiert",                   /* 48 S,P */
-        "'%s' est d‚j… d‚fini",                         /* 48 S,P */
-        "'%s' ‚ÍŠù‚É’è‹`‚³‚ê‚Ä‚¢‚é",                    /* 48 S,P */
+        "'%s' est dï¿½jï¿½ dï¿½fini",                         /* 48 S,P */
+        "'%s' ï¿½ÍŠï¿½ï¿½É’ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                    /* 48 S,P */
   },
   { "redefined",
         "'%s' previously declared as something else",   /* 81 S */
         "'%s' wurde vorher bereits anders deklariert",  /* 81 S */
-        "'%s' d‚j… d‚clar‚ de maniŠre diff‚rente",      /* 81 S */
-        "'%s' ‚ÍŠù‚É•Ê‚ÉéŒ¾‚³‚ê‚Ä‚¢‚é",                /* 81 S */
+        "'%s' dï¿½jï¿½ dï¿½clarï¿½ de maniï¿½re diffï¿½rente",      /* 81 S */
+        "'%s' ï¿½ÍŠï¿½ï¿½É•Ê‚ÉéŒ¾ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                /* 81 S */
   },
   { "undefined",
         "undefined identifier '%s'",                    /* 49 S */
         "Undefinierter Bezeichner '%s'",                /* 49 S */
-        "identificateur '%s' non d‚fini",               /* 49 S */
-        "–¢’è¯•Êq '%s'",                              /* 49 S */
+        "identificateur '%s' non dï¿½fini",               /* 49 S */
+        "ï¿½ï¿½ï¿½è¯ï¿½Êq '%s'",                              /* 49 S */
   },
   { "undefined2",
         "undefined identifier '%s', did you mean '%s'?",                        /* 49 S */
@@ -353,66 +353,66 @@ struct Msgtable msgtable[] =
         "'}' expected",                                 /* 55 S */
         "'}' erwartet",                                 /* 55 S */
         "'}' requis",                                   /* 55 S */
-        "'}' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 55 S */
+        "'}' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 55 S */
   },
   { "response_file",
         "can't open response file",                     /* 57 S */
-        "Antwortdatei kann nicht ge”ffnet werden",      /* 57 S */
-        "ouverture du fichier de r‚ponse impossible",   /* 57 S */
-        "ƒŒƒXƒ|ƒ“ƒXƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚¢",                 /* 57 S */
+        "Antwortdatei kann nicht geï¿½ffnet werden",      /* 57 S */
+        "ouverture du fichier de rï¿½ponse impossible",   /* 57 S */
+        "ï¿½ï¿½ï¿½Xï¿½|ï¿½ï¿½ï¿½Xï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½È‚ï¿½",                 /* 57 S */
   },
   { "pragma_proto",
         "pragma parameter function prototype not found",/* 57 S */
-        "Prototyp fr Pragma-Parameterfunktion nicht gefunden",/* 57 S */
-        "prototype de fonction du paramŠtre pragma introuvable",/* 57 S */
+        "Prototyp fï¿½r Pragma-Parameterfunktion nicht gefunden",/* 57 S */
+        "prototype de fonction du paramï¿½tre pragma introuvable",/* 57 S */
   },
   { "lcur_exp",
         "'{' expected",                                 /* 58 S } */
         "'{' erwartet",                                 /* 58 S } */
         "'{' requis",                                   /* 58 S } */
-        "'{' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 58 S } */
+        "'{' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 58 S } */
   },
   { "colon",
         "':' expected",                                 /* 62 S */
         "':' erwartet",                                 /* 62 S */
         "':' requis",                                   /* 62 S */
-        "':' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 62 S */
+        "':' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 62 S */
   },
   { "exp",
         "expression expected",                          /* 63 S */
         "Ausdruck erwartet",                                    /* 63 S */
         "expression requise",                           /* 63 S */
-        "®‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                         /* 63 S */
+        "ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                         /* 63 S */
   },
   { "lpar",
         "'(' expected",                                 /* 66 S */
         "'(' erwartet",                                 /* 66 S */
         "'(' requis",                                   /* 66 S */
-        "'(' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 66 S */
+        "'(' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 66 S */
   },
   { "lpar2",
         "'(' expected following %s",
         "'(' erwartet",
         "'(' requis",
-        "'(' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",
+        "'(' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",
   },
   { "illegal_op_types",
         "illegal operand types",                        /* 83 S */
-        "Unzul„ssiger Operandentyp",                            /* 83 S */
-        "types d'op‚randes non valides",                        /* 83 S */
-        "•s³ƒIƒyƒ‰ƒ“ƒhŒ^",                             /* 83 S */
+        "Unzulï¿½ssiger Operandentyp",                            /* 83 S */
+        "types d'opï¿½randes non valides",                        /* 83 S */
+        "ï¿½sï¿½ï¿½ï¿½Iï¿½yï¿½ï¿½ï¿½ï¿½ï¿½hï¿½^",                             /* 83 S */
   },
   { "open_input",
         "unable to open input file '%s'",               /* 84 S */
-        "Eingabedatei '%s' kann nicht ge”ffnet werden", /* 84 S */
-        "impossible d'ouvrir le fichier d'entr‚e '%s'",         /* 84 S */
-        "“ü—Íƒtƒ@ƒCƒ‹ '%s' ‚ªŠJ‚¯‚È‚¢",                 /* 84 S */
+        "Eingabedatei '%s' kann nicht geï¿½ffnet werden", /* 84 S */
+        "impossible d'ouvrir le fichier d'entrï¿½e '%s'",         /* 84 S */
+        "ï¿½ï¿½ï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ '%s' ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½È‚ï¿½",                 /* 84 S */
   },
   { "open_output",
         "unable to open output file '%s'",              /* 85 S */
-        "Ausgabedatei '%s' kann nicht ge”ffnet werden", /* 85 S */
+        "Ausgabedatei '%s' kann nicht geï¿½ffnet werden", /* 85 S */
         "impossible d'ouvrir le fichier de sortie '%s'",                /* 85 S */
-        "o—Íƒtƒ@ƒCƒ‹ '%s' ‚ªŠJ‚¯‚È‚¢",                 /* 85 S */
+        "ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ '%s' ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½È‚ï¿½",                 /* 85 S */
   },
 
         // Attempt to divide by 0 when constant folding.
@@ -421,27 +421,27 @@ struct Msgtable msgtable[] =
   { "divby0",
         "divide by 0",                                  /* 86 S */
         "Division durch 0",                                     /* 86 S */
-        "division par z‚ro",                                    /* 86 S */
-        "ƒ[ƒœZ",                                     /* 86 S */
+        "division par zï¿½ro",                                    /* 86 S */
+        "ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Z",                                     /* 86 S */
   },
   { "bad_filespec",
         "can't build filespec '%s'",                    /* 88 S */
         "Dateispezifikation '%s' kann nicht erstellt werden",                   /* 88 S */
-        "impossible de g‚n‚rer la sp‚cification de fichier '%S'",                       /* 88 S */
-        "ƒpƒX '%s' ‚ª•s³",                             /* 88 S */
+        "impossible de gï¿½nï¿½rer la spï¿½cification de fichier '%S'",                       /* 88 S */
+        "ï¿½pï¿½X '%s' ï¿½ï¿½ï¿½sï¿½ï¿½",                             /* 88 S */
   },
         // Input and output files have the same name
   { "mult_files",
         "duplicate file names '%s'",                    /* 89 S */
         "Doppelter Dateiname: '%s'",                    /* 89 S */
         "nom de fichier '%s' en double",                        /* 89 S */
-        "d•¡ƒtƒ@ƒCƒ‹–¼ '%s'",                          /* 89 S */
+        "ï¿½dï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ '%s'",                          /* 89 S */
   },
   { "bad_filename",
         "bad file name '%s'",                           /* 90 S */
-        "Ungltiger Dateiname: '%s'",                           /* 90 S */
+        "Ungï¿½ltiger Dateiname: '%s'",                           /* 90 S */
         "nom de fichier '%s' incorrect",                                /* 90 S */
-        "•s³ƒtƒ@ƒCƒ‹–¼ '%s'",                          /* 90 S */
+        "ï¿½sï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ '%s'",                          /* 90 S */
   },
 
         /* Comments do not nest in C. You cannot 'comment out' a block
@@ -452,29 +452,29 @@ struct Msgtable msgtable[] =
          */
   { "nestcomment",
         "comments do not nest",                         /* 91 W */
-        "Kommentare k”nnen nicht verschachtelt werden",                         /* 91 W */
+        "Kommentare kï¿½nnen nicht verschachtelt werden",                         /* 91 W */
         "imbrication des commentaires interdite",                               /* 91 W */
-        "ƒRƒƒ“ƒg‚ÍƒlƒXƒg‚Å‚«‚È‚¢",                     /* 91 W */
+        "ï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Íƒlï¿½Xï¿½gï¿½Å‚ï¿½ï¿½È‚ï¿½",                     /* 91 W */
   },
   { "string",
         "string expected",                                      /* 92 P */
         "String erwartet",                                      /* 92 P */
-        "chaŒne requise",                                       /* 92 P */
-        "•¶š—ñ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* 92 P */
+        "chaï¿½ne requise",                                       /* 92 P */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* 92 P */
   },
 #if 0 // obsoleted by C99
   { "blank_arg",
         "blank arguments are illegal",                  /* 93 P */
-        "Leere Argumente nicht zul„ssig",                       /* 93 P */
-        "arguments vides non autoris‚s",                        /* 93 P */
-        "‹ó‚«‚Ìˆø”‚Íg‚¦‚È‚¢",                         /* 93 P */
+        "Leere Argumente nicht zulï¿½ssig",                       /* 93 P */
+        "arguments vides non autorisï¿½s",                        /* 93 P */
+        "ï¿½ó‚«‚Ìˆï¿½ï¿½ï¿½ï¿½Ígï¿½ï¿½ï¿½È‚ï¿½",                         /* 93 P */
   },
 #endif
   { "integral",
         "integral expression expected",                 /* 94 S */
         "Integraler Ausdruck erwartet",                 /* 94 S */
-        "expression int‚grale requise",                 /* 94 S */
-        "®”®‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* 94 S */
+        "expression intï¿½grale requise",                 /* 94 S */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* 94 S */
   },
         /* Happens when a ; immediately follows an if, for, while as in:
                 if (x);
@@ -485,10 +485,10 @@ struct Msgtable msgtable[] =
          */
   { "extra_semi",
         "possible extraneous ';'",                      /* 98 W */
-        "M”glicherweise berflssiges ';'",             /* 98 W */
-        "pr‚sence possible de ';' superflu",            /* 98 W */
+        "Mï¿½glicherweise ï¿½berflï¿½ssiges ';'",             /* 98 W */
+        "prï¿½sence possible de ';' superflu",            /* 98 W */
         //#pragma dbcs(push,1)
-        //"';' ‚ª‘½‚·‚¬‚é‰Â”\«‚ª‚ ‚é",                 /* 98 W */
+        //"';' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â”\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                 /* 98 W */
         //#pragma dbcs(pop)
         "\x27\x3b\x27\x20\x82\xaa\x91\xbd\x82\xb7\x82\xac\x82\xe9\x89\xc2\x94\x5c\x90\xab\x82\xaa\x82\xa0\x82\xe9",
   },
@@ -496,7 +496,7 @@ struct Msgtable msgtable[] =
         "lvalue expected",                              /* 101 S */
         "lvalue erwartet",                              /* 101 S */
         "lvalue requise",                               /* 101 S */
-        "¶•Ó’l‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* 101 S */
+        "ï¿½ï¿½ï¿½Ó’lï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* 101 S */
   },
 
         /* Occurs in instances like:
@@ -510,8 +510,8 @@ struct Msgtable msgtable[] =
   { "valuenotused",
         "value of expression is not used",              /* 102 W */
         "Wert des Ausdrucks wird nicht benutzt",        /* 102 W */
-        "valeur de l'expression inutilis‚e",            /* 102 W */
-        "®‚Ì’l‚ªg‚í‚ê‚Ä‚¢‚È‚¢",                       /* 102 W */
+        "valeur de l'expression inutilisï¿½e",            /* 102 W */
+        "ï¿½ï¿½ï¿½Ì’lï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",                       /* 102 W */
   },
         /* ANSI C 3.1.3.4
            Found end of file or end of line before end of string.
@@ -519,27 +519,27 @@ struct Msgtable msgtable[] =
   { "noendofstring",
         "unterminated string",                          /* 104   */
         "Nicht abgeschlossener String",                 /* 104   */
-        "chaŒne non termin‚e",                          /* 104   */
-        "•¶š—ñ‚ªI—¹‚µ‚Ä‚¢‚È‚¢",                       /* 104   */
+        "chaï¿½ne non terminï¿½e",                          /* 104   */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚ªIï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",                       /* 104   */
   },
         // Probably out of disk space
   { "write_error",
         "error writing output file '%s'",                       // 107F
         "Fehler beim Schreiben der Ausgabedatei",               /* 107F */
-        "erreur d'‚criture dans le fichier de sortie",                  /* 107F */
-        "o—Íƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[",                   /* 107F */
+        "erreur d'ï¿½criture dans le fichier de sortie",                  /* 107F */
+        "ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[",                   /* 107F */
   },
   { "octal_digit",
         "octal digit expected",                         /* 108L */
         "Oktalziffer erwartet",                         /* 108L */
         "chiffre octal requis",                         /* 108L */
-        "8i‚Ì”š‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                  /* 108L */
+        "8ï¿½iï¿½Ìï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                  /* 108L */
   },
   { "const_assign",
         "can't assign to const variable %s",            /* 109S */
-        "Zuweisung zu Const-Variable nicht m”glich",
-        "affectation … une variable constante impossible",
-        "const•Ï”‚Ö‚Ì‘ã“ü‚ª‚Å‚«‚È‚¢",
+        "Zuweisung zu Const-Variable nicht mï¿½glich",
+        "affectation ï¿½ une variable constante impossible",
+        "constï¿½Ïï¿½ï¿½Ö‚Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",
   },
   { "null_nl",
         "%s",                                           /* 110E */
@@ -550,39 +550,39 @@ struct Msgtable msgtable[] =
          */
   { "nomem",
         "out of memory",                                /* 111  */
-        "Nicht gengend Speicher",                              /* 111  */
-        "m‚moire satur‚e",                              /* 111  */
-        "ƒƒ‚ƒŠ•s‘«",                                   /* 111  */
+        "Nicht genï¿½gend Speicher",                              /* 111  */
+        "mï¿½moire saturï¿½e",                              /* 111  */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½",                                   /* 111  */
   },
   { "command_line_error",
         "Command line error: ",                         /* 112  */
         "Fehler in der Befehlszeile: ",                 /* 112  */
         "erreur de ligne de commande :",                                /* 112  */
-        "ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒGƒ‰[: ",                       /* 112  */
+        "ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½[: ",                       /* 112  */
   },
   { "no_comment_term",
         "end of file found before end of comment, line %d",     /* 115  */
         "Dateiende vor Kommentarende, Zeile %d",        /* 115  */
-        "fin de fichier d‚tect‚ avant la fin du commentaire … la ligne %d",     /* 115  */
-        "ƒRƒƒ“ƒg’†‚Éƒtƒ@ƒCƒ‹‚ÌI‚è‚É’B¬‚µ‚½ (s”Ô† %d)",     /* 115  */
+        "fin de fichier dï¿½tectï¿½ avant la fin du commentaire ï¿½ la ligne %d",     /* 115  */
+        "ï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Éƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ÌIï¿½ï¿½É’Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½sï¿½Ôï¿½ %d)",     /* 115  */
   },
   { "warning",
         "Warning %d: ",                                 /* 116  */
         "Warnung %d: ",                                 /* 116  */
         "Avertissement %d :",                                   /* 116  */
-        "Œx %d: ",                                    /* 116  */
+        "ï¿½xï¿½ï¿½ %d: ",                                    /* 116  */
   },
   { "lexical_error",
         "Lexical error: ",                              /* 117  */
         "Lexikalischer Fehler: ",                               /* 117  */
         "Erreur de lexique :",                          /* 117  */
-        "Œê‹åƒGƒ‰[: ",                                 /* 117  */
+        "ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½[: ",                                 /* 117  */
   },
   { "preprocessor_error",
         "Preprocessor error: ",                         /* 118  */
-        "Pr„prozessorfehler: ",                         /* 118  */
-        "Erreur du pr‚processeur :",                            /* 118  */
-        "ƒvƒŠƒvƒƒZƒbƒTƒGƒ‰[: ",                       /* 118  */
+        "Prï¿½prozessorfehler: ",                         /* 118  */
+        "Erreur du prï¿½processeur :",                            /* 118  */
+        "ï¿½vï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Zï¿½bï¿½Tï¿½Gï¿½ï¿½ï¿½[: ",                       /* 118  */
   },
 
         // This line controls the format for how errors are reported
@@ -601,7 +601,7 @@ struct Msgtable msgtable[] =
         "0 or 1 expected",                              /* 122L */
         "0 oder 1 erwartet",                            /* 122L */
         "0 ou 1 requis",                                /* 122L */
-        "0 ‚Ü‚½‚Í 1 ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                /* 122L */
+        "0 ï¿½Ü‚ï¿½ï¿½ï¿½ 1 ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                /* 122L */
   },
 
         /* Last line in source file must end in a \n without an         */
@@ -609,15 +609,15 @@ struct Msgtable msgtable[] =
   { "no_nl",
         "last line in file had no \\\\n",                       /* 126L */
         "Letzte Zeile der Datei hat kein \\\\n",        /* 126L */
-        "\\\\n manquant sur la derniŠre ligne du fichier",      /* 126L */
-        "ƒtƒ@ƒCƒ‹‚ÌÅIs‚É \\\\n ‚ª‚È‚¢",              /* 126L */
+        "\\\\n manquant sur la derniï¿½re ligne du fichier",      /* 126L */
+        "ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ÌÅIï¿½sï¿½ï¿½ \\\\n ï¿½ï¿½ï¿½È‚ï¿½",              /* 126L */
   },
 
   { "prep_exp",
         "casts and sizeof are illegal in preprocessor expressions", /* 131 */
-        "Casts und Sizeof unzul„ssig in Pr„prozessorausdrcken", /* 131 */
+        "Casts und Sizeof unzulï¿½ssig in Prï¿½prozessorausdrï¿½cken", /* 131 */
         "cast et sizeof interdits dans les expressions du preprocesseur", /* 131 */
-        "ƒvƒŠƒvƒƒZƒbƒT®‚É‚ÍƒLƒƒƒXƒg‚¨‚æ‚Ñ sizeof ‚Íg‚¦‚È‚¢", /* 131 */
+        "ï¿½vï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Zï¿½bï¿½Tï¿½ï¿½ï¿½É‚ÍƒLï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ sizeof ï¿½Ígï¿½ï¿½ï¿½È‚ï¿½", /* 131 */
   },
         /* ANSI escape sequences are: \' \" \? \\
            \a \b \f \n \r \t \v \x hex-digit \octal-digit
@@ -625,42 +625,42 @@ struct Msgtable msgtable[] =
   { "bad_escape_seq",
         "undefined escape sequence",                    /* 133L */
         "Nicht definierte Escape-Sequenz",                      /* 133L */
-        "s‚quence d'‚chappement inconnue",                      /* 133L */
-        "–¢’è‹`ƒGƒXƒP[ƒvƒVƒPƒ“ƒX",                     /* 133L */
+        "sï¿½quence d'ï¿½chappement inconnue",                      /* 133L */
+        "ï¿½ï¿½ï¿½ï¿½`ï¿½Gï¿½Xï¿½Pï¿½[ï¿½vï¿½Vï¿½Pï¿½ï¿½ï¿½X",                     /* 133L */
   },
   { "binary_exp",
         "binary exponent part required for hex floating constants", /* 134L */
-        "Bin„rer Exponentteil erforderlich fr hex. Float-Konstanten", /* 134L */
-        "exposant binaire obligatoire pour les constantes hexad‚cimales … virgule flottante", /* 134L */
-        "16i‚Ì•‚“®¬”“_”‚É‚Íw”•”‚ª•K—v",           /* 134L */
+        "Binï¿½rer Exponentteil erforderlich fï¿½r hex. Float-Konstanten", /* 134L */
+        "exposant binaire obligatoire pour les constantes hexadï¿½cimales ï¿½ virgule flottante", /* 134L */
+        "16ï¿½iï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½É‚Íwï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½v",           /* 134L */
   },
   { "cseg_global",
         "pragma cseg must be at global scope",          /* 136  */
-        "Pragma Cseg muá global gltig sein",           /* 136  */
-        "pragma cseg doit ˆtre de visibilit‚ globale",          /* 136  */
-        "pragma cseg ‚ÍƒOƒ[ƒoƒ‹ƒXƒR[ƒv‚Å‹Lq‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",     /* 136  */
+        "Pragma Cseg muï¿½ global gï¿½ltig sein",           /* 136  */
+        "pragma cseg doit ï¿½tre de visibilitï¿½ globale",          /* 136  */
+        "pragma cseg ï¿½ÍƒOï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Xï¿½Rï¿½[ï¿½vï¿½Å‹Lï¿½qï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",     /* 136  */
   },
 
         /* ANSI 3.8.3.3 */
   { "hashhash_end",
         "## cannot appear at beginning or end",         /* 142P */
         "## darf nicht am Anfang oder Ende stehen",             /* 142P */
-        "## interdit au d‚but et … la fin",             /* 142P */
-        "## ‚Í•¶š—ñ‚ÌŠÔ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                    /* 142P */
+        "## interdit au dï¿½but et ï¿½ la fin",             /* 142P */
+        "## ï¿½Í•ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠÔ‚Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                    /* 142P */
   },
         /* ANSI 3.8.3.2 */
   { "hashparam",
         "# must be followed by a parameter",            /* 143P */
-        "# muá von einem Parameter gefolgt werden",             /* 143P */
-        "# doit ˆtre suivi d'un paramŠtre",             /* 143P */
-        "# ‚É‚Íƒpƒ‰ƒ[ƒ^‚ª‘±‚©‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",               /* 143P */
+        "# muï¿½ von einem Parameter gefolgt werden",             /* 143P */
+        "# doit ï¿½tre suivi d'un paramï¿½tre",             /* 143P */
+        "# ï¿½É‚Íƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",               /* 143P */
   },
         /* ANSI 3.4     */
   { "comma_const",
         "comma not allowed in constant expression",             /* 147S */
-        "Komma nicht zul„ssig in konstantem Ausdruck",          /* 147S */
-        "les virgules ne sont pas autoris‚es dans les exptessions constantes",  /* 147S */
-        "’è”®‚É‚ÍƒRƒ“ƒ}‚ğg‚Á‚Ä‚Í‚È‚ç‚È‚¢",           /* 147S */
+        "Komma nicht zulï¿½ssig in konstantem Ausdruck",          /* 147S */
+        "les virgules ne sont pas autorisï¿½es dans les exptessions constantes",  /* 147S */
+        "ï¿½è”ï¿½ï¿½ï¿½É‚ÍƒRï¿½ï¿½ï¿½}ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",           /* 147S */
   },
 
         // Compiler bug: report to Digital Mars
@@ -668,25 +668,25 @@ struct Msgtable msgtable[] =
         "internal error %s %d",                         // 168
         "Interner Fehler %s %d",                                // 168
         "erreur interne %s%d",                          // 168
-        "“à•”ƒGƒ‰[: %s %d",                            // 168
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½[: %s %d",                            // 168
   },
 
         // Exceeded maximum length of macro replacement text.
         // (%s is replaced by "macro text")
   { "max_macro_text",
         "maximum %s length of %u exceeded",             // 169
-        "Max. %s-L„nge von %u berschritten",           // 169
-        "la longueur de %s d‚passe la limite de %u",            // 169
-        "Å‘å‚Ì’·‚³ %u ‚ğ‰z‚¦‚Ä‚¢‚é",                   // 169
+        "Max. %s-Lï¿½nge von %u ï¿½berschritten",           // 169
+        "la longueur de %s dï¿½passe la limite de %u",            // 169
+        "ï¿½Å‘ï¿½Ì’ï¿½ï¿½ï¿½ %u ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                   // 169
   },
 
         // The compiler does not support macros with more than
         // 251 parameters.
   { "max_macro_params",
         "%u exceeds maximum of %u macro parameters",    // 171
-        "%u bersteigt die max. Anz. von %u Makroparametern",   // 171
-        "%u d‚passe le nombre maximal de %u paramŠtres de macro",       // 171
-        "%u ‚ÍÅ‘åƒ}ƒNƒƒpƒ‰ƒ[ƒ^”‚Ì %u ‚ğ‰z‚¦‚Ä‚¢‚é",// 171
+        "%u ï¿½bersteigt die max. Anz. von %u Makroparametern",   // 171
+        "%u dï¿½passe le nombre maximal de %u paramï¿½tres de macro",       // 171
+        "%u ï¿½ÍÅ‘ï¿½}ï¿½Nï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ %u ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",// 171
   },
 
   { "null",
@@ -698,7 +698,7 @@ struct Msgtable msgtable[] =
   { "missing_comma",
         "missing ',' between declaration of '%s' and '%s'",     // 176S
         "',' fehlt zwischen Deklaration von '%s' und '%s'",     // 176S
-        "virgule manquante entre '%s' et sa d‚claration",       // 176S
+        "virgule manquante entre '%s' et sa dï¿½claration",       // 176S
   },
 
         // Parameters are separated by commas.
@@ -714,8 +714,8 @@ struct Msgtable msgtable[] =
   },
   { "pascal_str_2long",
         "pascal string length %u is longer than 255",           // 180L
-        "Pascal-Stringl„nge %u ist gr”áer als 255",             // 180L
-        "longueur de la chaŒne pascal %u sup‚rieure … 255",             // 180L
+        "Pascal-Stringlï¿½nge %u ist grï¿½ï¿½er als 255",             // 180L
+        "longueur de la chaï¿½ne pascal %u supï¿½rieure ï¿½ 255",             // 180L
   },
   { "fatal_error",
         "Fatal error: ",                                        // 184
@@ -726,15 +726,15 @@ struct Msgtable msgtable[] =
         // the virtual memory address is not available
   { "cant_map_file",
         "cannot map file '%s' at %p",                   // 187
-        "Umsetzung der Datei '%s' an %p nicht m”glich",                 // 187
-        "impossible d'acc‚der au fichier '%s' … %p",                    // 187
+        "Umsetzung der Datei '%s' an %p nicht mï¿½glich",                 // 187
+        "impossible d'accï¿½der au fichier '%s' ï¿½ %p",                    // 187
   },
 
         // There is insufficient virtual memory at that address
   { "cant_reserve_mem",
         "cannot reserve memory at %p",                  // 188
         "Speicher an %p kann nicht reserviert werden",                  // 188
-        "impossible de r‚server de la m‚moire … %p",                    // 188
+        "impossible de rï¿½server de la mï¿½moire ï¿½ %p",                    // 188
   },
 
         // There is a maximum on the number of #include files
@@ -751,7 +751,7 @@ struct Msgtable msgtable[] =
         // The long long data type is not ANSI standard.
   { "no_longlong",
         "long long not supported for ANSI or 16 bit compiles",  // 167S
-        "Long Long nicht untersttzt bei ANSI- oder 16-Bit-Kompilierung",       // 167S
+        "Long Long nicht unterstï¿½tzt bei ANSI- oder 16-Bit-Kompilierung",       // 167S
         "long long incompatible avec la compilation ANSI ou 16 bits",   // 167S
   },
 
@@ -801,9 +801,9 @@ struct Msgtable msgtable[] =
         // Can't specify 16 bit instruction set for 32 bit memory model
   { "bad_iset",
         "invalid instruction set '%c' for memory model '%c'",   // 166
-        "Ungltiger Instruktionssatz '%c' fr Speichermodell '%c'",     // 166
-        "jeu d'instructions '%c' incompatible avec le modŠle de m‚moire '%c'",  // 166
-        "–½—ßƒZƒbƒg '%c' ‚ğƒƒ‚ƒŠƒ‚ƒfƒ‹ '%c' ‚É‚Íg‚¦‚È‚¢",     // 166
+        "Ungï¿½ltiger Instruktionssatz '%c' fï¿½r Speichermodell '%c'",     // 166
+        "jeu d'instructions '%c' incompatible avec le modï¿½le de mï¿½moire '%c'",  // 166
+        "ï¿½ï¿½ï¿½ßƒZï¿½bï¿½g '%c' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ '%c' ï¿½É‚Ígï¿½ï¿½ï¿½È‚ï¿½",     // 166
   },
 
    { "too_many_symbols",
@@ -818,7 +818,7 @@ struct Msgtable msgtable[] =
         "// comments are not ANSI C",                   /* 60   */
         "Kommentare mit // entsprechen nicht ANSI C",                   /* 60   */
         "commentaires // non valides en C ANSI",                        /* 60   */
-        "// ‚Ån‚Ü‚éƒRƒƒ“ƒg‚Í ANSI C ‚É‚È‚¢",          /* 60   */
+        "// ï¿½Ånï¿½Ü‚ï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ ANSI C ï¿½É‚È‚ï¿½",          /* 60   */
   },
 
 //////////////////////////////////////////////////////////////////
@@ -830,15 +830,15 @@ struct Msgtable msgtable[] =
   { "empty_sdl",
         "struct-declaration-list can't be empty",
         "Struct-Declaration-Liste darf nicht leer sein",
-        "la liste de d‚claration des structures ne doit pas ˆtre vide",
-        "struct ‚ÌéŒ¾ƒŠƒXƒg‚Í‹ó‚«‚É‚È‚Á‚Ä‚¢‚Ä‚Í‚È‚ç‚È‚¢",
+        "la liste de dï¿½claration des structures ne doit pas ï¿½tre vide",
+        "struct ï¿½ÌéŒ¾ï¿½ï¿½ï¿½Xï¿½gï¿½Í‹ó‚«‚É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",
   },
         // Use -p to turn off autoprototyping
   { "recursive_proto",
         "recursive prototype, turn off autoprototyping",
         "Rekursiver Prototyp, autom. Prototypbildung abschalten",
-        "prototype r‚cursif, d‚sactivez le prototypage automatique",
-        "Ä‹A“I‚Èƒvƒƒgƒ^ƒCƒvéŒ¾A©“®ƒvƒƒgƒ^ƒCƒv‚ğOFF‚É‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",
+        "prototype rï¿½cursif, dï¿½sactivez le prototypage automatique",
+        "ï¿½Ä‹Aï¿½Iï¿½Èƒvï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½éŒ¾ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½OFFï¿½É‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",
   },
 
 //////////////////////////////////////////////////////////////////
@@ -847,8 +847,8 @@ struct Msgtable msgtable[] =
 
   { "bad_type_comb",
         "illegal type combination, possible missing ';' after struct", // 181S
-        "Unzul„ssige Typkombination, evtl. fehlt ';' nach Struct", // 181S
-        "combinaison de types non autoris‚e, absence possible de ',' aprŠs struct", // 181S
+        "Unzulï¿½ssige Typkombination, evtl. fehlt ';' nach Struct", // 181S
+        "combinaison de types non autorisï¿½e, absence possible de ',' aprï¿½s struct", // 181S
   },
 
         /* Can't have both near and far, etc.
@@ -858,9 +858,9 @@ struct Msgtable msgtable[] =
          */
   { "illegal_type_combo",
         "illegal combination of types",                 /* 125S */
-        "Unzul„ssige Typkombination",                   /* 125S */
+        "Unzulï¿½ssige Typkombination",                   /* 125S */
         "combinaison de types incorrecte",                      /* 125S */
-        "•s³‚ÈŒ^‚Ì‘g‡‚¹",                             /* 125S */
+        "ï¿½sï¿½ï¿½ï¿½ÈŒ^ï¿½Ì‘gï¿½ï¿½ï¿½ï¿½",                             /* 125S */
   },
 
   { "ptr_to_ref",
@@ -873,22 +873,22 @@ struct Msgtable msgtable[] =
 
   { "illegal_cast",
         "illegal cast",                                 /* 82 S */
-        "Unzul„ssiges Cast",                                    /* 82 S */
+        "Unzulï¿½ssiges Cast",                                    /* 82 S */
         "cast non valide",                                      /* 82 S */
-        "•s³ƒLƒƒƒXƒg",                                 /* 82 S */
+        "ï¿½sï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Xï¿½g",                                 /* 82 S */
   },
   { "2manyinits",
         "too many initializers",                        /* 56 S */
         "Zu viele Initialisierer",                      /* 56 S */
         "trop de codes d'initialisation",               /* 56 S */
-        "‰Šú‰»q‚ª‘½‚·‚¬‚é",                           /* 56 S */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                           /* 56 S */
   },
         // Probably need an explicit cast
   { "explicit_cast",
         "need explicit cast to convert",                // 26
-        "Implizite Konvertierung nicht m”glich",        /* 26   */
+        "Implizite Konvertierung nicht mï¿½glich",        /* 26   */
         "conversion implicite impossible",              /* 26   */
-        "ˆÃ–Ù‚È•ÏŠ·‚ª‚Å‚«‚È‚¢",                         /* 26   */
+        "ï¿½Ã–Ù‚È•ÏŠï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",                         /* 26   */
   },
         /* ANSI C 3.5.4.3
                 func(s) short s; { ... }
@@ -899,33 +899,33 @@ struct Msgtable msgtable[] =
          */
   { "prototype",
         "prototype for '%s' should be %s",              /* 19   */
-        "Prototyp fr '%s' sollte %s sein",             /* 19   */
-        "le prototype de '%s' doit ˆtre %s",            /* 19   */
-        "'%s' ‚Ìƒvƒƒgƒ^ƒCƒv‚Í %s ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",  /* 19   */
+        "Prototyp fï¿½r '%s' sollte %s sein",             /* 19   */
+        "le prototype de '%s' doit ï¿½tre %s",            /* 19   */
+        "'%s' ï¿½Ìƒvï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½ %s ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",  /* 19   */
   },
   { "tag",
         "'{' or tag identifier expected",               /* 12 S */
         "'{' oder Tag-Bezeichner erwartet",             /* 12 S */
         "'{' ou identificateur de balise requis",       /* 12 S */
-        "'{' ‚Ü‚½‚Íƒ^ƒO¯•Êq‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",       /* 12 S */
+        "'{' ï¿½Ü‚ï¿½ï¿½Íƒ^ï¿½Oï¿½ï¿½ï¿½Êqï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",       /* 12 S */
   },
   { "no_inline",
         "function '%s' is too complicated to inline",   /* 15 W */
-        "Funktion '%s' zu komplex fr Inline",          /* 15 W */
+        "Funktion '%s' zu komplex fï¿½r Inline",          /* 15 W */
         "fonction '%s' trop complexe pour inline",      /* 15 W */
-        "ŠÖ” '%s' ‚ª•¡G‚·‚¬‚ÄƒCƒ“ƒ‰ƒCƒ“‰»‚Å‚«‚È‚¢",   /* 15 W */
+        "ï¿½Öï¿½ '%s' ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½ï¿½ï¿½ÄƒCï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",   /* 15 W */
   },
   { "statement",
         "statement expected",                           /*  7 S */
         "Anweisung erwartet",                           /*  7 S */
         "instruction requise",                          /*  7 S */
-        "•¶‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                         /*  7 S */
+        "ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                         /*  7 S */
   },
         // Identifer is both a symbol and a member of a struct.
   { "ambig_ref",
         "ambiguous reference to '%s'",                  // 189
         "Mehrdeutige Referenz '%s'",                            // 189
-        "r‚f‚rence … '%s' ambigu‰",                             // 189
+        "rï¿½fï¿½rence ï¿½ '%s' ambiguï¿½",                             // 189
   },
 
         // Can't implicitly convert one of the function parameters,
@@ -941,12 +941,12 @@ struct Msgtable msgtable[] =
   { "was_declared",
         "It was declared as: %s",                               // 185
         "Wurde deklariert als: %s",                             // 185
-        "El‚ment d‚clar‚ auparavant sous la forme %s",                          // 185
+        "Elï¿½ment dï¿½clarï¿½ auparavant sous la forme %s",                          // 185
   },
   { "now_declared",
         "It is now declared: %s",                               // 186
         "Wird jetzt deklariert als: %s",                        // 186
-        "El‚ment d‚sormais d‚clar‚ sous la forme %s",                           // 186
+        "Elï¿½ment dï¿½sormais dï¿½clarï¿½ sous la forme %s",                           // 186
   },
 
         // ANSI 3.4
@@ -956,9 +956,9 @@ struct Msgtable msgtable[] =
         // it won't fit.
   { "const_case",
         "constant expression does not fit in switch type",      /* 148S */
-        "Konstanter Ausdruck paát nicht in Schaltertyp",        /* 148S */
+        "Konstanter Ausdruck paï¿½t nicht in Schaltertyp",        /* 148S */
         "expression constante incompatible avec le type d'aiguillage",  /* 148S */
-        "’è”®‚ª switch •Ï”‚ÌƒTƒCƒY‚æ‚è‘å‚«‚¢",       /* 148S */
+        "ï¿½è”ï¿½ï¿½ï¿½ï¿½ switch ï¿½Ïï¿½ï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½ï¿½å‚«ï¿½ï¿½",       /* 148S */
   },
 
         /* ANSI 3.5 A declarator shall declare at least
@@ -967,8 +967,8 @@ struct Msgtable msgtable[] =
   { "empty_decl",
         "empty declaration",                                    /* 149S */
         "Leere Deklaration",                                    /* 149S */
-        "d‚claration vide",                                     /* 149S */
-        "‹ó‚«éŒ¾",                                     /* 149S */
+        "dï¿½claration vide",                                     /* 149S */
+        "ï¿½ó‚«éŒ¾",                                     /* 149S */
   },
 
         /* This is detected when the optimizer does data flow analysis
@@ -980,16 +980,16 @@ struct Msgtable msgtable[] =
   { "used_b4_set",
         "variable '%s' used before set",                // 150W
         "Variable '%s' wird vor dem Setzen benutzt",            // 150W
-        "variable '%s' utilis‚e avant sa d‚finition",           // 150W
-        "•Ï” '%s' ‚ª‘ã“ü‚Ì‘O‚Ég—p‚³‚ê‚Ä‚¢‚é",         // 150W
+        "variable '%s' utilisï¿½e avant sa dï¿½finition",           // 150W
+        "ï¿½Ïï¿½ '%s' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‘Oï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",         // 150W
   },
 
         // Probably results in an invalid pointer beyond the end of the stack
   { "ret_auto",
         "returning address of automatic '%s'",          // 161W
-        "Rckgabe der Adresse der Automatic-Zuweisung '%s'",            // 161W
+        "Rï¿½ckgabe der Adresse der Automatic-Zuweisung '%s'",            // 161W
         "renvoi de l'adresse de la fonction automatic '%s'",            // 161W
-        "©“®•Ï” '%s' ‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚µ‚Ä‚¢‚é",                 // 161W
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Ïï¿½ '%s' ï¿½Ìƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½ï¿½Ô‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                 // 161W
   },
 
         // Code and data for 16 bit compiles is output into 64Kb
@@ -998,17 +998,17 @@ struct Msgtable msgtable[] =
         // pieces, or switch to a 32 bit memory model.
   { "seg_gt_64k",
         "segment size is 0x%lx, exceeding 64Kb",                        // 162
-        "Segmentgr”áe 0x%lx bersteigt 64 Kb",                  // 162
-        "la taille du segment est 0x%lx, d‚passement des 64 Ko",                        // 162
-        "0x%lx ‚ÌƒZƒOƒƒ“ƒgƒTƒCƒY‚ª 64Kb ‚ğ‰z‚¦‚Ä‚¢‚é",         // 162
+        "Segmentgrï¿½ï¿½e 0x%lx ï¿½bersteigt 64 Kb",                  // 162
+        "la taille du segment est 0x%lx, dï¿½passement des 64 Ko",                        // 162
+        "0x%lx ï¿½ÌƒZï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Tï¿½Cï¿½Yï¿½ï¿½ 64Kb ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",         // 162
   },
 
         // __saveregs is recognized but not supported by Digital Mars C/C++.
   { "bad_kwd",
         "keyword not supported",                        // 163
-        "Schlsselwort wird nicht untersttzt",                 // 163
-        "mot-cl‚ non valide",                   // 163
-        "ƒL[ƒ[ƒh‚ªƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢",                     // 163
+        "Schlï¿½sselwort wird nicht unterstï¿½tzt",                 // 163
+        "mot-clï¿½ non valide",                   // 163
+        "ï¿½Lï¿½[ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",                     // 163
   },
 
         // The member appears in more than one struct, so you
@@ -1017,31 +1017,31 @@ struct Msgtable msgtable[] =
         "'%s' is a member of '%s' and '%s'",            // 164
         "'%s' ist Glied von '%s' und '%s'",             // 164
         "'%s' est membre de '%s' et de '%s'",           // 164
-        "'%s' ‚Í '%s' ‚Æ '%s' ‚Ì—¼•û‚Ìƒƒ“ƒo‚É‚È‚Á‚Ä‚¢‚é",      // 164
+        "'%s' ï¿½ï¿½ '%s' ï¿½ï¿½ '%s' ï¿½Ì—ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",      // 164
   },
 
         // Can't have a member of struct X that is of type X
   { "mem_same_type",
         "member '%s' can't be same type as struct '%s'",        // 165
         "Glied '%s' kann nicht vom gleichen Typ sein wie Struct '%s'",  // 165
-        "le membre '%s' et la structure '%s' ne doivent pas ˆtre du mˆme type", // 165
-        "ƒƒ“ƒo '%s' ‚ÌŒ^‚Í struct '%s' ‚Æ“¯‚¶‚É‚È‚Á‚Ä‚Í‚È‚ç‚È‚¢",      // 165
+        "le membre '%s' et la structure '%s' ne doivent pas ï¿½tre du mï¿½me type", // 165
+        "ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' ï¿½ÌŒ^ï¿½ï¿½ struct '%s' ï¿½Æ“ï¿½ï¿½ï¿½ï¿½É‚È‚ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",      // 165
   },
 
         /* ANSI 3.7.1   */
   { "explicit_param",
         "function definition must have explicit parameter list", /* 144S */
-        "Funktionsdefinition ben”tigt explizite Parameterliste", /* 144S */
-        "une liste de paramŠtres explicite doit ˆtre associ‚e … la d‚finition de la fonction", /* 144S */
-        "ŠÖ”’è‹`‚É‚Í‹ï‘Ì“I‚Èƒpƒ‰ƒ[ƒ^ƒŠƒXƒg‚ª•K—v",            /* 144S */
+        "Funktionsdefinition benï¿½tigt explizite Parameterliste", /* 144S */
+        "une liste de paramï¿½tres explicite doit ï¿½tre associï¿½e ï¿½ la dï¿½finition de la fonction", /* 144S */
+        "ï¿½Öï¿½ï¿½ï¿½`ï¿½É‚Í‹ï¿½Ì“Iï¿½Èƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Kï¿½v",            /* 144S */
   },
 
         /* ANSI 3.5.7   */
   { "ext_block_init",
         "external with block scope cannot have initializer",    /* 145S */
-        "Externe mit Block-Gltigkeit kann keinen Initialisierer haben",        /* 145S */
-        "les variables externes utilisant la visibilit‚ de bloc doivent ˆtre d‚pourvues de code d'initialisation",      /* 145S */
-        "ƒuƒƒbƒNƒXƒR[ƒv‚Ì external ‚É‚Í‰Šú‰»q‚ª‚ ‚Á‚Ä‚Í‚È‚ç‚È‚¢",   /* 145S */
+        "Externe mit Block-Gï¿½ltigkeit kann keinen Initialisierer haben",        /* 145S */
+        "les variables externes utilisant la visibilitï¿½ de bloc doivent ï¿½tre dï¿½pourvues de code d'initialisation",      /* 145S */
+        "ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Xï¿½Rï¿½[ï¿½vï¿½ï¿½ external ï¿½É‚Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",   /* 145S */
   },
 
         /* Precompiled headers can only have declarations, not
@@ -1050,11 +1050,11 @@ struct Msgtable msgtable[] =
   { "data_in_pch",
         "data or code '%s' defined in precompiled header",      /* 146S */
         "Daten oder Code in vorkompiliertem Header definiert",          /* 146S */
-        "l'en-tˆte pr‚compil‚ contient les donn‚es ou le code '%s'",    /* 146S */
+        "l'en-tï¿½te prï¿½compilï¿½ contient les donnï¿½es ou le code '%s'",    /* 146S */
     #if TX86
-        "ƒvƒŠƒRƒ“ƒpƒCƒ‹ƒwƒbƒ_‚Éƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é",                 /* 146S */
+        "ï¿½vï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½wï¿½bï¿½_ï¿½Éƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                 /* 146S */
     #else
-        "ƒvƒŠƒRƒ“ƒpƒCƒ‹ƒwƒbƒ_‚Éƒf[ƒ^‚©ƒR[ƒh '%s' ‚ª’è‹`‚³‚ê‚Ä‚¢‚é",   /* 146S */
+        "ï¿½vï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½wï¿½bï¿½_ï¿½Éƒfï¿½[ï¿½^ï¿½ï¿½ï¿½Rï¿½[ï¿½h '%s' ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",   /* 146S */
     #endif
   },
 
@@ -1064,40 +1064,40 @@ struct Msgtable msgtable[] =
          */
   { "no_ret_value",
         "no return value for function '%s'",            // 127S,W
-        "Kein Rckgabewert fr Funktion '%s'",  // 127S,W
+        "Kein Rï¿½ckgabewert fï¿½r Funktion '%s'",  // 127S,W
         "pas de valeur de retour pour la fonction '%s'",                // 127S,W
-        "ŠÖ” '%s' ‚Ì–ß‚è’l‚ª‚È‚¢",                             /* 127S */
+        "ï¿½Öï¿½ '%s' ï¿½Ì–ß‚ï¿½lï¿½ï¿½ï¿½È‚ï¿½",                             /* 127S */
   },
   { "sizeof_bitfield",
         "can't take sizeof bit field",                  /* 128S */
         "Kann kein Sizeof-Bitfeld aufnehmen",   /* 128S */
         "sizeof non utilisable avec un champ de bits",                  /* 128S */
-        "ƒrƒbƒgƒtƒB[ƒ‹ƒh‚Ì sizeof ‚ğ‚Æ‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",       /* 128S */
+        "ï¿½rï¿½bï¿½gï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ sizeof ï¿½ï¿½ï¿½Æ‚é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",       /* 128S */
   },
   { "no_ident_decl",
         "no identifier for declarator",                 /* 120S */
-        "Keine Bezeichner fr Deklarator",              /* 120S */
-        "d‚claration d‚pourvue d'identificateur",                       /* 120S */
-        "éŒ¾q‚É¯•Êq‚ª‚È‚¢",                         /* 120S */
+        "Keine Bezeichner fï¿½r Deklarator",              /* 120S */
+        "dï¿½claration dï¿½pourvue d'identificateur",                       /* 120S */
+        "ï¿½éŒ¾ï¿½qï¿½Éï¿½ï¿½Êqï¿½ï¿½ï¿½È‚ï¿½",                         /* 120S */
   },
   { "typesize_gt64k",
         "size of type exceeds 64k",                     /* 121S */
-        "Typ gr”áer als 64 KB",                 /* 121S */
-        "taille du type sup‚rieure … 64 Ko",                    /* 121S */
-        "Œ^‚ÌƒTƒCƒY‚ª 64k ‚ğ‰z‚¦‚Ä‚¢‚é",                /* 121S */
+        "Typ grï¿½ï¿½er als 64 KB",                 /* 121S */
+        "taille du type supï¿½rieure ï¿½ 64 Ko",                    /* 121S */
+        "ï¿½^ï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½ 64k ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                /* 121S */
   },
   { "noaddress",
         "can't take address of register, bit field, constant or string", /* 103 S */
         "Kann Adresse von Register, Bit-Feld, I-Konstante oder String nicht aufnehmen", /* 103 S */
-        "impossible d'enregistrer l'adresse du registre, du champ de bits, de la constante ou de la chaŒne", /* 103 S */
-        "ƒŒƒWƒXƒ^AƒrƒbƒgƒtƒB[ƒ‹ƒhA’è”‚¨‚æ‚Ñ•¶š—ñ‚ÌƒAƒhƒŒƒX‚Íæ‚ê‚È‚¢", /* 103 S */
+        "impossible d'enregistrer l'adresse du registre, du champ de bits, de la constante ou de la chaï¿½ne", /* 103 S */
+        "ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½Aï¿½rï¿½bï¿½gï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½Aï¿½è”ï¿½ï¿½ï¿½ï¿½Ñ•ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½Íï¿½ï¿½È‚ï¿½", /* 103 S */
   },
 
   { "bad_struct_use",
         "undefined use of struct or union",             /* 99 S */
         "Undefinierte Verwendung von Struct oder Union",        /* 99 S */
-        "utilisation non d‚finie de struct ou union",           /* 99 S */
-        "struct ‚Ü‚½‚Í union ‚Ì•s³g—p",               /* 99 S */
+        "utilisation non dï¿½finie de struct ou union",           /* 99 S */
+        "struct ï¿½Ü‚ï¿½ï¿½ï¿½ union ï¿½Ì•sï¿½ï¿½ï¿½gï¿½p",               /* 99 S */
   },
 
         /* Occurs in instances like:
@@ -1112,29 +1112,29 @@ struct Msgtable msgtable[] =
          */
   { "assignment",
         "possible unintended assignment",               /* 100 W */
-        "M”glicherweise unbeabsichtigte Zuweisung",     /* 100 W */
-        "pr‚sence possible d'une affectation non voulue",               /* 100 W */
+        "Mï¿½glicherweise unbeabsichtigte Zuweisung",     /* 100 W */
+        "prï¿½sence possible d'une affectation non voulue",               /* 100 W */
         #pragma dbcs(push,1)
-        "Œë‚Á‚½‘ã“ü‚Ì‰Â”\«‚ª‚ ‚é",                     /* 100 W */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰Â”\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                     /* 100 W */
         #pragma dbcs(pop)
   },
   { "type_mismatch",
         "type mismatch",                                /* 76 S */
-        "Typ stimmt nicht berein",                             /* 76 S */
+        "Typ stimmt nicht ï¿½berein",                             /* 76 S */
         "conflit de types",                             /* 76 S */
-        "Œ^‚ª–µ‚‚µ‚Ä‚¢‚é",                             /* 76 S */
+        "ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                             /* 76 S */
   },
   { "mult_default",
         "'default:' is already used",                   /* 77 S */
         "'default:' wird bereits benutzt",                      /* 77 S */
-        "'default:' d‚j… utilis‚",                      /* 77 S */
-        "'default:' ‚ÍŠù‚Ég‚í‚ê‚Ä‚¢‚é",                /* 77 S */
+        "'default:' dï¿½jï¿½ utilisï¿½",                      /* 77 S */
+        "'default:' ï¿½ÍŠï¿½ï¿½Égï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                /* 77 S */
   },
   { "not_switch",
         "not in a switch statement",                    /* 78 S */
         "Nicht in einer Verzweigungsanweisung",                 /* 78 S */
         "pas dans une instruction d'aiguillage",                        /* 78 S */
-        "switch •¶“à‚Å‚È‚¢",                            /* 78 S */
+        "switch ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½",                            /* 78 S */
   },
         /* Probably means you forgot to declare a function that returns */
         /* a pointer, so the compiler assumed it returns int. Cast int  */
@@ -1143,13 +1143,13 @@ struct Msgtable msgtable[] =
         "conversion of int to far or handle pointer",   /* 79 S */
         "Konvertierung von Int in Far- oder Handle-Pointer",    /* 79 S */
         "conversion de int en pointeur far ou descripteur",     /* 79 S */
-        "int ‚ª far ‚Ü‚½‚Í handle ƒ|ƒCƒ“ƒ^‚É•ÏŠ·‚³‚ê‚Ä‚¢‚é",    /* 79 S */
+        "int ï¿½ï¿½ far ï¿½Ü‚ï¿½ï¿½ï¿½ handle ï¿½|ï¿½Cï¿½ï¿½ï¿½^ï¿½É•ÏŠï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",    /* 79 S */
   },
   { "mult_case",
         "case %ld was already used",                    /* 80 S */
         "Case %ld wurde bereits benutzt",                       /* 80 S */
-        "le cas %ld a d‚j… ‚t‚ utilis‚",                        /* 80 S */
-        "case %ld ‚ÍŠù‚Ég‚í‚ê‚Ä‚¢‚é",                  /* 80 S */
+        "le cas %ld a dï¿½jï¿½ ï¿½tï¿½ utilisï¿½",                        /* 80 S */
+        "case %ld ï¿½ÍŠï¿½ï¿½Égï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                  /* 80 S */
   },
         /* A function must precede a ().
            Also occurs if a template declaration is not
@@ -1159,19 +1159,19 @@ struct Msgtable msgtable[] =
         "function expected",                            /* 64 S */
         "Funktion erwartet",                                    /* 64 S */
         "fonction requise",                             /* 64 S */
-        "ŠÖ”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 64 S */
+        "ï¿½Öï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 64 S */
   },
   { "ident_abstract",
         "identifier '%s' found in abstract declarator", /* 65 S */
         "Bezeichner in abstraktem Deklarator gefunden", /* 65 S */
-        "identificateur d‚tect‚ dans une d‚claration abstraite",        /* 65 S */
-        "’ŠÛéŒ¾q‚É¯•Êq‚ª‚ ‚é",                     /* 65 S */
+        "identificateur dï¿½tectï¿½ dans une dï¿½claration abstraite",        /* 65 S */
+        "ï¿½ï¿½ï¿½ÛéŒ¾ï¿½qï¿½Éï¿½ï¿½Êqï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                     /* 65 S */
   },
   { "const_init",
         "constant initializer expected",                /* 59 S */
         "Konstanter Initialisierer erwartet",           /* 59 S */
         "initialisation de la constante requise",       /* 59 S */
-        "’è”‚Ì‰Šú‰»q‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",             /* 59 S */
+        "ï¿½è”ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",             /* 59 S */
   },
         // ARM 7
         // Only in function definitions and function declarations
@@ -1180,97 +1180,97 @@ struct Msgtable msgtable[] =
         // by the type of a declaration.
   { "decl_spec_seq",
         "missing decl-specifier-seq for declaration of '%s'",   /* 61 S */
-        "decl-specifier-seq fehlt fr Deklaration von '%s'",    /* 61 S */
-        "s‚quence de sp‚cification manquante pour la d‚claration de '%s'",      /* 61 S */
-        "'%s'‚ÌéŒ¾‚ÉéŒ¾q‚ªŒ‡‚¯‚Ä‚¢‚é",               /* 61 S */
+        "decl-specifier-seq fehlt fï¿½r Deklaration von '%s'",    /* 61 S */
+        "sï¿½quence de spï¿½cification manquante pour la dï¿½claration de '%s'",      /* 61 S */
+        "'%s'ï¿½ÌéŒ¾ï¿½ÉéŒ¾ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",               /* 61 S */
   },
   { "semi_member",
         "';' expected following declaration of struct member", // 51 S
         "';' erwartet",                                 /* 51 S */
         "';' requis",                                   /* 51 S */
-        "';' ‚ª‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                       /* 51 S */
+        "';' ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                       /* 51 S */
   },
   { "bitfield",
         "bit field '%s' must be of integral type",      /* 50 S */
-        "Feld '%s' muá vom Typ Integral sein",          /* 50 S */
-        "le champ '%s' doit ˆtre de type int‚gral",     /* 50 S */
-        "ƒtƒB[ƒ‹ƒh '%s' ‚Í®”Œ^‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",   /* 50 S */
+        "Feld '%s' muï¿½ vom Typ Integral sein",          /* 50 S */
+        "le champ '%s' doit ï¿½tre de type intï¿½gral",     /* 50 S */
+        "ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½h '%s' ï¿½Íï¿½ï¿½ï¿½ï¿½^ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",   /* 50 S */
   },
   { "bitwidth",
         "%d exceeds maximum bit field width of %d bits",        // 52 S
-        "Max. Breite von %d Bits berschritten",                /* 52 S */
-        "d‚passement de la largeur autoris‚e de %d bits",       /* 52 S */
-        "%d ƒrƒbƒg‚ÌÅ‘å•‚ğ‰z‚¦‚Ä‚¢‚é",                        /* 52 S */
+        "Max. Breite von %d Bits ï¿½berschritten",                /* 52 S */
+        "dï¿½passement de la largeur autorisï¿½e de %d bits",       /* 52 S */
+        "%d ï¿½rï¿½bï¿½gï¿½ÌÅ‘å•ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                        /* 52 S */
   },
   { "unknown_size",
         "size of %s is not known",                      /* 53 S */
-        "Gr”áe von %s nicht bekannt",                   /* 53 S */
+        "Grï¿½ï¿½e von %s nicht bekannt",                   /* 53 S */
         "taille de %s inconnue",                        /* 53 S */
-        "%s ‚ÌƒTƒCƒY‚Í’m‚ç‚ê‚Ä‚¢‚È‚¢",                  /* 53 S */
+        "%s ï¿½ÌƒTï¿½Cï¿½Yï¿½Í’mï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",                  /* 53 S */
   },
   { "bad_member_type",
         "illegal type for '%s' member",                 /* 54 S */
-        "Unzul„ssiger Typ fr Glied '%s'",              /* 54 S */
-        "membre '%s' de type non autoris‚",             /* 54 S */
-        "'%s' ƒƒ“ƒo‚ÌŒ^‚ª•s³",                        /* 54 S */
+        "Unzulï¿½ssiger Typ fï¿½r Glied '%s'",              /* 54 S */
+        "membre '%s' de type non autorisï¿½",             /* 54 S */
+        "'%s' ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ÌŒ^ï¿½ï¿½ï¿½sï¿½ï¿½",                        /* 54 S */
   },
   { "id_or_decl",
         "identifier or '( declarator )' expected",      /* 39 S */
         "Bezeichner oder '( declarator )' erwartet",    /* 39 S */
-        "identificateur ou '( d‚claration )' requis",   /* 39 S */
-        "¯•Êq‚Ü‚½‚Í '( éŒ¾q )' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", /* 39 S */
+        "identificateur ou '( dï¿½claration )' requis",   /* 39 S */
+        "ï¿½ï¿½ï¿½Êqï¿½Ü‚ï¿½ï¿½ï¿½ '( ï¿½éŒ¾ï¿½q )' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", /* 39 S */
   },
   { "not_param",
         "'%s' is not in function parameter list",               /* 40 S */
         "'%s' ist nicht in der Funktionsparameterliste",        /* 40 S */
-        "'%s' ne figure pas dans la liste des paramŠtres de la fonction", /* 40 S       */
-        "'%s' ‚ÍŠÖ”‚Ìƒpƒ‰ƒ[ƒ^ƒŠƒXƒg‚É‚ÍŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢",      /* 40 S */
+        "'%s' ne figure pas dans la liste des paramï¿½tres de la fonction", /* 40 S       */
+        "'%s' ï¿½ÍŠÖï¿½ï¿½Ìƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½Xï¿½gï¿½É‚ÍŠÜ‚Ü‚ï¿½Ä‚ï¿½ï¿½È‚ï¿½",      /* 40 S */
   },
   { "param_context",
         "parameter list is out of context",                     /* 41 S */
-        "Parameterliste auáerhalb des Kontexts",                /* 41 S */
-        "la liste des paramŠtres est hors contexte",            /* 41 S */
-        "ƒpƒ‰ƒ[ƒ^ƒŠƒXƒg‚ÌˆÊ’uŠÖŒW‚ª‚¨‚©‚µ‚¢",                 /* 41 S */
+        "Parameterliste auï¿½erhalb des Kontexts",                /* 41 S */
+        "la liste des paramï¿½tres est hors contexte",            /* 41 S */
+        "ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½Xï¿½gï¿½ÌˆÊ’uï¿½ÖŒWï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                 /* 41 S */
   },
   { "noprototype",
         "function '%s' has no prototype",               /* 44 S */
         "Funktion '%s' hat keinen Prototyp",            /* 44 S */
         "la fonction '%s' n'a pas de prototype",        /* 44 S */
-        "ŠÖ” '%s' ‚É‚Íƒvƒƒgƒ^ƒCƒv‚ª‚È‚¢",             /* 44 S */
+        "ï¿½Öï¿½ '%s' ï¿½É‚Íƒvï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½ï¿½È‚ï¿½",             /* 44 S */
   },
   { "datadef",
         "expected data def of '%s', not func def",      /* 45 S */
         "Datendefinition von '%s' erwartet, nicht Funktionsdefinition", /* 45 S */
-        "d‚finition de donn‚es de '%s' requise et non d‚finition de fonction",  /* 45 S */
-        "ŠÖ”’è‹`‚Å‚Í‚È‚­A'%s' ‚Ìƒf[ƒ^’è‹`‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",/* 45 S */
+        "dï¿½finition de donnï¿½es de '%s' requise et non dï¿½finition de fonction",  /* 45 S */
+        "ï¿½Öï¿½ï¿½ï¿½`ï¿½Å‚Í‚È‚ï¿½ï¿½A'%s' ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½`ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",/* 45 S */
   },
   { "noextern",
         "cannot define parameter as extern",                    /* 37 S */
         "Parameter kann nicht als extern definiert werden",     /* 37 S */
-        "impossible de d‚finir le paramŠtre comme extern",      /* 37 S */
-        "ƒpƒ‰ƒ[ƒ^‚ğ extern ‚Æ’è‹`‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",         /* 37 S */
+        "impossible de dï¿½finir le paramï¿½tre comme extern",      /* 37 S */
+        "ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ extern ï¿½Æ’ï¿½`ï¿½ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",         /* 37 S */
   },
   { "badtag",
         "'%s' is not a correct struct, union or enum tag identifier", /* 28 S */
-        "'%s' ist kein korrekter Tag-Bezeichner fr Struct, Union oder Enum", /* 28 S */
+        "'%s' ist kein korrekter Tag-Bezeichner fï¿½r Struct, Union oder Enum", /* 28 S */
         "'%s' n'est pas une balise struct, union ou enum valide", /* 28 S */
-        "'%s' ‚Í structAunion ‚Ü‚½‚Í enum ‚Ìƒ^ƒO¯•Êq‚Å‚Í‚È‚¢", /* 28 S */
+        "'%s' ï¿½ï¿½ structï¿½Aunion ï¿½Ü‚ï¿½ï¿½ï¿½ enum ï¿½Ìƒ^ï¿½Oï¿½ï¿½ï¿½Êqï¿½Å‚Í‚È‚ï¿½", /* 28 S */
   },
   { "nomatch_proto",
         "type of '%s' does not match function prototype", /* 105 S */
-        "Typ von '%s' stimmt nicht mit Prototyp der Funktion berein", /* 105 S */
+        "Typ von '%s' stimmt nicht mit Prototyp der Funktion ï¿½berein", /* 105 S */
         "le type de '%s' ne correspond pas au prototype de la fonction", /* 105 S */
-        "'%s' ‚ÌŒ^‚ªŠÖ”ƒvƒƒgƒ^ƒCƒv‚Æ–µ‚‚µ‚Ä‚¢‚é",    /* 105 S */
+        "'%s' ï¿½ÌŒ^ï¿½ï¿½ï¿½Öï¿½ï¿½vï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½Æ–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",    /* 105 S */
   },
   { "void_novalue",
         // Also, void& is an illegal type
         // Constructors, destructors and invariants cannot return values.
         /* Functions returning void cannot return values.       */
         "voids have no value; ctors, dtors and invariants have no return value", // 106
-        "Voids haben keinen Wert, Ctors und Dtors haben keinen Rckgabewert", /* 106 */
-        "les void sont d‚pourvus de valeur, les ctor et dtor ne renvoient pas de valeur", /* 106 */
+        "Voids haben keinen Wert, Ctors und Dtors haben keinen Rï¿½ckgabewert", /* 106 */
+        "les void sont dï¿½pourvus de valeur, les ctor et dtor ne renvoient pas de valeur", /* 106 */
         #pragma dbcs(push,1)
-        "void ‚É‚Í’l‚ª‚È‚­A\’zqAÁ–Åq‚É‚Í–ß‚è’l‚ª‚È‚¢", /* 106 */
+        "void ï¿½É‚Í’lï¿½ï¿½ï¿½È‚ï¿½ï¿½Aï¿½\ï¿½zï¿½qï¿½Aï¿½ï¿½ï¿½Åqï¿½É‚Í–ß‚ï¿½lï¿½ï¿½ï¿½È‚ï¿½", /* 106 */
         #pragma dbcs(pop)
   },
         /* Precompiled headers must be compiled with same
@@ -1279,23 +1279,23 @@ struct Msgtable msgtable[] =
          */
   { "pch_config",
         "different configuration for precompiled header", // 139 (W22)
-        "Abweichende Konfiguration fr vorkompilierten Header", /* 139 */
-        "la configuration de l'en-tˆte pr‚compil‚ a chang‚", /* 139 */
-        "‚¿‚ª‚¤ƒIƒvƒVƒ‡ƒ“‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ƒvƒŠƒRƒ“ƒpƒCƒ‹ƒwƒbƒ_‚ğg—p‚µ‚Ä‚¢‚é", /* 139 */
+        "Abweichende Konfiguration fï¿½r vorkompilierten Header", /* 139 */
+        "la configuration de l'en-tï¿½te prï¿½compilï¿½ a changï¿½", /* 139 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÅƒRï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½wï¿½bï¿½_ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½", /* 139 */
   },
         // Use -cpp to precompile a header file with C++, as the default
         // is to compile a .h file with the C compiler.
   { "wrong_lang",
         "precompiled header compiled with C instead of C++",    // 182 F
         "Vorkompilierter Header wurde mit C statt mit C++ kompiliert",  // 182 F
-        "en-tˆte pr‚compil‚ sous C et non sous C++",    // 182 F
+        "en-tï¿½te prï¿½compilï¿½ sous C et non sous C++",    // 182 F
   },
 
         // Define the struct before referencing its members.
   { "not_a_member",
         "'%s' is not a member of undefined class '%s'", // 175
         "'%s' ist nicht Glied des vorausreferenzierten Class '%s'",     // 175
-        "'%s' n'est pas membre de la structure r‚f‚renc‚e '%s'",        // 175
+        "'%s' n'est pas membre de la structure rï¿½fï¿½rencï¿½e '%s'",        // 175
   },
   { "not_a_member_alt",
         "'%s' is not a member of undefined class '%s', did you mean '%s'?",
@@ -1307,9 +1307,9 @@ struct Msgtable msgtable[] =
         //      void g() { f(); }
   { "no_static_def",
         "no definition for static '%s'",                // 172
-        "Keine Definition fr Static '%s'",             // 172
-        "la fonction static '%s' n'est pas d‚finie",            // 172
-        "static '%s' ‚Í’è‹`‚³‚ê‚Ä‚¢‚È‚¢",               // 172
+        "Keine Definition fï¿½r Static '%s'",             // 172
+        "la fonction static '%s' n'est pas dï¿½finie",            // 172
+        "static '%s' ï¿½Í’ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½",               // 172
   },
 
         // ANSI 3.7
@@ -1318,15 +1318,15 @@ struct Msgtable msgtable[] =
   { "no_ext_def",
         "need at least one external def",               // 173
         "Mindestens eine externe Definition erforderlich",              // 173
-        "au moins une d‚finition externe est obligatoire",              // 173
-        "Å’á1‚Â‚Ì external ’è‹`‚ª•K—v",                // 173
+        "au moins une dï¿½finition externe est obligatoire",              // 173
+        "ï¿½Å’ï¿½1ï¿½Â‚ï¿½ external ï¿½ï¿½`ï¿½ï¿½ï¿½Kï¿½v",                // 173
   },
 
   { "decl_0size_bitfield",
         "declarator for 0 sized bit field",             /* 129S */
-        "Deklarator fr Bitfeld mit Gr”áe 0",           /* 129S */
-        "d‚claration d'un champ de bits de taille z‚ro",                /* 129S */
-        "ƒTƒCƒY 0 ‚ÌƒrƒbƒgƒtƒB[ƒ‹ƒh‚É¯•Êq‚ğ‚Â‚¯‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",/* 129S     */
+        "Deklarator fï¿½r Bitfeld mit Grï¿½ï¿½e 0",           /* 129S */
+        "dï¿½claration d'un champ de bits de taille zï¿½ro",                /* 129S */
+        "ï¿½Tï¿½Cï¿½Y 0 ï¿½Ìƒrï¿½bï¿½gï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½Éï¿½ï¿½Êqï¿½ï¿½ï¿½Â‚ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",/* 129S     */
   },
 
         /* An internally generated tag name is used. You should supply a
@@ -1334,94 +1334,94 @@ struct Msgtable msgtable[] =
          */
   { "notagname",
         "no tag name for struct or enum",               /* 130W */
-        "Kein Tag-Name fr Struct oder Enum",           /* 130W */
-        "struct ou enum d‚pourvu de nom de balise",             /* 130W */
-        "struct ‚Ü‚½‚Í enum ‚Éƒ^ƒO–¼‚ª‚È‚¢",                    /* 130W */
+        "Kein Tag-Name fï¿½r Struct oder Enum",           /* 130W */
+        "struct ou enum dï¿½pourvu de nom de balise",             /* 130W */
+        "struct ï¿½Ü‚ï¿½ï¿½ï¿½ enum ï¿½Éƒ^ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½",                    /* 130W */
   },
   { "unnamed_bitfield",
         "can't have unnamed bit fields in unions",      /* 123  */
-        "Unbenannte Bit-Felder in Unions nicht zul„ssig",       /* 123  */
+        "Unbenannte Bit-Felder in Unions nicht zulï¿½ssig",       /* 123  */
         "champs de bits sans nom interdits dans les unions",    /* 123  */
-        " union‚É‚Í–³–¼ƒrƒbƒgƒtƒB[ƒ‹ƒh‚ğŠÜ‚Ş‚±‚Æ‚Í‚Å‚«‚È‚¢",   /* 123  */
+        " unionï¿½É‚Í–ï¿½ï¿½ï¿½ï¿½rï¿½bï¿½gï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Ü‚Ş‚ï¿½ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",   /* 123  */
   },
         /* Large automatic allocations will probably cause stack overflow */
   { "large_auto",
         "very large automatic",                         /* 124W */
-        "Sehr groáe Automatic-Zuweisung",                       /* 124W */
+        "Sehr groï¿½e Automatic-Zuweisung",                       /* 124W */
         "assignation automatique de taille trop importante",                    /* 124W */
-        "©“®•Ï”‚ª‘å‚«‚·‚¬‚é",                         /* 124W */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Ïï¿½ï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                         /* 124W */
   },
   { "array",
         "array or pointer required before '['",         /* 96 S */
         "Array oder Pointer erforderlich vor '['",              /* 96 S */
         "tableau ou pointeur requis avant '['",         /* 96 S */
-        "'[' ‚Ì‘O‚Í”z—ñ‚Ü‚½‚Íƒ|ƒCƒ“ƒ^‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",       /* 96 S */
+        "'[' ï¿½Ì‘Oï¿½Í”zï¿½ï¿½Ü‚ï¿½ï¿½Íƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",       /* 96 S */
   },
 
         /* ANSI C 3.5.4.2       */
   { "array_dim",
         "array dimension %d must be > 0",                       /* 97   */
-        "Array-Dimension muá > 0 sein",                 /* 97   */
-        "la dimension du tableau doit ˆtre sup‚rieure … 0",                     /* 97   */
-        "”z—ñ‚ÌŸŒ³”‚Í 0 ˆÈã‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",              /* 97   */
+        "Array-Dimension muï¿½ > 0 sein",                 /* 97   */
+        "la dimension du tableau doit ï¿½tre supï¿½rieure ï¿½ 0",                     /* 97   */
+        "ï¿½zï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½Èï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",              /* 97   */
   },
 
   { "pointer",
         "pointer required before '->', '->*' or after '*'",     /* 95 S */
         "Pointer erforderlich vor '->', '->*' oder nach '*'",   /* 95 S */
-        "pointeur requis avant '->' ou '->*' et aprŠs '*'",     /* 95 S */
-        "'->'A'->*' ‚Ì‘O‚¨‚æ‚Ñ '*' ‚ÌŒã‚Íƒ|ƒCƒ“ƒ^‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",  /* 95 S */
+        "pointeur requis avant '->' ou '->*' et aprï¿½s '*'",     /* 95 S */
+        "'->'ï¿½A'->*' ï¿½Ì‘Oï¿½ï¿½ï¿½ï¿½ï¿½ '*' ï¿½ÌŒï¿½Íƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",  /* 95 S */
   },
   { "not_variable",
         // The symbol is not a variable, or is not a static variable.
         "'%s' is not a %svariable",                     /* 87 S */
         "'%s' ist keine %s-Variable",                           /* 87 S */
         "'%s' n'est pas une %svariable",                        /* 87 S */
-        "'%s' ‚Í %s •Ï”‚Å‚Í‚È‚¢",                      /* 87 S */
+        "'%s' ï¿½ï¿½ %s ï¿½Ïï¿½ï¿½Å‚Í‚È‚ï¿½",                      /* 87 S */
   },
   { "while",
         "'while (expression)' expected after 'do { statement }'", // 67 S
         "'while' erwartet",                                     /* 67 S */
         "'while' requis",                               /* 67 S */
-        "'while' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                   /* 67 S */
+        "'while' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                   /* 67 S */
   },
   { "bad_break",
         "'break' is valid only in a for, do, while or switch statement",        /* 68 S */
-        "'break' ist nur gltig in Schleife oder Verzweigung",  /* 68 S */
-        "'break' autoris‚ uniquement dans une boucle ou un aiguillage", /* 68 S */
-        "'break' ‚Íƒ‹[ƒv‚Ü‚½‚Í switch “à‚ÉŒÀ‚é",       /* 68 S */
+        "'break' ist nur gï¿½ltig in Schleife oder Verzweigung",  /* 68 S */
+        "'break' autorisï¿½ uniquement dans une boucle ou un aiguillage", /* 68 S */
+        "'break' ï¿½Íƒï¿½ï¿½[ï¿½vï¿½Ü‚ï¿½ï¿½ï¿½ switch ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½",       /* 68 S */
   },
   { "bad_continue",
         "'continue' is valid only in a for, do or while statement",             /* 69 S */
-        "'continue' ist nur gltig in einer Schleife",  /* 69 S */
-        "'continue' autoris‚ uniquement dans une boucle",               /* 69 S */
-        "'continue' ‚Íƒ‹[ƒv“à‚ÉŒÀ‚é",                  /* 69 S */
+        "'continue' ist nur gï¿½ltig in einer Schleife",  /* 69 S */
+        "'continue' autorisï¿½ uniquement dans une boucle",               /* 69 S */
+        "'continue' ï¿½Íƒï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½",                  /* 69 S */
   },
   { "unknown_tag",
         "undefined tag '%s'",                           /* 70 S */
         "Undefiniertes Tag '%s'",                       /* 70 S */
-        "balise '%s' non identifi‚e",                           /* 70 S */
-        "–¢’èƒ^ƒO '%s'",                                /* 70 S */
+        "balise '%s' non identifiï¿½e",                           /* 70 S */
+        "ï¿½ï¿½ï¿½ï¿½^ï¿½O '%s'",                                /* 70 S */
   },
   { "unknown_label",
         "undefined label '%s'",                         /* 71 S */
         "Undefiniertes Label '%s'",                             /* 71 S */
-        "‚tiquette '%s' non identifi‚e",                                /* 71 S */
-        "–¢’èƒ‰ƒxƒ‹ '%s'",                              /* 71 S */
+        "ï¿½tiquette '%s' non identifiï¿½e",                                /* 71 S */
+        "ï¿½ï¿½ï¿½èƒ‰ï¿½xï¿½ï¿½ '%s'",                              /* 71 S */
   },
         // Can't subtract 2 pointers if they point to 0 sized objects
         // because a divide by 0 would result.
   { "0size",
         "cannot subtract pointers to objects of 0 size", // 72 S
-        "Objekt hat die Gr”áe 0",                               /* 72 S */
-        "objet de taille z‚ro",                         /* 72 S */
-        "ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ªƒ[ƒ",                   /* 72 S */
+        "Objekt hat die Grï¿½ï¿½e 0",                               /* 72 S */
+        "objet de taille zï¿½ro",                         /* 72 S */
+        "ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½ï¿½[ï¿½ï¿½",                   /* 72 S */
   },
   { "not_struct",
         "not a struct or union type",                   /* 73 S */
         "Nicht vom Typ Struct oder Union",                      /* 73 S */
         "le type n'est pas struct ou union",                    /* 73 S */
-        "struct ‚Ü‚½‚Í union ‚Å‚Í‚È‚¢",                 /* 73 S */
+        "struct ï¿½Ü‚ï¿½ï¿½ï¿½ union ï¿½Å‚Í‚È‚ï¿½",                 /* 73 S */
   },
         /*
            In C++, this can also happen
@@ -1432,17 +1432,17 @@ struct Msgtable msgtable[] =
   { "notamember",
         "'%s' is not a member of '%s'",                 /* 74 S */
         "'%s' ist kein Glied des '%s'",                 /* 74 S */
-        "'%s' n'appartient pas … la '%s'",              /* 74 S */
-        "'%s' ‚Í struct '%s' ‚Ìƒƒ“ƒo‚Å‚Í‚È‚¢",         /* 74 S */
+        "'%s' n'appartient pas ï¿½ la '%s'",              /* 74 S */
+        "'%s' ï¿½ï¿½ struct '%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½Å‚Í‚È‚ï¿½",         /* 74 S */
   },
   { "notamember_alt",
         "'%s' is not a member of '%s', did you mean '%s'?",
   },
   { "bad_ptr_arith",
         "illegal pointer arithmetic",                   /* 75 S */
-        "Unzul„ssige Pointer-Arithmetik",                       /* 75 S */
-        "arithm‚tique de pointeur incorrect",                   /* 75 S */
-        "•s³ƒ|ƒCƒ“ƒ^‰‰Z",                             /* 75 S */
+        "Unzulï¿½ssige Pointer-Arithmetik",                       /* 75 S */
+        "arithmï¿½tique de pointeur incorrect",                   /* 75 S */
+        "ï¿½sï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½Z",                             /* 75 S */
   },
         /* One of:
                 1. Templates can only be declared at global scope. ARM 14.1
@@ -1452,24 +1452,24 @@ struct Msgtable msgtable[] =
          */
   { "storage_class",
         "%s storage class is illegal in this context",  /* 47 S */
-        "Speicherklasse %s in diesem Kontext unzul„ssig",       /* 47 S */
+        "Speicherklasse %s in diesem Kontext unzulï¿½ssig",       /* 47 S */
         "classe de stockage %s interdite dans ce contexte",     /* 47 S */
-        "‚±‚±‚Å‚Í %s ‚Ì‹L‰¯ƒNƒ‰ƒX‚Íg‚¦‚È‚¢",           /* 47 S */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ %s ï¿½Ì‹Lï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½Ígï¿½ï¿½ï¿½È‚ï¿½",           /* 47 S */
   },
   { "storage_class2",
         "%s storage class is illegal for %s",
   },
   { "array_of_funcs",
         "array of functions, references or voids is illegal",   /* 42 S */
-        "Array von Funktionen oder Referenzen ungltig",        /* 42 S */
-        "tableau de fonctions ou de r‚f‚rences non autoris‚",   /* 42 S */
-        "ŠÖ”‚Ü‚½‚ÍQÆ‚Ì”z—ñ‚ğéŒ¾‚Å‚«‚È‚¢",                   /* 42 S */
+        "Array von Funktionen oder Referenzen ungï¿½ltig",        /* 42 S */
+        "tableau de fonctions ou de rï¿½fï¿½rences non autorisï¿½",   /* 42 S */
+        "ï¿½Öï¿½ï¿½Ü‚ï¿½ï¿½ÍQï¿½Æ‚Ì”zï¿½ï¿½ï¿½éŒ¾ï¿½Å‚ï¿½ï¿½È‚ï¿½",                   /* 42 S */
   },
   { "return_type",
         "can't return arrays, functions or abstract classes",   /* 43 S */
-        "Rckgabe von Arrays, Funktionen oder abstrakten Klassen nicht m”glich",        /* 43 S */
+        "Rï¿½ckgabe von Arrays, Funktionen oder abstrakten Klassen nicht mï¿½glich",        /* 43 S */
         "renvoi de tableaux, de fonctions ou de classes abstraites impossible", /* 43 S */
-        "”z—ñAŠÖ”A’ŠÛƒNƒ‰ƒX‚ğ–ß‚è’l‚Æ‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",   /* 43 S */
+        "ï¿½zï¿½ï¿½Aï¿½Öï¿½ï¿½Aï¿½ï¿½ï¿½ÛƒNï¿½ï¿½ï¿½Xï¿½ï¿½ß‚ï¿½lï¿½Æ‚ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",   /* 43 S */
   },
   { "body",
         "__body statement expected following __in or __out",
@@ -1493,7 +1493,7 @@ struct Msgtable msgtable[] =
         // Part of syntax for __try block for Structured Exception Handling.
   { "bad_leave",
         "__leave must be within a __try block",         // TX86+0
-        "__leave muá innerhalb eines '__try'-Blocks sein",              // TX86+0
+        "__leave muï¿½ innerhalb eines '__try'-Blocks sein",              // TX86+0
         "__leave doit se trouver dans un bloc __try",           // TX86+0
   },
 
@@ -1507,21 +1507,21 @@ struct Msgtable msgtable[] =
         // Structured Exception Handling is only for Win32.
   { "try_needs_win32",
         "__try only valid for -mn memory model",                // TX86+2
-        "__try nur gltig fr Speichermodell -mn",              // TX86+2
-        "__try est utilisable uniquement avec le modŠle de m‚moire -mn",                // TX86+2
+        "__try nur gï¿½ltig fï¿½r Speichermodell -mn",              // TX86+2
+        "__try est utilisable uniquement avec le modï¿½le de mï¿½moire -mn",                // TX86+2
   },
 
         // This is part of Structured Exception Handling.
   { "needs_filter",
         "GetExceptionInformation() only valid in exception filter",     // TX86+3
-        "GetExceptionInformation() nur gltig in Ausnahmefilter",       // TX86+3
+        "GetExceptionInformation() nur gï¿½ltig in Ausnahmefilter",       // TX86+3
         "GetExceptionInformation() utilisable uniquement dans un filtre d'exceptions",  // TX86+3
   },
 
         // This is part of Structured Exception Handling.
   { "needs_handler",
         "GetExceptionCode() only valid in exception filter or handler", // TX86+4
-        "GetExceptionCode() nur gltig in Ausnahmefilter oder Handler", // TX86+4
+        "GetExceptionCode() nur gï¿½ltig in Ausnahmefilter oder Handler", // TX86+4
         "GetExceptionCode() utilisable uniquement dans un filtre ou un gestionnaire d'exceptions",      // TX86+4
   },
 
@@ -1532,7 +1532,7 @@ struct Msgtable msgtable[] =
         //      __declspec(thread)
   { "bad_declspec",
         "unsupported __declspec type",                  // TX86+5
-        "Nichtuntersttzter __declspec-Typ",                    // TX86+5
+        "Nichtunterstï¿½tzter __declspec-Typ",                    // TX86+5
         "type __declspec incompatible",                 // TX86+5
   },
 
@@ -1543,24 +1543,24 @@ struct Msgtable msgtable[] =
         */
   { "bad_based_type",
         "unsupported based type",                       // TX86+6
-        "Nichtuntersttzter Based-Typ",                 // TX86+6
+        "Nichtunterstï¿½tzter Based-Typ",                 // TX86+6
         "type based incompatible",                      // TX86+6
-        "–¢ƒTƒ|[ƒg‚Ì based Œ^",                        // 167
+        "ï¿½ï¿½ï¿½Tï¿½|ï¿½[ï¿½gï¿½ï¿½ based ï¿½^",                        // 167
   },
 
         // dllimports can only be extern declarations
   { "bad_dllimport",
         "initializer or function body for dllimport not allowed", // TX86+7
-        "Initialisierer oder Funktionsrumpf fr Dllimport nicht zul„ssig", // TX86+7
-        "code d'initialisation ou corps de la fonction non autoris‚ pour dllimport", // TX86+7
+        "Initialisierer oder Funktionsrumpf fï¿½r Dllimport nicht zulï¿½ssig", // TX86+7
+        "code d'initialisation ou corps de la fonction non autorisï¿½ pour dllimport", // TX86+7
   },
 
         /* _far16 is used only under OS/2 2.0 flat memory model */
   { "far16_model",
         "'_far16' is only valid in -mf memory model",   /* 137  */
-        "'_far16' nur gltig fr Speichermodell -mf",   /* 137  */
-        "'_far16' valide uniquement dans le modŠle de m‚moire -mf",     /* 137  */
-        "'_far16' ‚Í -mf ƒƒ‚ƒŠƒ‚ƒfƒ‹‚ÉŒÀ‚é",           /* 137  */
+        "'_far16' nur gï¿½ltig fï¿½r Speichermodell -mf",   /* 137  */
+        "'_far16' valide uniquement dans le modï¿½le de mï¿½moire -mf",     /* 137  */
+        "'_far16' ï¿½ï¿½ -mf ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½",           /* 137  */
   },
 
         /* The compiler cannot generate code for a far16
@@ -1568,9 +1568,9 @@ struct Msgtable msgtable[] =
          */
   { "far16_extern",
         "'_far16' functions can only be extern",        /* 138  */
-        "'_far16'-Funktionen k”nnen nur extern sein",   /* 138  */
-        "les fonctions '_far16' doivent ˆtre de type extern",   /* 138  */
-        "'_far16' ŠÖ”‚Í extern ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",    /* 138  */
+        "'_far16'-Funktionen kï¿½nnen nur extern sein",   /* 138  */
+        "les fonctions '_far16' doivent ï¿½tre de type extern",   /* 138  */
+        "'_far16' ï¿½Öï¿½ï¿½ï¿½ extern ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",    /* 138  */
   },
 
         /* alloca() requires that a special stack frame be set
@@ -1580,8 +1580,8 @@ struct Msgtable msgtable[] =
   { "alloca_win",
         "alloca() cannot be used in Windows functions", // 151S
         "alloca() kann nicht in Windows-Funktionen benutzt werden",     // 151S
-        "allocal() non autoris‚ dans les fonctions Windows",    // 151S
-        "alloca() ‚Í Windows ŠÖ”‚Å‚Íg‚¦‚È‚¢",         // 151S
+        "allocal() non autorisï¿½ dans les fonctions Windows",    // 151S
+        "alloca() ï¿½ï¿½ Windows ï¿½Öï¿½ï¿½Å‚Ígï¿½ï¿½ï¿½È‚ï¿½",         // 151S
   },
 
         // Error messages from the inline assembler.
@@ -1590,9 +1590,9 @@ struct Msgtable msgtable[] =
         // the instruction.  Tell them the correct number
   { "nops_expected",                                            // 152
         "%d operands expected for the %s instruction, had %d",
-        "%d Operanden erwartet fr die %s-Instruktion",
-        "'%d' op‚randes l'instruction %s doit comprendre",
-        "%d ŒÂ‚ÌƒIƒyƒ‰ƒ“ƒh‚ª•K—v (–½—ß:%s)",
+        "%d Operanden erwartet fï¿½r die %s-Instruktion",
+        "'%d' opï¿½randes l'instruction %s doit comprendre",
+        "%d ï¿½Â‚ÌƒIï¿½yï¿½ï¿½ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Kï¿½v (ï¿½ï¿½ï¿½ï¿½:%s)",
   },
 
 
@@ -1604,9 +1604,9 @@ struct Msgtable msgtable[] =
         // not allow for an 8 bit memory operand.
   { "bad_op",
         "Illegal type/size of operands for the %s instruction", // 153 W
-        "Unzul„ssige(r) Typ/Gr”áe der Operanden fr die %s-Instruktion",        // 153 W
-        "Type/taille des op‚randes incompatible avec l'instruction %s", // 153 W
-        "%s –½—ß‚ÌƒIƒyƒ‰ƒ“ƒh‚ÌŒ^‚¨‚æ‚ÑƒTƒCƒY‚ª•s³",    // 153
+        "Unzulï¿½ssige(r) Typ/Grï¿½ï¿½e der Operanden fï¿½r die %s-Instruktion",        // 153 W
+        "Type/taille des opï¿½randes incompatible avec l'instruction %s", // 153 W
+        "%s ï¿½ï¿½ï¿½ß‚ÌƒIï¿½yï¿½ï¿½ï¿½ï¿½ï¿½hï¿½ÌŒ^ï¿½ï¿½ï¿½ï¿½ÑƒTï¿½Cï¿½Yï¿½ï¿½ï¿½sï¿½ï¿½",    // 153
   },
 
         // A non-sensical operand was entered on a floating point instruction
@@ -1615,18 +1615,18 @@ struct Msgtable msgtable[] =
         // A numeric constant entered into a floating point instrution
   { "bad_float_op",
         "Unknown operand type for this floating point instruction",     // 154
-        "Unbekannter Oprendentyp fr diese Flieákomma-Instruktion",     // 154
-        "Type d'op‚rande incompatible avec une instruction en virgule flottante",       // 154
-        "•‚“®“_–½—ß‚ÌƒIƒyƒ‰ƒ“ƒhƒ^ƒCƒv‚ª•s³",           // 154
+        "Unbekannter Oprendentyp fï¿½r diese Flieï¿½komma-Instruktion",     // 154
+        "Type d'opï¿½rande incompatible avec une instruction en virgule flottante",       // 154
+        "ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ß‚ÌƒIï¿½yï¿½ï¿½ï¿½ï¿½ï¿½hï¿½^ï¿½Cï¿½vï¿½ï¿½ï¿½sï¿½ï¿½",           // 154
   },
         //
         // This covers illegal operands like [ah], etc.
         //
   { "bad_addr_mode",
         "Illegal addressing mode",                              // 155
-        "Unzul„ssiger Adressierungsmodus",                              // 155
+        "Unzulï¿½ssiger Adressierungsmodus",                              // 155
         "Mode d'adressage non valide",                          // 155
-        "•s³ƒAƒhƒŒƒXƒ‚[ƒh",                           // 155
+        "ï¿½sï¿½ï¿½ï¿½Aï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½[ï¿½h",                           // 155
   },
         //
         // If the ASM keyword is used, an assembler opcode should be the
@@ -1635,8 +1635,8 @@ struct Msgtable msgtable[] =
   { "opcode_exp",
         "Assembler opcode expected",                            // 156
         "Assembler-Opcode erwartet",                            // 156
-        "code op‚ration assembleur requis",                             // 156
-        "ƒAƒZƒ“ƒuƒ‰‚ÌƒIƒyƒR[ƒh‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",     // 156
+        "code opï¿½ration assembleur requis",                             // 156
+        "ï¿½Aï¿½Zï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ÌƒIï¿½yï¿½Rï¿½[ï¿½hï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",     // 156
   },
         //
         // When using the LOCK, REP, REPE, REPNE, REPZ instruction
@@ -1644,9 +1644,9 @@ struct Msgtable msgtable[] =
         //
   { "prefix",
         "Prefix opcode must be followed by an assembler opcode", // 157
-        "Assembler-Opcode muá auf Pr„fix-Opcode folgen", // 157
-        "Le code op‚ration du pr‚fixe doit ˆtre suivi d'un code op‚ration assembleur", // 157
-        "ƒvƒŒƒtƒBƒbƒNƒXƒIƒyƒR[ƒh‚É‚ÍƒAƒZƒ“ƒuƒ‰‚ÌƒIƒyƒR[ƒh‚ª‘±‚©‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", // 157
+        "Assembler-Opcode muï¿½ auf Prï¿½fix-Opcode folgen", // 157
+        "Le code opï¿½ration du prï¿½fixe doit ï¿½tre suivi d'un code opï¿½ration assembleur", // 157
+        "ï¿½vï¿½ï¿½ï¿½tï¿½Bï¿½bï¿½Nï¿½Xï¿½Iï¿½yï¿½Rï¿½[ï¿½hï¿½É‚ÍƒAï¿½Zï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ÌƒIï¿½yï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", // 157
   },
         //
         // This error message is used when an expression cannot be
@@ -1655,29 +1655,29 @@ struct Msgtable msgtable[] =
         //
   { "bad_operand",
         "Illegal operand",                                      // 158
-        "Unzul„ssiger Operand",                                 // 158
-        "Op‚rande non autoris‚e",                                       // 158
-        "•s³ƒIƒyƒ‰ƒ“ƒh",                                       // 158
+        "Unzulï¿½ssiger Operand",                                 // 158
+        "Opï¿½rande non autorisï¿½e",                                       // 158
+        "ï¿½sï¿½ï¿½ï¿½Iï¿½yï¿½ï¿½ï¿½ï¿½ï¿½h",                                       // 158
   },
   { "ptr_exp",
         "Expected assembler directive PTR to follow assembler cast", // 159
         "Erwarte Assembler-Anweisung PTR nach Assembler-Cast", // 159
-        "Directive assembleur PTR requise aprŠs cast assembleur", // 159
-        "ƒAƒZƒ“ƒuƒ‰ƒLƒƒƒXƒg‚ÉƒAƒZƒ“ƒuƒ‰w—ß PTR ‚ª‘±‚©‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", // 159
+        "Directive assembleur PTR requise aprï¿½s cast assembleur", // 159
+        "ï¿½Aï¿½Zï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Xï¿½gï¿½ÉƒAï¿½Zï¿½ï¿½ï¿½uï¿½ï¿½ï¿½wï¿½ï¿½ PTR ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", // 159
   },
   { "386_op",
         "Reference to '%s' caused a 386 instruction to be generated", // 160W
         "Referenz auf '%s' bewirkte eine 386-Instruktion", // 160W
-        "Instruction 386 g‚n‚r‚e par la r‚f‚rence … '%'", // 160W
-        "'%s' ‚ÌQÆ‚É‚æ‚è 386 ‚Ì–½—ß‚ğ¶¬‚·‚é",               // 160W
+        "Instruction 386 gï¿½nï¿½rï¿½e par la rï¿½fï¿½rence ï¿½ '%'", // 160W
+        "'%s' ï¿½ÌQï¿½Æ‚É‚ï¿½ï¿½ 386 ï¿½Ì–ï¿½ï¿½ß‚ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½",               // 160W
   },
 
         // Happens if -Wb flag and there is a segment fixup to DGROUP
   { "ds_ne_dgroup",
         "DS is not equal to DGROUP",                    // 170
         "DS ist ungleich DGROUP",                       // 170
-        "D S n'est pas ‚gal … DGROUP",                  // 170
-        "DS ‚Í DGROUP ‚Æ“¯‚¶‚Å‚È‚¢",                    // 170
+        "D S n'est pas ï¿½gal ï¿½ DGROUP",                  // 170
+        "DS ï¿½ï¿½ DGROUP ï¿½Æ“ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½",                    // 170
   },
         // Too many debug info types in one module.
   { "2manytypes",
@@ -1693,7 +1693,7 @@ struct Msgtable msgtable[] =
   { "before_pch",
         "symbols or macros defined before #include of precompiled header",      // TX86+8 (W20)
         "Symbole oder Makros definiert vor #include des vorkompilierten Header",        // TX86+8
-        "symboles ou macros d‚finis avant #include de l'en-tˆte pr‚compil‚",    // TX86+8
+        "symboles ou macros dï¿½finis avant #include de l'en-tï¿½te prï¿½compilï¿½",    // TX86+8
   },
 
         // The #include'ing of a precompiled header must be the first
@@ -1717,14 +1717,14 @@ struct Msgtable msgtable[] =
 #if !TX86
   { "cseg_2big",
         "code segment too large",                       /* 151cg F*/
-        "Codesegment zu groá",                  /* 151cg F*/
+        "Codesegment zu groï¿½",                  /* 151cg F*/
         "segment de code trop grand",                   /* 151cg F*/
-        "ƒR[ƒhƒZƒOƒƒ“ƒg‚ª‘½‚·‚¬‚é",                   /* 151cg F*/
+        "ï¿½Rï¿½[ï¿½hï¿½Zï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",                   /* 151cg F*/
   },
   { "ptr_handle",
         "only pointers to handle based types allowed",  /* 22 S */
-        "Nur Pointer auf Handle-basierte Typen zul„ssig",  /* 22 S */
-        "seuls les pointeurs vers des types … base de descripteur sont permis",  /* 22 S */
+        "Nur Pointer auf Handle-basierte Typen zulï¿½ssig",  /* 22 S */
+        "seuls les pointeurs vers des types ï¿½ base de descripteur sont permis",  /* 22 S */
   },
 #endif
 #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
@@ -1767,15 +1767,15 @@ struct Msgtable msgtable[] =
         // an initializer must be of the same type or it must be const.
   { "bad_ref",
         "reference must refer to same type or be const",        // 183
-        "Referenz muá sich auf denselben Typ beziehen oder konstant sein",      // 183
-        "la r‚f‚rence doit porter sur le mˆme type ou ˆtre constante",  // 183
+        "Referenz muï¿½ sich auf denselben Typ beziehen oder konstant sein",      // 183
+        "la rï¿½fï¿½rence doit porter sur le mï¿½me type ou ï¿½tre constante",  // 183
   },
         // Function is declared to return a value, but it returns
         // without specifying a value.
   { "implied_ret",
         "implied return of %s at closing '}' does not return value",    // 177S,W
-        "Implizierter Rcksprung bei abschlieáender '}' gibt keinen Wert zurck",       // 177S,W
-        "le retour impliqu‚ par l'accolade '}' ne renvoie pas de valeur",       // 177S,W
+        "Implizierter Rï¿½cksprung bei abschlieï¿½ender '}' gibt keinen Wert zurï¿½ck",       // 177S,W
+        "le retour impliquï¿½ par l'accolade '}' ne renvoie pas de valeur",       // 177S,W
   },
         /* ++x is overloaded by operator++()
            x++ is overloaded by operator++(int)
@@ -1783,16 +1783,16 @@ struct Msgtable msgtable[] =
   { "obsolete_inc",
         "using operator++() (or --) instead of missing operator++(int)", /* 140W */
         "Verwende operator++() (oder --) anstelle des fehlenden operator++(int)", /* 140W */
-        "utilisation de l'op‚rateur ++() (ou --) … la place de l'op‚rateur manquant ++(entier)", /* 140W */
-        "operator++(int) (‚Ü‚½‚Í --) ‚ª‚È‚¢‚Ì‚Å‚©‚í‚è‚É operator++() ‚ğg—p‚·‚é", /* 140W */
+        "utilisation de l'opï¿½rateur ++() (ou --) ï¿½ la place de l'opï¿½rateur manquant ++(entier)", /* 140W */
+        "operator++(int) (ï¿½Ü‚ï¿½ï¿½ï¿½ --) ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ì‚Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ operator++() ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½", /* 140W */
   },
 
         /* The member functions must be const or volatile too.  */
   { "cv_arg",
         "can't pass const/volatile object to non-const/volatile member function",       /* 141T */
-        "Kann Const/Volatile-Objekt nicht an Non-Const/Volatile-Gliedfunktion bergeben",       /* 141T */
-        "impossible de transmettre un objet constant/volatile … une fonction membre de type diff‚rent", /* 141T */
-        "const/volatile ‚ÌƒIƒuƒWƒFƒNƒg‚ğ const/volatile ‚Å‚È‚¢ƒƒ“ƒoŠÖ”‚É“n‚·‚±‚Æ‚ª‚Å‚«‚È‚¢",  /* 141T */
+        "Kann Const/Volatile-Objekt nicht an Non-Const/Volatile-Gliedfunktion ï¿½bergeben",       /* 141T */
+        "impossible de transmettre un objet constant/volatile ï¿½ une fonction membre de type diffï¿½rent", /* 141T */
+        "const/volatile ï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ const/volatile ï¿½Å‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Öï¿½ï¿½É“nï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",  /* 141T */
   },
         /* The syntax delete [expr] p; is an anachronism, it
            has been superseded by delete [] p; ARM 5.3.4.
@@ -1800,8 +1800,8 @@ struct Msgtable msgtable[] =
   { "obsolete_del",
         "use delete[] rather than delete[expr], expr ignored",  /* 135W */
         "Verwenden Sie delete[] statt delete[expr], Ausdr. wird ignoriert",     /* 135W */
-        "utilisez delete[] … la place de delete[expr], expr ignor‚e",   /* 135W */
-        "delete[expr] ‚Å‚Í‚È‚­ delete[] ‚ğg‚¤‚×‚« (expr ‚Í–³‹‚³‚ê‚é)",        /* 135W */
+        "utilisez delete[] ï¿½ la place de delete[expr], expr ignorï¿½e",   /* 135W */
+        "delete[expr] ï¿½Å‚Í‚È‚ï¿½ delete[] ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½×‚ï¿½ (expr ï¿½Í–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)",        /* 135W */
   },
         /* Support for storage management via assignment
            to 'this' is an anachronism and will be removed
@@ -1812,14 +1812,14 @@ struct Msgtable msgtable[] =
   { "assignthis",
         "assignment to 'this' is obsolete, use X::operator new/delete", /* 132W */
         "Zuweisung zu 'this' obsolet, verwenden Sie X::operator new/delete", /* 132W */
-        "affectation … 'this' obsolŠte, utilisez X::operator new/delete", /* 132W */
-        "'this' ‚Ö‚Ì‘ã“ü‚Ì‘ã‚í‚è‚É X::operator new/delete ‚ğg‚¤‚×‚«", /* 132W */
+        "affectation ï¿½ 'this' obsolï¿½te, utilisez X::operator new/delete", /* 132W */
+        "'this' ï¿½Ö‚Ì‘ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ X::operator new/delete ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½×‚ï¿½", /* 132W */
   },
   { "musthaveinit",
         "trailing parameters must have initializers",
-        "Nachfolgende Parameter mssen initialisiert werden",
-        "les paramŠtres de fin doivent comporter des codes d'initialisation",
-        "Œã‘±‚Ìƒpƒ‰ƒ[ƒ^‚É‚Í‰Šú‰»q‚ª•K—v",
+        "Nachfolgende Parameter mï¿½ssen initialisiert werden",
+        "les paramï¿½tres de fin doivent comporter des codes d'initialisation",
+        "ï¿½ã‘±ï¿½Ìƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½É‚Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½Kï¿½v",
   },
 
         // ARM 9.6
@@ -1828,7 +1828,7 @@ struct Msgtable msgtable[] =
         "function member '%s' can't be in an anonymous union", /* CPP+1 */
         "Funktionsglied '%s' kann nicht in anonymer Union sein", /* CPP+1 */
         "membre de fonction '%s' interdit dans une union anonyme", /* CPP+1 */
-        "ŠÖ”ƒƒ“ƒo '%s' ‚ğ–³–¼ union ‚ÉŠÜ‚Ş‚±‚Æ‚Í‚Å‚«‚È‚¢", /* CPP+1 */
+        "ï¿½Öï¿½ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' ï¿½ğ–³–ï¿½ union ï¿½ÉŠÜ‚Ş‚ï¿½ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½", /* CPP+1 */
   },
 
         /* Static member functions don't have a this. By the same token,
@@ -1841,7 +1841,7 @@ struct Msgtable msgtable[] =
         "no instance of class '%s'",                    /* CPP+2 */
         "Keine Instanz der Klasse '%s'",                        /* CPP+2 */
         "aucune occurrence de la classe '%s'",                  /* CPP+2 */
-        "ƒNƒ‰ƒX '%s' ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚È‚¢",                     /* CPP+2 */
+        "ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½È‚ï¿½",                     /* CPP+2 */
   },
 
   { "no_template_instance",
@@ -1853,16 +1853,16 @@ struct Msgtable msgtable[] =
         "'%s' is not a struct or a class",              /* CPP+3 */
         "'%s' ist weder Struct noch Klasse",            /* CPP+3 */
         "'%s' n'est pas une structure ou une classe",           /* CPP+3 */
-        "'%s' ‚Í struct ‚Å‚àƒNƒ‰ƒX‚Å‚à‚È‚¢",                    /* CPP+3 */
+        "'%s' ï¿½ï¿½ struct ï¿½Å‚ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½Å‚ï¿½ï¿½È‚ï¿½",                    /* CPP+3 */
   },
 
         /* p->class::member     */
         /* Class must be the same as class p points to or be a public base class of it */
   { "public_base",
         "'%s' must be a public base class of '%s'",     // CPP+4
-        "'%s' muá eine ”ffentliche Basisklasse von '%s' sein",  // CPP+4
-        "'%s' doit ˆtre une classe mŠre publique de '%s'",      // CPP+4
-        "'%s' ‚Í public Šî–{ƒNƒ‰ƒX‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",          /* CPP+4 */
+        "'%s' muï¿½ eine ï¿½ffentliche Basisklasse von '%s' sein",  // CPP+4
+        "'%s' doit ï¿½tre une classe mï¿½re publique de '%s'",      // CPP+4
+        "'%s' ï¿½ï¿½ public ï¿½ï¿½{ï¿½Nï¿½ï¿½ï¿½Xï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",          /* CPP+4 */
   },
 
         /* Identifier with type info appended exceeds 127 chars, which  */
@@ -1875,34 +1875,34 @@ struct Msgtable msgtable[] =
         /* a function which it can coerce the arguments to match        */
   { "nomatch",
         "no match for function '%s%s'",                         /* CPP+7 */
-        "Keine Entsprechung fr Funktion '%s%s'",                               /* CPP+7 */
+        "Keine Entsprechung fï¿½r Funktion '%s%s'",                               /* CPP+7 */
         "aucune correspondance pour la fonction'%s%s'",                         /* CPP+7 */
-        "ŠÖ” '%s%s' ‚Éˆê’v‚·‚é‚à‚Ì‚ª‚È‚¢",                     /* CPP+7 */
+        "ï¿½Öï¿½ '%s%s' ï¿½Éˆï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½È‚ï¿½",                     /* CPP+7 */
   },
 
         /* Not all operators can be overloaded  */
   { "not_overloadable",
         "not an overloadable operator token",           /* CPP+8 */
-        "Kein berlagerbares Operator-Token",           /* CPP+8 */
-        "il ne s'agit pas d'un t‚moin d'op‚rateur chargeable",          /* CPP+8 */
+        "Kein ï¿½berlagerbares Operator-Token",           /* CPP+8 */
+        "il ne s'agit pas d'un tï¿½moin d'opï¿½rateur chargeable",          /* CPP+8 */
         #pragma dbcs(push,1)
-        "ƒI[ƒo[ƒ[ƒh‰Â”\‚È‰‰Zq‚Å‚Í‚È‚¢",                   /* CPP+8 */
+        "ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½[ï¿½hï¿½Â”\ï¿½È‰ï¿½ï¿½Zï¿½qï¿½Å‚Í‚È‚ï¿½",                   /* CPP+8 */
         #pragma dbcs(pop)
   },
   { "opovl_function",
         "operator overload must be a function",         /* CPP+9 */
-        "Operator-šberlagerung muá eine Funktion sein",         /* CPP+9 */
-        "l'appel par op‚rateur doit porter sur une fonction",           /* CPP+9 */
-        "‰‰Zq‚ÌƒI[ƒo[ƒ[ƒh‚ÍŠÖ”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",       /* CPP+9 */
+        "Operator-ï¿½berlagerung muï¿½ eine Funktion sein",         /* CPP+9 */
+        "l'appel par opï¿½rateur doit porter sur une fonction",           /* CPP+9 */
+        "ï¿½ï¿½ï¿½Zï¿½qï¿½ÌƒIï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½[ï¿½hï¿½ÍŠÖï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",       /* CPP+9 */
   },
 
         /* Operator overloaded functions must be unary, binary or n-ary */
         /* depending on which operator is overloaded. () is n-ary.      */
   { "n_op_params",
         "should be %s parameter(s) for operator",       /* CPP+10 */
-        "Es sollten %s Parameter fr Operator vorhanden sein",  /* CPP+10 */
-        "l'op‚rateur devrait comporter %s paramŠtres",  /* CPP+10 */
-        "‰‰Zq‚Ìƒpƒ‰ƒ[ƒ^”‚Í %s ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",         /* CPP+10 */
+        "Es sollten %s Parameter fï¿½r Operator vorhanden sein",  /* CPP+10 */
+        "l'opï¿½rateur devrait comporter %s paramï¿½tres",  /* CPP+10 */
+        "ï¿½ï¿½ï¿½Zï¿½qï¿½Ìƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ %s ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",         /* CPP+10 */
   },
 
   /* C++98 13.5-6 says:
@@ -1912,15 +1912,15 @@ struct Msgtable msgtable[] =
    */
   { "param_class",
         "at least one parameter must be a class, class&, enum or enum&",
-        "Mindestens ein Parameter muá Class oder Class& sein",  /* CPP+11 */
-        "au moins un paramŠtre doit ˆtre une classe ou une class&",     /* CPP+11 */
-        "­‚È‚­‚Æ‚à‚P‚Â‚Ìƒpƒ‰ƒƒ^[‚ªƒNƒ‰ƒX‚à‚µ‚­‚ÍƒNƒ‰ƒX‚ÌQÆ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", /* CPP+11 */
+        "Mindestens ein Parameter muï¿½ Class oder Class& sein",  /* CPP+11 */
+        "au moins un paramï¿½tre doit ï¿½tre une classe ou une class&",     /* CPP+11 */
+        "ï¿½ï¿½ï¿½È‚ï¿½ï¿½Æ‚ï¿½ï¿½Pï¿½Â‚Ìƒpï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÍƒNï¿½ï¿½ï¿½Xï¿½ÌQï¿½Æ‚Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", /* CPP+11 */
   },
   { "class_colcol",
         "'%s' must be a class name preceding '::'",     /* CPP+12 */
-        "'%s' muá ein Klassenname, gefolgt von '::', sein",     /* CPP+12 */
-        "'%s' doit ˆtre un nom de classe suivi de '::'",        /* CPP+12 */
-        "'::' ‚Ì‘O‚Ì '%s' ‚ÍƒNƒ‰ƒX–¼‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",        /* CPP+12 */
+        "'%s' muï¿½ ein Klassenname, gefolgt von '::', sein",     /* CPP+12 */
+        "'%s' doit ï¿½tre un nom de classe suivi de '::'",        /* CPP+12 */
+        "'::' ï¿½Ì‘Oï¿½ï¿½ '%s' ï¿½ÍƒNï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",        /* CPP+12 */
   },
 
         /* When naming members of a base class in a derived class       */
@@ -1929,9 +1929,9 @@ struct Msgtable msgtable[] =
         /* def must be a base class of abc.                             */
   { "base_class",
         "'%s' must be a base class",                    /* CPP+13 */
-        "'%s' muá eine Basisklasse sein",                       /* CPP+13 */
-        "'%s' doit ˆtre une classe mŠre",                       /* CPP+13 */
-        "'%s' ‚ÍŠî–{ƒNƒ‰ƒX‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                  /* CPP+13 */
+        "'%s' muï¿½ eine Basisklasse sein",                       /* CPP+13 */
+        "'%s' doit ï¿½tre une classe mï¿½re",                       /* CPP+13 */
+        "'%s' ï¿½ÍŠï¿½{ï¿½Nï¿½ï¿½ï¿½Xï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                  /* CPP+13 */
   },
 
         /* Can only adjust access to members of a base class in a
@@ -1939,9 +1939,9 @@ struct Msgtable msgtable[] =
          */
   { "access_decl",
         "access declaration must be in public or protected section",    /* CPP+14 */
-        "Zugriffsdeklaration muá in ”ffentlichem oder geschtztem Abschnitt erfolgen",  /* CPP+14 */
-        "la d‚claration d'accŠs doit se trouver dans une section publique ou prot‚g‚e", /* CPP+14 */
-        "ƒAƒNƒZƒXéŒ¾‚Í public ‚Ü‚½‚Í protected •”‚É‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",  /* CPP+14 */
+        "Zugriffsdeklaration muï¿½ in ï¿½ffentlichem oder geschï¿½tztem Abschnitt erfolgen",  /* CPP+14 */
+        "la dï¿½claration d'accï¿½s doit se trouver dans une section publique ou protï¿½gï¿½e", /* CPP+14 */
+        "ï¿½Aï¿½Nï¿½Zï¿½Xï¿½éŒ¾ï¿½ï¿½ public ï¿½Ü‚ï¿½ï¿½ï¿½ protected ï¿½ï¿½ï¿½É‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",  /* CPP+14 */
   },
 
         /* o    not declaring destructors right                         */
@@ -1950,10 +1950,10 @@ struct Msgtable msgtable[] =
         /* o    specifying return value for constructor or destructor   */
   { "bad_ctor_dtor",
         "illegal constructor or destructor or invariant declaration",   // CPP+15
-        "Unzul„ssige Constructor- oder Destructor-Deklaration", /* CPP+15 */
-        "d‚claration de constructeur ou de destructeur non valide",     /* CPP+15 */
+        "Unzulï¿½ssige Constructor- oder Destructor-Deklaration", /* CPP+15 */
+        "dï¿½claration de constructeur ou de destructeur non valide",     /* CPP+15 */
         #pragma dbcs(push,1)
-        "\’zq‚Ü‚½‚ÍÁ–Åq‚ÌéŒ¾‚ª•s³",                       /* CPP+15 */
+        "ï¿½\ï¿½zï¿½qï¿½Ü‚ï¿½ï¿½Íï¿½ï¿½Åqï¿½ÌéŒ¾ï¿½ï¿½ï¿½sï¿½ï¿½",                       /* CPP+15 */
         #pragma dbcs(pop)
   },
 
@@ -1962,9 +1962,9 @@ struct Msgtable msgtable[] =
          */
   { "no_inst_member",
         "no instance of class '%s' for member '%s'",            /* CPP+16 */
-        "Keine Instanz der Klasse '%s' fr Glied '%s'",         /* CPP+16 */
+        "Keine Instanz der Klasse '%s' fï¿½r Glied '%s'",         /* CPP+16 */
         "aucune occurrence de la classe '%s' pour le membre %s",                /* CPP+16 */
-        "ƒNƒ‰ƒX '%s' ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğƒƒ“ƒo '%s'‚Å‚ÍQÆ‚Å‚«‚È‚¢",      /* CPP+16 */
+        "ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½o '%s'ï¿½Å‚ÍQï¿½Æ‚Å‚ï¿½ï¿½È‚ï¿½",      /* CPP+16 */
   },
 
         /* When a class name appears in an expression, the only
@@ -1973,16 +1973,16 @@ struct Msgtable msgtable[] =
   { "colcol_lpar",
         "'::' or '(' expected after class '%s'",        /* CPP+17 */
         "'::' oder '(' erwartet nach Klasse '%s'",      /* CPP+17 */
-        "'::' ou '(' requis aprŠs le nom de classe '%s'",       /* CPP+17 */
-        "ƒNƒ‰ƒX '%s' ‚ÌŸ‚Í '::' ‚Ü‚½‚Í '(' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",        /* CPP+17 */
+        "'::' ou '(' requis aprï¿½s le nom de classe '%s'",       /* CPP+17 */
+        "ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½Ìï¿½ï¿½ï¿½ '::' ï¿½Ü‚ï¿½ï¿½ï¿½ '(' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",        /* CPP+17 */
   },
 
         /* A user-defined type conversion function was declared outside of a class */
   { "conv_member",
         "type conversions must be members",             /* CPP+18 */
-        "Typkonvertierungen mssen Glieder sein",               /* CPP+18 */
-        "les conversions de type doivent ˆtre des membres",             /* CPP+18 */
-        "Œ^•ÏŠ·‚Íƒƒ“ƒo‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",             /* CPP+18 */
+        "Typkonvertierungen mï¿½ssen Glieder sein",               /* CPP+18 */
+        "les conversions de type doivent ï¿½tre des membres",             /* CPP+18 */
+        "ï¿½^ï¿½ÏŠï¿½ï¿½Íƒï¿½ï¿½ï¿½ï¿½oï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",             /* CPP+18 */
   },
 
         /* Can't have constructor as a default function parameter       */
@@ -1991,7 +1991,7 @@ struct Msgtable msgtable[] =
         "Constructor kann in diesem Kontext nicht behandelt werden",    /* CPP+19 */
         "constructeur non utilisable dans ce contexte", /* CPP+19 */
         #pragma dbcs(push,1)
-        "‚±‚±‚Å\’zq‚ğw’è‚µ‚Ä‚Í‚È‚ç‚È‚¢",             /* CPP+19 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Å\ï¿½zï¿½qï¿½ï¿½ï¿½wï¿½è‚µï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",             /* CPP+19 */
         #pragma dbcs(pop)
   },
 
@@ -1999,9 +1999,9 @@ struct Msgtable msgtable[] =
         /* Can't have multiple initializers for the base class          */
   { "seen_init",
         "already seen initializer for '%s'",            /* CPP+20 */
-        "Es wurde bereits ein Initialisierer fr '%s' angegeben",               /* CPP+20 */
-        "code d'initialisation de '%s' d‚j… d‚tect‚",           /* CPP+20 */
-        "'%s' ‚Ì‰Šú‰»q‚ªŠù‚É‚ ‚é",            /* CPP+20 */
+        "Es wurde bereits ein Initialisierer fï¿½r '%s' angegeben",               /* CPP+20 */
+        "code d'initialisation de '%s' dï¿½jï¿½ dï¿½tectï¿½",           /* CPP+20 */
+        "'%s' ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½",            /* CPP+20 */
   },
 
         /* A base class initializer appears for class %s, but there is  */
@@ -2010,33 +2010,33 @@ struct Msgtable msgtable[] =
         /* Can't have explicit initializer for virtual base class.      */
   { "bad_mem_init",
         "bad member-initializer for '%s'",              /* CPP+21 */
-        "Ungltiger Glied-Initialisierer fr '%s'",             /* CPP+21 */
+        "Ungï¿½ltiger Glied-Initialisierer fï¿½r '%s'",             /* CPP+21 */
         "code d'initialisation de membre incorrect pour la classe '%s'",                /* CPP+21 */
-        "'%s' ‚Ìƒƒ“ƒo‰Šú‰»q‚ª•s³",          /* CPP+21 */
+        "'%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½sï¿½ï¿½",          /* CPP+21 */
   },
   { "vector_init",
         "vectors cannot have initializers",             /* CPP+22 */
-        "Vektoren k”nnen keine Initialisierer haben",           /* CPP+22 */
-        "les vecteurs doivent ˆtre d‚pourvus de code d'initialisation",         /* CPP+22 */
-        "ƒxƒNƒgƒ‹‚É‚Í‰Šú‰»q‚ª‚ ‚Á‚Ä‚Í‚È‚ç‚È‚¢",               /* CPP+22 */
+        "Vektoren kï¿½nnen keine Initialisierer haben",           /* CPP+22 */
+        "les vecteurs doivent ï¿½tre dï¿½pourvus de code d'initialisation",         /* CPP+22 */
+        "ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½É‚Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",               /* CPP+22 */
   },
   { "del_ptrs",
         "can only delete pointers",                     /* CPP+23 */
-        "Nur Pointer k”nnen gel”scht werden",                   /* CPP+23 */
-        "seuls les pointeurs peuvent ˆtre supprim‚s",                   /* CPP+23 */
-        "delete ‚Íƒ|ƒCƒ“ƒ^‚ÉŒÀ‚é",                      /* CPP+23 */
+        "Nur Pointer kï¿½nnen gelï¿½scht werden",                   /* CPP+23 */
+        "seuls les pointeurs peuvent ï¿½tre supprimï¿½s",                   /* CPP+23 */
+        "delete ï¿½Íƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½ÉŒï¿½ï¿½ï¿½",                      /* CPP+23 */
   },
   { "ext_inline",
         "storage class for '%s' can't be both extern and inline", /* CPP+24 */
-        "Speicherklasse fr '%s' kann nicht gleichzeitig extern und inline sein", /* CPP+24 */
-        "la classe de stockage de '%s' ne peut pas ˆtre … la fois extern et inline", /* CPP+24 */
-        "'%s' ‚Ì‹L‰¯ƒNƒ‰ƒX‚Í“¯‚É extern ‚Æ inline ‚É‚È‚Á‚Ä‚¢‚Í‚È‚ç‚È‚¢", /* CPP+24 */
+        "Speicherklasse fï¿½r '%s' kann nicht gleichzeitig extern und inline sein", /* CPP+24 */
+        "la classe de stockage de '%s' ne peut pas ï¿½tre ï¿½ la fois extern et inline", /* CPP+24 */
+        "'%s' ï¿½Ì‹Lï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½Í“ï¿½ï¿½ï¿½ï¿½ï¿½ extern ï¿½ï¿½ inline ï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½Í‚È‚ï¿½È‚ï¿½", /* CPP+24 */
   },
   { "non_static",
         "operator functions -> () and [] must be non-static members",   /* CPP+25 */
-        "Operatorfunktionen -> () und [] mssen nicht-statische Glieder sein",  /* CPP+25 */
-        "les op‚rateurs ->, () et [] doivent ˆtre des membres non statiques",   /* CPP+25 */
-        "operator ->A()A‚¨‚æ‚Ñ [] ‚Í static ‚Å‚È‚¢ƒƒ“ƒo‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",  /* CPP+25 */
+        "Operatorfunktionen -> () und [] mï¿½ssen nicht-statische Glieder sein",  /* CPP+25 */
+        "les opï¿½rateurs ->, () et [] doivent ï¿½tre des membres non statiques",   /* CPP+25 */
+        "operator ->ï¿½A()ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ [] ï¿½ï¿½ static ï¿½Å‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",  /* CPP+25 */
   },
 
         /* For member initializers for which the member has no constructor, */
@@ -2044,15 +2044,15 @@ struct Msgtable msgtable[] =
         /* by assignment.                                               */
   { "one_arg",
         "one argument req'd for member initializer for '%s'", /* CPP+26 */
-        "Ein Argument erforderl. fr Glied-Initialisierer fr '%s'", /* CPP+26 */
+        "Ein Argument erforderl. fï¿½r Glied-Initialisierer fï¿½r '%s'", /* CPP+26 */
         "le code d'initialisation des membres de '%s' requiert un argument", /* CPP+26 */
-        "'%s' ‚Ìƒƒ“ƒo‰Šú‰»q‚Éˆø”1‚Â‚ª•K—v",                 /* CPP+26 */
+        "'%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½Éˆï¿½ï¿½ï¿½1ï¿½Â‚ï¿½ï¿½Kï¿½v",                 /* CPP+26 */
   },
   { "linkage_specs",
         "linkage specs are \"C\", \"C++\", and \"Pascal\", not \"%s\"", // CPP+27
         "Link-Spezifikationen sind \"C\", \"C++\" und \"Pascal\", nicht \"%s\"", // CPP+27
-        "les sp‚cifications de liaison sont \"C\", \"C++\" et \"Pascal\" et non pas  \"%s\"", // CPP+27
-        "ƒŠƒ“ƒP[ƒWƒ^ƒCƒv‚Í \"%s\" ‚Å‚Í‚È‚­A\"C\"A\"C++\"A‚¨‚æ‚Ñ\"Pascal\" ‚Ì‚¢‚¸‚ê‚©‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", /* CPP+27 */
+        "les spï¿½cifications de liaison sont \"C\", \"C++\" et \"Pascal\" et non pas  \"%s\"", // CPP+27
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Pï¿½[ï¿½Wï¿½^ï¿½Cï¿½vï¿½ï¿½ \"%s\" ï¿½Å‚Í‚È‚ï¿½ï¿½A\"C\"ï¿½A\"C++\"ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½\"Pascal\" ï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ê‚©ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", /* CPP+27 */
   },
 
         /* The member name is private or protected      */
@@ -2060,7 +2060,7 @@ struct Msgtable msgtable[] =
         "member '%s' of class '%s' is not accessible",          /* CPP+28 */
         "Kein Zugriff auf Glied '%s' der Klasse '%s'",          /* CPP+28 */
         "le membre '%s' de la classe '%s' n'est pas accessible",                /* CPP+28 */
-        "ƒƒ“ƒo '%s' (ƒNƒ‰ƒX '%s')‚ÍƒAƒNƒZƒX‚Å‚«‚È‚¢",          /* CPP+28 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' (ï¿½Nï¿½ï¿½ï¿½X '%s')ï¿½ÍƒAï¿½Nï¿½Zï¿½Xï¿½Å‚ï¿½ï¿½È‚ï¿½",          /* CPP+28 */
   },
 
         /* The member name can only be used by member functions and     */
@@ -2068,8 +2068,8 @@ struct Msgtable msgtable[] =
   { "private",
         "member '%s' of class '%s' is private",                 /* CPP+29 */
         "Glied '%s' der Klasse '%s' ist privat",                        /* CPP+29 */
-        "le membre '%s' de la classe '%s' est priv‚",                   /* CPP+29 */
-        "ƒƒ“ƒo '%s' (ƒNƒ‰ƒX '%s')‚Í private ‚É‚È‚Á‚Ä‚¢‚é",     /* CPP+29 */
+        "le membre '%s' de la classe '%s' est privï¿½",                   /* CPP+29 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' (ï¿½Nï¿½ï¿½ï¿½X '%s')ï¿½ï¿½ private ï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",     /* CPP+29 */
   },
 
         // ARM 12.1
@@ -2077,10 +2077,10 @@ struct Msgtable msgtable[] =
         // Should use reference to X instead
   { "ctor_X",
         "argument of type '%s' to copy constructor",            // CPP+30
-        "Argument vom Typ '%s' fr Copy Constructor",           // CPP+30
+        "Argument vom Typ '%s' fï¿½r Copy Constructor",           // CPP+30
         "utilisez un argument de type '%s' avec le constructeur de copie",              // CPP+30
         #pragma dbcs(push,1)
-        "ƒRƒs[\’zq‚Ìˆø”‚ÌŒ^ '%s' ‚ª•s³",           // CPP+30
+        "ï¿½Rï¿½sï¿½[ï¿½\ï¿½zï¿½qï¿½Ìˆï¿½ï¿½ï¿½ï¿½ÌŒ^ '%s' ï¿½ï¿½ï¿½sï¿½ï¿½",           // CPP+30
         #pragma dbcs(pop)
   },
 
@@ -2088,9 +2088,9 @@ struct Msgtable msgtable[] =
         /*      int classname::member = initializer;            */
   { "static_init_inside",
         "initializer for non-const static member must be outside of class def", /* CPP+31 */
-        "Initialiserer fr statisches Glied muá auáerh. der Klassendef. sein", /* CPP+31 */
-        "le code d'initialisation d'un membre statique doit se trouver en dehors de la d‚finition de la classe", /* CPP+31 */
-        "static ƒƒ“ƒo‚Ì‰Šú‰»q‚ÍƒNƒ‰ƒX‚ÌŠO‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢", /* CPP+31 */
+        "Initialiserer fï¿½r statisches Glied muï¿½ auï¿½erh. der Klassendef. sein", /* CPP+31 */
+        "le code d'initialisation d'un membre statique doit se trouver en dehors de la dï¿½finition de la classe", /* CPP+31 */
+        "static ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ÍƒNï¿½ï¿½ï¿½Xï¿½ÌŠOï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½", /* CPP+31 */
   },
 
         // Initializers for const static members, when inside
@@ -2103,8 +2103,8 @@ struct Msgtable msgtable[] =
   { "ambig_type_conv",
         "ambiguous type conversion",                            /* CPP+32 */
         "Typkonvertierung nicht eindeutig",                             /* CPP+32 */
-        "la conversion de type est ambigu‰",                            /* CPP+32 */
-        "Œ^•ÏŠ·‚ª‚ ‚¢‚Ü‚¢",                             /* CPP+32 */
+        "la conversion de type est ambiguï¿½",                            /* CPP+32 */
+        "ï¿½^ï¿½ÏŠï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½",                             /* CPP+32 */
   },
 
         /* Cannot directly call a pure virtual function */
@@ -2112,29 +2112,29 @@ struct Msgtable msgtable[] =
         "'%s' is a pure virtual function",                      /* CPP+33 */
         "'%s' ist eine reine virtuelle Funktion",                       /* CPP+33 */
         "'%s' est une fonction virtuelle pure",                 /* CPP+33 */
-        "'%s' ‚Íƒˆ‰¼‘zŠÖ”",                          /* CPP+33 */
+        "'%s' ï¿½Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½zï¿½Öï¿½",                          /* CPP+33 */
   },
 
         // Non-extern consts or references must be initialized.
   { "const_needs_init",
         "const or reference '%s' needs initializer",            // CPP+34
-        "Konstante oder Referenz '%s' muá initialisiert werden",                // CPP+34
-        "la constante ou la r‚f‚rence '%s' doit ˆtre initialis‚e",              // CPP+34
-        "const or reference '%s' ‚Í const ‚Ü‚½‚ÍQÆ‚È‚Ì‚Å‰Šú‰»q‚ª•K—v",              // CPP+34
+        "Konstante oder Referenz '%s' muï¿½ initialisiert werden",                // CPP+34
+        "la constante ou la rï¿½fï¿½rence '%s' doit ï¿½tre initialisï¿½e",              // CPP+34
+        "const or reference '%s' ï¿½ï¿½ const ï¿½Ü‚ï¿½ï¿½ÍQï¿½Æ‚È‚Ì‚Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½Kï¿½v",              // CPP+34
   },
 
         /* ARM 3.4      */
   { "main_type",
     #if TX86
         "main(), WinMain() or LibMain() cannot be static or inline",    // CPP+35
-        "main(), WinMain() oder LibMain() k”nnen nicht 'static' oder 'inline' sein",    // CPP+35
-        "main(), WinMain() et LibMain() ne doivent pas ˆtre de type static ou inline",  // CPP+35
-        "main()AWinMain() ‚¨‚æ‚Ñ LibMain() ‚Í static ‚É‚à inline ‚É‚à‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",      // CPP+35
+        "main(), WinMain() oder LibMain() kï¿½nnen nicht 'static' oder 'inline' sein",    // CPP+35
+        "main(), WinMain() et LibMain() ne doivent pas ï¿½tre de type static ou inline",  // CPP+35
+        "main()ï¿½AWinMain() ï¿½ï¿½ï¿½ï¿½ï¿½ LibMain() ï¿½ï¿½ static ï¿½É‚ï¿½ inline ï¿½É‚ï¿½ï¿½ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",      // CPP+35
     #else
         "main() cannot be static or inline",                    /* CPP+35 */
         "main() kann nicht 'static' oder 'inline' sein",                        /* CPP+35 */
-        "main() ne doit pas ˆtre de type static ou inline",                     /* CPP+35 */
-        "main() ‚Í inline ‚É‚à‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",      // CPP+35
+        "main() ne doit pas ï¿½tre de type static ou inline",                     /* CPP+35 */
+        "main() ï¿½ï¿½ inline ï¿½É‚ï¿½ï¿½ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",      // CPP+35
     #endif
   },
 
@@ -2142,10 +2142,10 @@ struct Msgtable msgtable[] =
            the initializers                             */
   { "no_ctor",
         "cannot find constructor for class matching %s::%s%s",  // CPP+36
-        "Kein Constructor fr Klasse entsprechend %s::%s%s gefunden",   // CPP+36
-        "impossible de trouver un constructeur correspondant … %s::%s%s",       // CPP+36
+        "Kein Constructor fï¿½r Klasse entsprechend %s::%s%s gefunden",   // CPP+36
+        "impossible de trouver un constructeur correspondant ï¿½ %s::%s%s",       // CPP+36
         #pragma dbcs(push,1)
-        "%s::%s%s ‚Æˆê’v‚·‚éƒNƒ‰ƒX‚Ì\’zq‚ªŒ©‚Â‚©‚ç‚È‚¢",      // CPP+36
+        "%s::%s%s ï¿½Æˆï¿½vï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½Ì\ï¿½zï¿½qï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½È‚ï¿½",      // CPP+36
         #pragma dbcs(pop)
   },
 
@@ -2153,8 +2153,8 @@ struct Msgtable msgtable[] =
   { "dup_direct_base",
         "duplicate direct base class '%s'",                     /* CPP+37 */
         "Doppelte direkte Basisklasse '%s'",                    /* CPP+37 */
-        "classe mŠre directe '%s' utilis‚e plus d'une fois",                    /* CPP+37 */
-        "’¼Ú‚ÌŠî–{ƒNƒ‰ƒX '%s' ‚ªd•¡‚µ‚Ä‚¢‚é",                 /* CPP+37 */
+        "classe mï¿½re directe '%s' utilisï¿½e plus d'une fois",                    /* CPP+37 */
+        "ï¿½ï¿½ï¿½Ú‚ÌŠï¿½{ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½ï¿½ï¿½dï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                 /* CPP+37 */
   },
 
         /* Can't mix static and virtual storage classes for member functions */
@@ -2162,14 +2162,14 @@ struct Msgtable msgtable[] =
   { "static_virtual",
         "static function '%s' can't be virtual",                /* CPP+38 */
         "Statische Funktion '%s' kann nicht virtuell sein",             /* CPP+38 */
-        "la fonction statique '%s' ne doit pas ˆtre de type virtuel",           /* CPP+38 */
-        "static ŠÖ” '%s' ‚Í virtual ‚É‚·‚é‚±‚Æ‚ª‚Å‚«‚È‚¢",             /* CPP+38 */
+        "la fonction statique '%s' ne doit pas ï¿½tre de type virtuel",           /* CPP+38 */
+        "static ï¿½Öï¿½ '%s' ï¿½ï¿½ virtual ï¿½É‚ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",             /* CPP+38 */
   },
   { "opnew_type",
         "type must be void *operator new%s(size_t [,..]);",     /* CPP+39 */
-        "Typ muá void *operator new(size_t [,..]); sein",       /* CPP+39 */
-        "le type doit ˆtre void*op‚rateur new(size_t [,..]);",  /* CPP+39 */
-        "Œ^‚Í void *operator new(size_t [,..]); ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",    /* CPP+39 */
+        "Typ muï¿½ void *operator new(size_t [,..]); sein",       /* CPP+39 */
+        "le type doit ï¿½tre void*opï¿½rateur new(size_t [,..]);",  /* CPP+39 */
+        "ï¿½^ï¿½ï¿½ void *operator new(size_t [,..]); ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",    /* CPP+39 */
   },
 
         /* Type of operator delete() must be one of:    */
@@ -2178,9 +2178,9 @@ struct Msgtable msgtable[] =
         /*      void operator delete(void *,void *);    */
   { "opdel_type",
         "must be void operator delete%s(void * [,size_t]);",    /* CPP+40 */
-        "muá lauten void operator delete(void * [,size_t]);",   /* CPP+40 */
-        "doit ˆtre void*op‚rateur delete(void * [,size_t]);",   /* CPP+40 */
-        "void operator delete(void * [,size_t]); ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",   /* CPP+40 */
+        "muï¿½ lauten void operator delete(void * [,size_t]);",   /* CPP+40 */
+        "doit ï¿½tre void*opï¿½rateur delete(void * [,size_t]);",   /* CPP+40 */
+        "void operator delete(void * [,size_t]); ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",   /* CPP+40 */
   },
 
         /* Syntax for pure virtual function is          */
@@ -2188,14 +2188,14 @@ struct Msgtable msgtable[] =
   { "zero",
         "0 expected",                                           /* CPP+41 */
         "0 erwartet",                                           /* CPP+41 */
-        "z‚ro requis",                                          /* CPP+41 */
-        "0 ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                                         /* CPP+41 */
+        "zï¿½ro requis",                                          /* CPP+41 */
+        "0 ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                                         /* CPP+41 */
   },
   { "create_abstract",
         "cannot create instance of abstract class '%s'",        /* CPP+42 */
         "Instanz der abstrakten Klasse '%s' kann nicht erzeugt werden", /* CPP+42 */
-        "impossible de cr‚er une occurrence de la classe abstraite '%'",        /* CPP+42 */
-        "’ŠÛƒNƒ‰ƒX '%s' ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",       /* CPP+42 */
+        "impossible de crï¿½er une occurrence de la classe abstraite '%'",        /* CPP+42 */
+        "ï¿½ï¿½ï¿½ÛƒNï¿½ï¿½ï¿½X '%s' ï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",       /* CPP+42 */
   },
 
         /* Can't generate X& operator=(X&) if           */
@@ -2205,9 +2205,9 @@ struct Msgtable msgtable[] =
         /*         a private operator=()                */
   { "cant_generate",
         "cannot generate %s for class '%s'",            /* CPP+43 */
-        "%s kann fr Klasse '%s' nicht erzeugt werden",         /* CPP+43 */
-        "impossible de g‚n‚rer %s pour la classe '%s'",         /* CPP+43 */
-        "%s ‚ğ¶¬‚Å‚«‚È‚¢ (ƒNƒ‰ƒX '%s')",              /* CPP+43 */
+        "%s kann fï¿½r Klasse '%s' nicht erzeugt werden",         /* CPP+43 */
+        "impossible de gï¿½nï¿½rer %s pour la classe '%s'",         /* CPP+43 */
+        "%s ï¿½ğ¶ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½ (ï¿½Nï¿½ï¿½ï¿½X '%s')",              /* CPP+43 */
   },
 
         /* Can't generate X& operator=(X&) if           */
@@ -2224,14 +2224,14 @@ struct Msgtable msgtable[] =
         "'%s' ist kein Constructor",                    /* CPP+44 */
         "'%s' n'est pas un constructeur",                       /* CPP+44 */
         #pragma dbcs(push,1)
-        "'%s' ‚Í\’zq‚Å‚Í‚È‚¢",                        /* CPP+44 */
+        "'%s' ï¿½Í\ï¿½zï¿½qï¿½Å‚Í‚È‚ï¿½",                        /* CPP+44 */
         #pragma dbcs(pop)
   },
   { "base_memmodel",
         "base class '%s' has different ambient memory model",   /* CPP+45 */
         "Basisklasse '%s' hat andere Speichermodellumgebung",   /* CPP+45 */
-        "la classe mŠre '%s' n'utilise pas le mˆme modŠle de m‚moire",  /* CPP+45 */
-        "Šî–{ƒNƒ‰ƒX '%s' ‚Ìƒƒ‚ƒŠƒ‚ƒfƒ‹‚Æ–µ‚‚µ‚Ä‚¢‚é", /* CPP+45 */
+        "la classe mï¿½re '%s' n'utilise pas le mï¿½me modï¿½le de mï¿½moire",  /* CPP+45 */
+        "ï¿½ï¿½{ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Æ–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½", /* CPP+45 */
   },
 
         /* Can't have a near reference to far data      */
@@ -2239,7 +2239,7 @@ struct Msgtable msgtable[] =
         "'%s' is far",                                  /* CPP+46 */
         "'%s' ist Far",                                 /* CPP+46 */
         "'%s' est de type far",                                 /* CPP+46 */
-        "'%s' ‚Í far ‚É‚È‚Á‚Ä‚¢‚é",                                     /* CPP+46 */
+        "'%s' ï¿½ï¿½ far ï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",                                     /* CPP+46 */
   },
 
         /* operator->() must return:
@@ -2252,9 +2252,9 @@ struct Msgtable msgtable[] =
          */
   { "bad_oparrow",
         "illegal return type %s for operator->()",              /* CPP+47 */
-        "Unzul„ssiger Rckgabetyp fr Operator->()",            /* CPP+47 */
-        "‚l‚ment renvoy‚ incompatible avec l'op‚rateur ->[]",           /* CPP+47 */
-        "operator->() ‚Ì–ß‚èŒ^‚ª•s³",          /* CPP+47 */
+        "Unzulï¿½ssiger Rï¿½ckgabetyp fï¿½r Operator->()",            /* CPP+47 */
+        "ï¿½lï¿½ment renvoyï¿½ incompatible avec l'opï¿½rateur ->[]",           /* CPP+47 */
+        "operator->() ï¿½Ì–ß‚ï¿½^ï¿½ï¿½ï¿½sï¿½ï¿½",          /* CPP+47 */
   },
 
         /* Can't redefine default argument for parameter */
@@ -2264,8 +2264,8 @@ struct Msgtable msgtable[] =
   { "default_redef",
         "redefinition of default value for parameter '%s'",     // CPP+48
         "Redefinition von Standardparametern",          /* CPP+48 */
-        "modification de la d‚finition du paramŠtre par d‚faut",        // CPP+48
-        "ƒfƒtƒHƒ‹ƒgƒpƒ‰ƒ[ƒ^‚ğÄ’è‹`‚Å‚«‚È‚¢",         /* CPP+48 */
+        "modification de la dï¿½finition du paramï¿½tre par dï¿½faut",        // CPP+48
+        "ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½Ä’ï¿½`ï¿½Å‚ï¿½ï¿½È‚ï¿½",         /* CPP+48 */
   },
 
         /* If you define a variable with the same name
@@ -2276,10 +2276,10 @@ struct Msgtable msgtable[] =
          */
   { "ctor_disallowed",
         "no constructor allowed for class '%s'",        /* CPP+49 */
-        "Kein Constructor zul„ssig fr Klasse '%s'",    /* CPP+49 */
+        "Kein Constructor zulï¿½ssig fï¿½r Klasse '%s'",    /* CPP+49 */
         "constructeur non utilisable avec la classe '%s'",      /* CPP+49 */
         #pragma dbcs(push,1)
-        "ƒNƒ‰ƒX '%s' ‚É‚Í\’zq‚ğ’è‹`‚Å‚«‚È‚¢", /* CPP+49 */
+        "ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½É‚Í\ï¿½zï¿½qï¿½ï¿½ï¿½`ï¿½Å‚ï¿½ï¿½È‚ï¿½", /* CPP+49 */
         #pragma dbcs(pop)
   },
 
@@ -2288,17 +2288,17 @@ struct Msgtable msgtable[] =
   { "ambig_ref_base",
         "ambiguous reference to base class '%s'",       /* CPP+50 */
         "Mehrdeutige Referenz auf Basisklasse '%s'",    /* CPP+50 */
-        "r‚f‚rence … la classe mŠre ambigu‰ '%s'",      /* CPP+50 */
-        "Šî–{ƒNƒ‰ƒX '%s' ‚ÌQÆ‚ª‚ ‚¢‚Ü‚¢",     /* CPP+50 */
+        "rï¿½fï¿½rence ï¿½ la classe mï¿½re ambiguï¿½ '%s'",      /* CPP+50 */
+        "ï¿½ï¿½{ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½ÌQï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½",     /* CPP+50 */
   },
 
         /* Pure member functions must be virtual, as in: */
         /*      virtual void func() = 0;                 */
   { "pure_func_virtual",
         "pure function must be virtual",                /* CPP+51 */
-        "Reine Funktion muá virtuell sein",             /* CPP+51 */
-        "la fonction pure doit ˆtre virtuelle",         /* CPP+51 */
-        "ƒˆŠÖ”‚Í‰¼‘z‚É‚à‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",         /* CPP+51 */
+        "Reine Funktion muï¿½ virtuell sein",             /* CPP+51 */
+        "la fonction pure doit ï¿½tre virtuelle",         /* CPP+51 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½Í‰ï¿½ï¿½zï¿½É‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",         /* CPP+51 */
   },
 
         /* Cannot convert a pointer to a virtual base   */
@@ -2308,18 +2308,18 @@ struct Msgtable msgtable[] =
   { "vbase",
         "'%s' is a virtual base class of '%s'",         /* CPP+52 */
         "'%s' ist eine virtuelle Basisklasse von '%s'",         /* CPP+52 */
-        "'%s' est une classe mŠre virtuelle de '%s'",           /* CPP+52 */
-        "'%s' ‚Í '%s' ‚Ì‰¼‘zŠî–{ƒNƒ‰ƒX‚É‚È‚Á‚Ä‚¢‚é",            /* CPP+52 */
+        "'%s' est une classe mï¿½re virtuelle de '%s'",           /* CPP+52 */
+        "'%s' ï¿½ï¿½ '%s' ï¿½Ì‰ï¿½ï¿½zï¿½ï¿½{ï¿½Nï¿½ï¿½ï¿½Xï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½",            /* CPP+52 */
   },
 
         /* An object of a class with a constructor or   */
         /* a destructor may not be a member of a union. */
   { "union_tors",
         "union members cannot have ctors or dtors",     /* CPP+53 */
-        "Union-Glieder k”nnen keine Ctors oder Dtors haben",    /* CPP+53 */
+        "Union-Glieder kï¿½nnen keine Ctors oder Dtors haben",    /* CPP+53 */
         "les membres d'une union ne doivent pas comporter de ctor ou de dtor",  /* CPP+53 */
         #pragma dbcs(push,1)
-        "union ‚É‚Í\’zq‚Ü‚½‚ÍÁ–Åq‚Ì‚ ‚é‚à‚Ì‚ğŠÜ‚Ş‚±‚Æ‚Í‚Å‚«‚È‚¢",   /* CPP+53 */
+        "union ï¿½É‚Í\ï¿½zï¿½qï¿½Ü‚ï¿½ï¿½Íï¿½ï¿½Åqï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½Ü‚Ş‚ï¿½ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",   /* CPP+53 */
         #pragma dbcs(pop)
   },
 
@@ -2328,8 +2328,8 @@ struct Msgtable msgtable[] =
   { "ptr_member",
         "pointer to member expected to right of .* or ->*",     /* CPP+54 */
         "Pointer auf Glied rechts von .* oder ->* erwartet",    /* CPP+54 */
-        "pointeur vers un membre requis … droite de . * ou ->*",        /* CPP+54 */
-        ".*A->* ‚ÌŸ‚Íƒƒ“ƒo‚Ö‚Ìƒ|ƒCƒ“ƒ^‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",   /* CPP+54 */
+        "pointeur vers un membre requis ï¿½ droite de . * ou ->*",        /* CPP+54 */
+        ".*ï¿½A->* ï¿½Ìï¿½ï¿½Íƒï¿½ï¿½ï¿½ï¿½oï¿½Ö‚Ìƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",   /* CPP+54 */
   },
 
         /* Access declarations in a derived class cannot
@@ -2340,8 +2340,8 @@ struct Msgtable msgtable[] =
   { "change_access",
         "cannot raise or lower access to base member '%s'",     /* CPP+55 */
         "Zugriff auf Basisglied '%s' kann nicht angehoben oder gesenkt werden", /* CPP+55 */
-        "impossible d'augmenter ou de baisser le niveau d'accŠs au membre parent '%s'", /* CPP+55 */
-        "ƒx[ƒXƒƒ“ƒo '%s' ‚ÌƒAƒNƒZƒX‚ğ•ÏX‚Å‚«‚È‚¢",   /* CPP+55 */
+        "impossible d'augmenter ou de baisser le niveau d'accï¿½s au membre parent '%s'", /* CPP+55 */
+        "ï¿½xï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½o '%s' ï¿½ÌƒAï¿½Nï¿½Zï¿½Xï¿½ï¿½ÏXï¿½Å‚ï¿½ï¿½È‚ï¿½",   /* CPP+55 */
   },
 
         /*  Cannot convert a pointer to a class X to a pointer
@@ -2351,40 +2351,40 @@ struct Msgtable msgtable[] =
   { "cvt_private_base",
         "cannot convert %s* to a private base class %s*",       /* CPP+56 */
         "%s* kann nicht in eine private Basisklasse %s* konvertiert werden",    /* CPP+56 */
-        "impossible de convertir %s* en classe mŠre priv‚e %s*",        /* CPP+56 */
-        "%s* ‚ğ private Šî–{ƒNƒ‰ƒX %s* ‚É•ÏŠ·‚Å‚«‚È‚¢", /* CPP+56 */
+        "impossible de convertir %s* en classe mï¿½re privï¿½e %s*",        /* CPP+56 */
+        "%s* ï¿½ï¿½ private ï¿½ï¿½{ï¿½Nï¿½ï¿½ï¿½X %s* ï¿½É•ÏŠï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½", /* CPP+56 */
   },
 
         // ARM 9.5
   { "glbl_ambig_unions",
         "global anonymous unions must be static",               // CPP+57
-        "Globale anonyme Unions mssen statisch sein",          // CPP+57
-        "les unions anonymes globales doivent ˆtre statiques",          // CPP+57
-        "ƒOƒ[ƒoƒ‹‚Ì–³–¼ union ‚Í static ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",          // CPP+57
+        "Globale anonyme Unions mï¿½ssen statisch sein",          // CPP+57
+        "les unions anonymes globales doivent ï¿½tre statiques",          // CPP+57
+        "ï¿½Oï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Ì–ï¿½ï¿½ï¿½ union ï¿½ï¿½ static ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",          // CPP+57
   },
 
         /* The member cannot be initialized without a constructor */
   { "const_mem_ctor",
         "member '%s' is const but there is no constructor",     /* CPP+58 */
         "Glied '%s' ist eine Konstante, aber es gibt keinen Constructor",       /* CPP+58 */
-        "le membre '%s' est une constante mais aucun constructeur n'est pr‚sent",       /* CPP+58 */
+        "le membre '%s' est une constante mais aucun constructeur n'est prï¿½sent",       /* CPP+58 */
         #pragma dbcs(push,1)
-        "ƒƒ“ƒo '%s' ‚ª const ‚È‚Ì‚É\’zq‚ª‚È‚¢",      /* CPP+58 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' ï¿½ï¿½ const ï¿½È‚Ì‚É\ï¿½zï¿½qï¿½ï¿½ï¿½È‚ï¿½",      /* CPP+58 */
         #pragma dbcs(pop)
   },
   { "static_mem_func",
         "member functions cannot be static",                    /* CPP+59 */
-        "Gliedfunktionen k”nnen nicht statisch sein",                   /* CPP+59 */
-        "les fonctions membres ne doivent pas ˆtre statiques",                  /* CPP+59 */
-        "ƒƒ“ƒoŠÖ”‚Í static ‚É‚È‚Á‚Ä‚Í‚È‚ç‚È‚¢",                       /* CPP+59 */
+        "Gliedfunktionen kï¿½nnen nicht statisch sein",                   /* CPP+59 */
+        "les fonctions membres ne doivent pas ï¿½tre statiques",                  /* CPP+59 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Öï¿½ï¿½ï¿½ static ï¿½É‚È‚ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",                       /* CPP+59 */
   },
 
         /* More than one match is found for overloaded function */
   { "overload_ambig",
         "ambiguous reference to symbol",                        /* CPP+60 */
         "Mehrdeutige Referenz auf Funktion",                    /* CPP+60 */
-        "r‚f‚rence ambigu‰ … la fonction",                      /* CPP+60 */
-        "ŠÖ”‚Ö‚ÌQÆ‚ª‚ ‚¢‚Ü‚¢",                       /* CPP+60 */
+        "rï¿½fï¿½rence ambiguï¿½ ï¿½ la fonction",                      /* CPP+60 */
+        "ï¿½Öï¿½ï¿½Ö‚ÌQï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½",                       /* CPP+60 */
   },
 
         /* ARM 13.4.7 only allows declarations of the form:
@@ -2395,15 +2395,15 @@ struct Msgtable msgtable[] =
          */
   { "postfix_arg",
         "argument to postfix ++ or -- must be int",             /* CPP+61 */
-        "Argument des Postfix ++ oder -- muá Int sein",         /* CPP+61 */
-        "l'argument de l'op‚rateur ++ ou -- doit ˆtre un entier",               /* CPP+61 */
-        "Œã’u‚« ++ ‚Ü‚½‚Í -- ‚Ìˆø”‚Í int ‚ÉŒÀ‚é",              /* CPP+61 */
+        "Argument des Postfix ++ oder -- muï¿½ Int sein",         /* CPP+61 */
+        "l'argument de l'opï¿½rateur ++ ou -- doit ï¿½tre un entier",               /* CPP+61 */
+        "ï¿½ï¿½uï¿½ï¿½ ++ ï¿½Ü‚ï¿½ï¿½ï¿½ -- ï¿½Ìˆï¿½ï¿½ï¿½ï¿½ï¿½ int ï¿½ÉŒï¿½ï¿½ï¿½",              /* CPP+61 */
   },
   { "cv_func",
         "static or non-member functions can't be const or volatile", /* CPP+62 */
-        "Statische oder Nicht-Glied-Funktionen k”nnen nicht 'const' oder 'volatile' sein", /* CPP+62 */
-        "les fonctions statiques ou non membres ne doivent pas ˆtre de type constant ou volatile", /* CPP+62 */
-        "static ‚¨‚æ‚Ñ”ñƒƒ“ƒoŠÖ”‚Í const ‚Ü‚½‚Í volatile ‚É‚È‚Á‚Ä‚¢‚Ä‚Í‚È‚ç‚È‚¢", /* CPP+62 */
+        "Statische oder Nicht-Glied-Funktionen kï¿½nnen nicht 'const' oder 'volatile' sein", /* CPP+62 */
+        "les fonctions statiques ou non membres ne doivent pas ï¿½tre de type constant ou volatile", /* CPP+62 */
+        "static ï¿½ï¿½ï¿½ï¿½Ñ”ñƒƒï¿½ï¿½oï¿½Öï¿½ï¿½ï¿½ const ï¿½Ü‚ï¿½ï¿½ï¿½ volatile ï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½Ä‚Í‚È‚ï¿½È‚ï¿½", /* CPP+62 */
   },
 
         /* Cannot specify a storage class or a type when
@@ -2413,8 +2413,8 @@ struct Msgtable msgtable[] =
   { "access_class",
         "access declaration of base member '%s::%s' has storage class or type", /* CPP+63 */
         "Kennzeichner oder Typ in Zugriffsdeklaration",         /* CPP+63 */
-        "qualificateur ou type pr‚sent dans la d‚claration d'accŠs",            /* CPP+63 */
-        "ƒAƒNƒZƒXéŒ¾‚É‚ÍCüq‚¨‚æ‚ÑŒ^‚ğw’è‚µ‚Ä‚Í‚È‚ç‚È‚¢",           /* CPP+63 */
+        "qualificateur ou type prï¿½sent dans la dï¿½claration d'accï¿½s",            /* CPP+63 */
+        "ï¿½Aï¿½Nï¿½Zï¿½Xï¿½éŒ¾ï¿½É‚ÍCï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ÑŒ^ï¿½ï¿½ï¿½wï¿½è‚µï¿½Ä‚Í‚È‚ï¿½È‚ï¿½",           /* CPP+63 */
   },
 
         /* Can't adjust access for overloaded function
@@ -2422,9 +2422,9 @@ struct Msgtable msgtable[] =
          */
   { "access_diff",
         "overloaded function '%s' has different access levels", /* CPP+64 */
-        "šberlagerte Funktion '%s' hat unterschiedl. Zugriffsebenen",   /* CPP+64 */
-        "le niveau d'accŠs de la fonction '%s' appel‚e est diff‚rent",  /* CPP+64 */
-        "ƒI[ƒo[ƒ[ƒhŠÖ” '%s' ‚ÌƒAƒNƒZƒXƒŒƒxƒ‹‚ª‚Ü‚¿‚Ü‚¿",   /* CPP+64 */
+        "ï¿½berlagerte Funktion '%s' hat unterschiedl. Zugriffsebenen",   /* CPP+64 */
+        "le niveau d'accï¿½s de la fonction '%s' appelï¿½e est diffï¿½rent",  /* CPP+64 */
+        "ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½[ï¿½hï¿½Öï¿½ '%s' ï¿½ÌƒAï¿½Nï¿½Zï¿½Xï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Ü‚ï¿½",   /* CPP+64 */
   },
 
         /* Can't adjust access for base member when a derived
@@ -2433,8 +2433,8 @@ struct Msgtable msgtable[] =
   { "derived_class_name",
         "a derived class member has the same name '%s'",        /* CPP+65 */
         "Ein abgeleitetes Klassenglied hat denselben Namen: '%s'",      /* CPP+65 */
-        "un membre d‚riv‚ de la classe s'appelle ‚galement '%s'",       /* CPP+65 */
-        "“¯‚¶–¼Ì '%s' ‚ğ‚Â”h¶ƒNƒ‰ƒXƒƒ“ƒo‚ª‘¶İ‚·‚é",       /* CPP+65 */
+        "un membre dï¿½rivï¿½ de la classe s'appelle ï¿½galement '%s'",       /* CPP+65 */
+        "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '%s' ï¿½ï¿½ï¿½ï¿½ï¿½Â”hï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½ï¿½",       /* CPP+65 */
   },
 
         /* Had a class name preceding the member function
@@ -2443,34 +2443,34 @@ struct Msgtable msgtable[] =
   { "decl_other_class",
         "can't declare member of another class '%s'",           /* CPP+66 */
         "Glied einer weiteren Klasse '%s' kann nicht deklariert werden",                /* CPP+66 */
-        "impossible de d‚clarer le membre d'une autre classe '%s'",             /* CPP+66 */
-        " •Ê‚ÌƒNƒ‰ƒX '%s' ‚Ìƒƒ“ƒo‚ğéŒ¾‚Å‚«‚È‚¢",              /* CPP+66 */
+        "impossible de dï¿½clarer le membre d'une autre classe '%s'",             /* CPP+66 */
+        " ï¿½Ê‚ÌƒNï¿½ï¿½ï¿½X '%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½ï¿½éŒ¾ï¿½Å‚ï¿½ï¿½È‚ï¿½",              /* CPP+66 */
   },
   { "friend_sclass",
         "invalid storage class for friend",                     /* CPP+67 */
-        "Ungltige Speicherklassse fr Friend",                 /* CPP+67 */
+        "Ungï¿½ltige Speicherklassse fï¿½r Friend",                 /* CPP+67 */
         "classe de stockage amie non valide",                   /* CPP+67 */
-        "friend ‚É‚Í‚±‚Ì•Û‘¶ƒNƒ‰ƒX‚ğg‚¦‚È‚¢",                  /* CPP+67 */
+        "friend ï¿½É‚Í‚ï¿½ï¿½Ì•Û‘ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½",                  /* CPP+67 */
   },
   { "friend_type",
         "only classes and functions can be friends",            /* CPP+68 */
-        "Nur Klassen und Funktionen k”nnen Friends sein",               /* CPP+68 */
-        "seules les classes et les fonctions peuvent ˆtre des amies",           /* CPP+68 */
-        "friend ‚ÍƒNƒ‰ƒX‚¨‚æ‚ÑŠÖ”‚ÉŒÀ‚é",                      /* CPP+68 */
+        "Nur Klassen und Funktionen kï¿½nnen Friends sein",               /* CPP+68 */
+        "seules les classes et les fonctions peuvent ï¿½tre des amies",           /* CPP+68 */
+        "friend ï¿½ÍƒNï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ÑŠÖï¿½ï¿½ÉŒï¿½ï¿½ï¿½",                      /* CPP+68 */
   },
 
         /* Destructors are of the form X::~X()  */
   { "tilde_class",
         "class name '%s' expected after ~",                     /* CPP+69 */
         "Klassenname '%s' erwartet nach ~",                     /* CPP+69 */
-        "nom de classe '%s' requis aprŠs ~",                    /* CPP+69 */
-        "u~v‚ÉƒNƒ‰ƒX–¼ '%s' ‚ª‘±‚©‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                  /* CPP+69 */
+        "nom de classe '%s' requis aprï¿½s ~",                    /* CPP+69 */
+        "ï¿½u~ï¿½vï¿½ÉƒNï¿½ï¿½ï¿½Xï¿½ï¿½ '%s' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                  /* CPP+69 */
   },
   { "not_enum_member",
         "'%s' is not a member of enum '%s'",                    // CPP+70
         "'%s' ist kein Glied von Enum '%s'",                    // CPP+70
         "'%s' n'est pas membre de l'ensemble enum '%s'",                        // CPP+70
-        "'%s' ‚Í enum '%s' ‚Ìƒƒ“ƒo‚Å‚È‚¢",                     // CPP+87
+        "'%s' ï¿½ï¿½ enum '%s' ï¿½Ìƒï¿½ï¿½ï¿½ï¿½oï¿½Å‚È‚ï¿½",                     // CPP+87
   },
 
         // ARM 6.7
@@ -2478,15 +2478,15 @@ struct Msgtable msgtable[] =
         // initialization of a variable to be skipped.
   { "skip_init",
         "initialization of '%s' is skipped",                    // CPP+71
-        "Initialisierung von '%s' wird bergangen",                     // CPP+71
-        "'%s' n'a pas ‚t‚ initialis‚",                  // CPP+71
-        "'%s'‚Ì‰Šú‰»‚ğ–³‹",                                   // CPP+71
+        "Initialisierung von '%s' wird ï¿½bergangen",                     // CPP+71
+        "'%s' n'a pas ï¿½tï¿½ initialisï¿½",                  // CPP+71
+        "'%s'ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ğ–³ï¿½",                                   // CPP+71
   },
   { "fwd_ref_base",
         "forward referenced class '%s' cannot be a base class", /* CPP+72 */
         "Vorausreferenzierte Klasse '%s' kann keine Basisklasse sein",  /* CPP+72 */
-        "la classe '%s' r‚f‚renc‚e en avant ne doit pas ˆtre une classe mŠre",  /* CPP+72 */
-        "ƒNƒ‰ƒX '%s' ‚Í‘O•ûQÆ‚³‚ê‚Ä‚¢‚é‚Ì‚ÅŠî–{ƒNƒ‰ƒX‚Æ‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢",   /* CPP+72 */
+        "la classe '%s' rï¿½fï¿½rencï¿½e en avant ne doit pas ï¿½tre une classe mï¿½re",  /* CPP+72 */
+        "ï¿½Nï¿½ï¿½ï¿½X '%s' ï¿½Í‘Oï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚ÅŠï¿½{ï¿½Nï¿½ï¿½ï¿½Xï¿½Æ‚ï¿½ï¿½é‚±ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",   /* CPP+72 */
   },
 
         // ARM 5.2
@@ -2495,20 +2495,20 @@ struct Msgtable msgtable[] =
   { "lt_cast",
         "'<' expected following cast",                  // CPP+73
         "'<' erwartet nach Cast",                       // CPP+73
-        "'<' requis aprŠs cast",                        // CPP+73
-        "'<' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                                       /* CPP+73       */
+        "'<' requis aprï¿½s cast",                        // CPP+73
+        "'<' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                                       /* CPP+73       */
   },
   { "gt",
         "'>' expected",                                 // CPP+74
         "'>' erwartet",                                 // CPP+74
         "'>' requis",                                   // CPP+74
-        "'>' ‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                                       /* CPP+74       */
+        "'>' ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                                       /* CPP+74       */
   },
   { "templ_param_lists",
         "parameter lists do not match for template '%s'", /* CPP+75     */
         "Parameterlisten entsprechen nicht der Schablone '%s'", /* CPP+75       */
-        "les listes de paramŠtres du squelette '%s' ne correspondent pas", /* CPP+75    */
-        "ƒeƒ“ƒvƒŒ[ƒg '%s' ‚Ìƒpƒ‰ƒ[ƒ^ƒŠƒXƒg‚ªˆê’v‚µ‚È‚¢", /* CPP+75   */
+        "les listes de paramï¿½tres du squelette '%s' ne correspondent pas", /* CPP+75    */
+        "ï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½g '%s' ï¿½Ìƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½È‚ï¿½", /* CPP+75   */
   },
         /* A template member function must have a class name
            that is a template.
@@ -2519,29 +2519,29 @@ struct Msgtable msgtable[] =
         "'%s' is not a class template",                 /* CPP+76 */
         "'%s' ist keine Klassenschablone",                      /* CPP+76 */
         "'%s' n'est pas le nom d'un squelette de classe",                       /* CPP+76 */
-        "'%s' ‚ÍƒNƒ‰ƒXƒeƒ“ƒvƒŒ[ƒg‚Å‚Í‚È‚¢",                    /* CPP+76 */
+        "'%s' ï¿½ÍƒNï¿½ï¿½ï¿½Xï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½gï¿½Å‚Í‚È‚ï¿½",                    /* CPP+76 */
   },
   { "bad_templ_decl",
         "malformed template declaration",               /* CPP+77 */
         "Fasche Form der Schablonendeklaration",                /* CPP+77 */
-        "d‚claration de squelette incorrecte",          /* CPP+77 */
-        "ƒeƒ“ƒvƒŒ[ƒgéŒ¾‚ª‚¨‚©‚µ‚¢",           /* CPP+77 */
+        "dï¿½claration de squelette incorrecte",          /* CPP+77 */
+        "ï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½gï¿½éŒ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",           /* CPP+77 */
   },
 
         /* All template-arguments for a function must be type-arguments. ARM 14.4 */
   { "templ_arg_type",
         "template-argument '%s' for function must be a type-argument", // CPP+78
-        "Schablonenargument '%s' muá ein Typargument sein",     /* CPP+78 */
-        "l'argument de squelette '%s' doit ˆtre un argument de type",   /* CPP+78 */
-        "ƒeƒ“ƒvƒŒ[ƒgˆø” '%s' ‚ÍŒ^ˆø”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",     /* CPP+78 */
+        "Schablonenargument '%s' muï¿½ ein Typargument sein",     /* CPP+78 */
+        "l'argument de squelette '%s' doit ï¿½tre un argument de type",   /* CPP+78 */
+        "ï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½ '%s' ï¿½ÍŒ^ï¿½ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",     /* CPP+78 */
   },
 
         /* ARM 5.3.4    */
   { "adel_array",
         "must use delete[] for arrays",                 /* CPP+79 */
-        "Fr Arrays muá delete[] verwendet werden",                     /* CPP+79 */
+        "Fï¿½r Arrays muï¿½ delete[] verwendet werden",                     /* CPP+79 */
         "delete[] obligatoire avec les tableaux",                       /* CPP+79 */
-        "”z—ñ‚É‚Í delete[] ‚ğg‚í‚È‚¯‚ê‚Î‚È‚ç‚È‚¢",                     /* CPP+79 */
+        "ï¿½zï¿½ï¿½É‚ï¿½ delete[] ï¿½ï¿½ï¿½gï¿½ï¿½È‚ï¿½ï¿½ï¿½Î‚È‚ï¿½È‚ï¿½",                     /* CPP+79 */
   },
 
         /* ARM 9.4      */
@@ -2549,12 +2549,12 @@ struct Msgtable msgtable[] =
     #if TX86
         "local class cannot have static data member '%s'",      /* CPP+80 */
         "Lokale Klasse kann kein statisches Datenglied '%s' haben",     /* CPP+80 */
-        "une classe locale ne doit pas comporter de membre de type donn‚e statique",    /* CPP+80 */
-        "ƒ[ƒJƒ‹ƒNƒ‰ƒX‚É‚Í static ƒf[ƒ^ƒƒ“ƒo '%s' ‚ğŠÜ‚Ş‚±‚Æ‚Í‚Å‚«‚È‚¢",     /* CPP+80 */
+        "une classe locale ne doit pas comporter de membre de type donnï¿½e statique",    /* CPP+80 */
+        "ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½É‚ï¿½ static ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½o '%s' ï¿½ï¿½ï¿½Ü‚Ş‚ï¿½ï¿½Æ‚Í‚Å‚ï¿½ï¿½È‚ï¿½",     /* CPP+80 */
     #else
         "local class cannot have static data or non-inline function member '%s'",       /* CPP+80 */
         "Lok. Klasse kann kein stat. oder nicht-inline Funktionsglied '%s' haben",      /* CPP+80 */
-        "une classe locale ne doit pas comporter de membre de type donn‚e statique ou fonction non inline",     /* CPP+80 */
+        "une classe locale ne doit pas comporter de membre de type donnï¿½e statique ou fonction non inline",     /* CPP+80 */
     #endif
   },
 
@@ -2564,9 +2564,9 @@ struct Msgtable msgtable[] =
          */
   { "conv_ret",
         "return type cannot be specified for conversion function", /* CPP+81 */
-        "Fr Konvertierungsfunktion kann kein Rckgabetyp angegeben werden", /* CPP+81 */
-        "le type renvoy‚ ne peut pas ˆtre associ‚ … la fonction de conversion", /* CPP+81 */
-        "•ÏŠ·ŠÖ”‚Ì–ß‚èŒ^‚ğw’è‚µ‚Ä‚Í‚È‚ç‚È‚¢", /* CPP+81 */
+        "Fï¿½r Konvertierungsfunktion kann kein Rï¿½ckgabetyp angegeben werden", /* CPP+81 */
+        "le type renvoyï¿½ ne peut pas ï¿½tre associï¿½ ï¿½ la fonction de conversion", /* CPP+81 */
+        "ï¿½ÏŠï¿½ï¿½Öï¿½ï¿½Ì–ß‚ï¿½^ï¿½ï¿½ï¿½wï¿½è‚µï¿½Ä‚Í‚È‚ï¿½È‚ï¿½", /* CPP+81 */
   },
 
         /* CPP98 14.8.2
@@ -2575,14 +2575,14 @@ struct Msgtable msgtable[] =
   { "templ_arg_unused",
         "template-argument '%s' has no value in template function specialization", /* CPP+82 */
         "Schablonenargument '%s' nicht benutzt bei Funktionsparametertypen", /* CPP+82 */
-        "argument de squelette '%' non utilis‚ avec les types de paramŠtres de fonction", /* CPP+82 */
-        "ƒeƒ“ƒvƒŒ[ƒgˆø” '%s' ‚ÍŠÖ”ƒpƒ‰ƒ[ƒ^Œ^‚Ég‚í‚ê‚Ä‚¢‚È‚¢", /* CPP+82 */
+        "argument de squelette '%' non utilisï¿½ avec les types de paramï¿½tres de fonction", /* CPP+82 */
+        "ï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½ '%s' ï¿½ÍŠÖï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½^ï¿½Égï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½", /* CPP+82 */
   },
   { "cant_gen_templ_inst",
         "cannot generate template instance from -XI%s", /* CPP+83 */
         "Schabloneninstanz von -XI%s kann nicht erstellt werden",       /* CPP+83 */
-        "impossible de g‚n‚rer une instance de squelette … partir de -XI%s",    /* CPP+83 */
-        "-XI%s ‚©‚çƒeƒ“ƒvƒŒ[ƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚Å‚«‚È‚¢",   /* CPP+83 */
+        "impossible de gï¿½nï¿½rer une instance de squelette ï¿½ partir de -XI%s",    /* CPP+83 */
+        "-XI%s ï¿½ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½gï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ğ¶ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",   /* CPP+83 */
   },
 
         /* ARM 8.4.3
@@ -2593,9 +2593,9 @@ struct Msgtable msgtable[] =
          */
   { "bad_ref_init",
         "invalid reference initialization",             /* CPP+84 */
-        "Ungltige Referenzinitialisierung",            /* CPP+84 */
-        "initialisation incorrecte de la r‚f‚rence",            /* CPP+84 */
-        "QÆ‚Ì‰Šú‰»‚ª•s³",           /* CPP+84 */
+        "Ungï¿½ltige Referenzinitialisierung",            /* CPP+84 */
+        "initialisation incorrecte de la rï¿½fï¿½rence",            /* CPP+84 */
+        "ï¿½Qï¿½Æ‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½",           /* CPP+84 */
   },
 
         /* ARM 12.6.2 Can only initialize non-static members
@@ -2603,17 +2603,17 @@ struct Msgtable msgtable[] =
          */
   { "no_mem_init",
         "cannot have member initializer for '%s'",      /* CPP+85 */
-        "Gliedinitialisierer fr '%s' nicht m”glich",   /* CPP+85 */
+        "Gliedinitialisierer fï¿½r '%s' nicht mï¿½glich",   /* CPP+85 */
         "'%s' ne doit pas comporter de membre d'initialisation",        /* CPP+85 */
-        "'%s' ‚Éƒƒ“ƒo‰Šú‰»q‚ğw’è‚Å‚«‚È‚¢",  /* CPP+85 */
+        "'%s' ï¿½Éƒï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½wï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½",  /* CPP+85 */
   },
 #if 0 // allowed by CPP98
         // ARM 5.3.4
   { "del_ptr_const",
         "cannot delete pointer to const",               /* CPP+86 */
-        "Pointer auf Konstante kann nicht gel”scht werden",             /* CPP+86 */
+        "Pointer auf Konstante kann nicht gelï¿½scht werden",             /* CPP+86 */
         "impossible de supprimer le pointeur vers la constante",                /* CPP+86 */
-        "const ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ delete ‚Å‚«‚È‚¢",         /* CPP+86 */
+        "const ï¿½Ö‚Ìƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½ï¿½ delete ï¿½Å‚ï¿½ï¿½È‚ï¿½",         /* CPP+86 */
   },
 #endif
 #if TX86
@@ -2621,18 +2621,18 @@ struct Msgtable msgtable[] =
         "'::' expected",                                // CPP+89
         "'::' erwartet",                                // CPP+89
         "'::' requis",                                  // CPP+89
-        "'::' ‚ª‚ ‚è‚Ü‚¹‚ñ",                            // CPP+89
+        "'::' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½",                            // CPP+89
   },
 #else
   { "ptr_ref",
         "pointers and references to references are illegal", /* CPP+97 */
-        "Pointer und Referenzen auf Referenzen unzul„ssig", /* CPP+97 */
-        "un pointeur ou une r‚f‚rence ne doit pas indiquer une autre r‚f‚rence", /* CPP+97 */
+        "Pointer und Referenzen auf Referenzen unzulï¿½ssig", /* CPP+97 */
+        "un pointeur ou une rï¿½fï¿½rence ne doit pas indiquer une autre rï¿½fï¿½rence", /* CPP+97 */
   },
   { "mult_decl",
         "Only one identifier is allowed to appear in a declaration appearing in a conditional expression", /* CPP+98 */
         "Nur ein Bezeichner erlaubt in Deklaration in konditionalem Ausdruck", /* CPP+98 */
-        "Un seul identificateur autoris‚ dans une d‚claration figurant dans une expression conditionnelle", /* CPP+98 */
+        "Un seul identificateur autorisï¿½ dans une dï¿½claration figurant dans une expression conditionnelle", /* CPP+98 */
   },
 #endif
         // ARM 15.4
@@ -2640,16 +2640,16 @@ struct Msgtable msgtable[] =
         // void func() throw(unsigned); <- error, different specification
   { "exception_specs",
         "Exception specifications must match exactly for each declaration of a function", // CPP+99
-        "Ausnahmespezifikationen mssen fr jede Deklaration einer Funktion genau bereinstimmen", // CPP+99
-        "Les sp‚cifications d'exception doivent ˆtre identiques pour toutes les d‚clarations d'une fonction", // CPP+99
+        "Ausnahmespezifikationen mï¿½ssen fï¿½r jede Deklaration einer Funktion genau ï¿½bereinstimmen", // CPP+99
+        "Les spï¿½cifications d'exception doivent ï¿½tre identiques pour toutes les dï¿½clarations d'une fonction", // CPP+99
   },
 
         // ARM 15.4
         // Can't have void func() throw(int,int);
   { "eh_types",
         "Types may not appear more than once in an exception specification", // CPP+100
-        "Typen k”nnen in Ausnahmespezifikation nur einmal auftreten", // CPP+100
-        "Les types ne doivent figurer qu'une seule fois dans une sp‚cification d'exception", // CPP+100
+        "Typen kï¿½nnen in Ausnahmespezifikation nur einmal auftreten", // CPP+100
+        "Les types ne doivent figurer qu'une seule fois dans une spï¿½cification d'exception", // CPP+100
   },
 
         // ARM 15.3
@@ -2658,8 +2658,8 @@ struct Msgtable msgtable[] =
         //  o   ptr/ref to base class appears before ptr/ref derived
   { "catch_masked",
         "Catch type masked by previous catch",          // CPP+101
-        "Catch-Typ maskiert durch frheren Catch",              // CPP+101
-        "Type catch masqu‚ par catch pr‚c‚dent",                // CPP+101
+        "Catch-Typ maskiert durch frï¿½heren Catch",              // CPP+101
+        "Type catch masquï¿½ par catch prï¿½cï¿½dent",                // CPP+101
   },
 
         // ARM 15.3
@@ -2667,8 +2667,8 @@ struct Msgtable msgtable[] =
         // of catch handlers for a try-block.
   { "catch_ellipsis",
         "A '...' handler must be the last one for a try-block", // CPP+102
-        "Ein '...'-Handler muá der letzte in einem Try-Block sein", // CPP+102
-        "Le gestionnaire '...' doit ˆtre le dernier du bloc try", // CPP+102
+        "Ein '...'-Handler muï¿½ der letzte in einem Try-Block sein", // CPP+102
+        "Le gestionnaire '...' doit ï¿½tre le dernier du bloc try", // CPP+102
   },
 
         // ARM 15.1
@@ -2676,7 +2676,7 @@ struct Msgtable msgtable[] =
         // try { statements } catch (exception-declaration) { statements }
   { "catch_follows",
         "A catch must follow a try-block",                      // CPP+103
-        "Ein Catch muá auf einen Try-Block folgen",                     // CPP+103
+        "Ein Catch muï¿½ auf einen Try-Block folgen",                     // CPP+103
         "Un catch ne doit pas suivre un bloc try",                      // CPP+103
   },
 
@@ -2684,31 +2684,31 @@ struct Msgtable msgtable[] =
         // cannot throw far classes in small data models.
   { "not_of_ambient_model",
         "Cannot throw object of '%s' not of ambient memory model", // CPP+104
-        "Kann Objekt von '%s' nicht bertragen, da nicht vom umgebenden Speichermodell", // CPP+104
-        "Throw d'un objet de '%s' impossible, modŠle de m‚moire incompatible", // CPP+104
+        "Kann Objekt von '%s' nicht ï¿½bertragen, da nicht vom umgebenden Speichermodell", // CPP+104
+        "Throw d'un objet de '%s' impossible, modï¿½le de mï¿½moire incompatible", // CPP+104
   },
   { "compileEH",
         "Compile all files with -Ae to support exception handling",     // CPP+105
-        "Alle Dateien mit -EH kompilieren zur Untersttzung der Ausnahmebehandlung",    // CPP+105
+        "Alle Dateien mit -EH kompilieren zur Unterstï¿½tzung der Ausnahmebehandlung",    // CPP+105
         "Compilez tous les fichiers avec -EH pour assurer la gestion des exceptions",   // CPP+105
   },
   { "typeinfo_h",
         "#include <typeinfo.h> in order to use RTTI",           // CPP+106
-        "#include <typeinfo.h> fr Verwendung von RTTI",                // CPP+106
+        "#include <typeinfo.h> fï¿½r Verwendung von RTTI",                // CPP+106
         "#include <typeinfo.h> pour utiliser RTTI",             // CPP+106
   },
   { "compileRTTI",
         "compile all files with -Ar to support RTTI",           // CPP+107
-        "Alle Dateien mit -ER kompilieren zur Untersttzung von RTTI",          // CPP+107
-        "Compilez tous les fichiers avec -ER pour g‚rer RTTI",          // CPP+107
+        "Alle Dateien mit -ER kompilieren zur Unterstï¿½tzung von RTTI",          // CPP+107
+        "Compilez tous les fichiers avec -ER pour gï¿½rer RTTI",          // CPP+107
   },
 
         // ARM 5.2.6
         // This is refering to the type specified in a dynamic_cast.
   { "ptr_to_class",
         "type must be a pointer or a reference to a defined class or void*",    // CPP+108
-        "Typ muá Pointer oder Referenz auf definierte Klasse oder void* sein",  // CPP+108
-        "le type doit ˆtre un pointeur ou une r‚f‚rence indiquant une classe d‚finie ou void*", // CPP+108
+        "Typ muï¿½ Pointer oder Referenz auf definierte Klasse oder void* sein",  // CPP+108
+        "le type doit ï¿½tre un pointeur ou une rï¿½fï¿½rence indiquant une classe dï¿½finie ou void*", // CPP+108
   },
 
         // ARM 5.2.6
@@ -2717,8 +2717,8 @@ struct Msgtable msgtable[] =
         // must be a pointer.
   { "not_pointer",
         "expression must be a pointer",                 // CPP+109
-        "Ausdruck muá ein Pointer sein",                        // CPP+109
-        "l'expression doit ˆtre un pointeur",                   // CPP+109
+        "Ausdruck muï¿½ ein Pointer sein",                        // CPP+109
+        "l'expression doit ï¿½tre un pointeur",                   // CPP+109
   },
 
         // ARM 5.2.6
@@ -2726,15 +2726,15 @@ struct Msgtable msgtable[] =
         // A polymorphic type is a class with at least one virtual function.
   { "ptr_to_polymorph",
         "expression must be a pointer or reference to a polymorphic type",      // CPP+110
-        "Ausdruck muá Pointer oder Referenz auf polymorphen Typ sein",  // CPP+110
-        "l'expression doit ˆtre un pointeur ou une r‚f‚rence indiquant un type polymorphe",     // CPP+110
+        "Ausdruck muï¿½ Pointer oder Referenz auf polymorphen Typ sein",  // CPP+110
+        "l'expression doit ï¿½tre un pointeur ou une rï¿½fï¿½rence indiquant un type polymorphe",     // CPP+110
   },
 
         // Template argument list required and is surrounded by <>. ARM 14.1
   { "lt_following",
         "'<' expected following %s",                    // CPP+111
         "'<' erwartet nach %s",                         // CPP+111
-        "'<' requis aprŠs'%'",                          // CPP+111
+        "'<' requis aprï¿½s'%'",                          // CPP+111
   },
 
         // When expanding a template, a template argument needs
@@ -2828,9 +2828,9 @@ struct Msgtable msgtable[] =
          */
   { "init2tmp",
         "non-const reference initialized to temporary", /* 60 W */
-        "Nicht konstante Referenz als tempor„r initialisiert",  /* 60 W */
-        "r‚f‚rence non constante initialis‚e … une valeur temporaire",  /* 60 W */
-        "”ñ const ‚ÌQÆ‚ğˆê•Ï”‚É‰Šú‰»‚·‚é",        /* 60 W */
+        "Nicht konstante Referenz als temporï¿½r initialisiert",  /* 60 W */
+        "rï¿½fï¿½rence non constante initialisï¿½e ï¿½ une valeur temporaire",  /* 60 W */
+        "ï¿½ï¿½ const ï¿½ÌQï¿½Æ‚ï¿½ï¿½êï¿½Ïï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",        /* 60 W */
   },
   // CPP98 14.6.3
   // typename should be followed by :: or nested-name-specifier
@@ -2860,7 +2860,7 @@ struct Msgtable msgtable[] =
   { "mix_EH",
         "cannot mix C++ EH with NT structured EH",              // CPP+112
         "C++ EH kann nicht mit NT-Strukturiertem EH vermischt werden",          // CPP+112
-        "impossible d'utiliser EH de C++ et EH structur‚ de NT ensemble",               // CPP+112
+        "impossible d'utiliser EH de C++ et EH structurï¿½ de NT ensemble",               // CPP+112
   },
   // CPP98 14.5.4-1
   { "primary_template_first",
@@ -3095,7 +3095,7 @@ int main()
     fclose(fp);
 
     //////////////////////////////////////
-    fp = fopen("msgs2.c","w");
+    fp = fopen("msgs2.cpp","w");
     if (!fp)
     {   printf("can't open msgs2.c\n");
         exit(EXIT_FAILURE);

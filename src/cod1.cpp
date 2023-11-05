@@ -4008,7 +4008,7 @@ void pushParams(CodeBuilder& cdb,elem *e,unsigned stackalign)
                 freenode(e);
                 return;
         }
-    case OPind:
+    case OPind: {
         if (!e->Ecount)                         /* if *e1       */
         {
             if (sz <= REGSIZE)
@@ -4078,7 +4078,7 @@ void pushParams(CodeBuilder& cdb,elem *e,unsigned stackalign)
             return;
         }
         break;
-
+    }
     case OPnp_fp:
         if (!e->Ecount)                         /* if (far *)e1 */
         {
@@ -4105,7 +4105,7 @@ void pushParams(CodeBuilder& cdb,elem *e,unsigned stackalign)
         }
         break;
 
-    case OPrelconst:
+    case OPrelconst: {
 #if TARGET_SEGMENTED
         /* Determine if we can just push the segment register           */
         /* Test size of type rather than TYfptr because of (long)(&v)   */
@@ -4159,6 +4159,7 @@ void pushParams(CodeBuilder& cdb,elem *e,unsigned stackalign)
         }
 #endif
         break;                          /* else must evaluate expression */
+    }
     case OPvar:
     L1:
         if (config.flags4 & CFG4speed &&
