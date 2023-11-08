@@ -58,7 +58,7 @@ One and only one of these macros must be set by the makefile:
  * and generating (targetting) windows/dos/dosx executables.
  * The "_WIN32" and "__DMC__" macros control hosting issues
  * for operating system and compiler dependencies, respectively.
- * To target linux executables, use OMFOBJ for things specific to the
+ * To target Windows executables, use OMFOBJ for things specific to the
  * OMF object file format, and TARGET_WINDOS for things specific to
  * the windows/dos/dosx memory model.
  * If this is all done right, one could generate a win/dos/dosx object file
@@ -201,10 +201,8 @@ One and only one of these macros must be set by the makefile:
 #include <time.h>
 
 #define M_UNIX 1
-#define MEMMODELS 1
-#if __GNUC__
+//#define MEMMODELS 1
 #define _MSC_VER 0
-#endif
 
 #define ERRSTREAM stderr
 #define isleadbyte(c) 0
@@ -283,7 +281,7 @@ const bool HEADER_LIST          = true;
 #define TARGET_SEGMENTED     (!MARS && TARGET_WINDOS)
 
 
-#if __GNUC__
+#if __GNUC__ || __clang__
 #define LDOUBLE                 0       // no support for true long doubles
 #else
 #define LDOUBLE         (config.exe == EX_WIN32)   // support true long doubles

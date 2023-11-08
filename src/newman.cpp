@@ -25,6 +25,8 @@
 #include        "el.h"
 #include        "type.h"
 #include        "filespec.h"
+#include        "parser.h"
+#include        "cpp.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"

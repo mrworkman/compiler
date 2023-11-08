@@ -25,6 +25,7 @@
 #include        "go.h"
 #include        "code.h"
 #include        "debtab.c"
+#include        "ty.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"

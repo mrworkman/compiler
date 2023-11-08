@@ -3364,7 +3364,7 @@ void prolog_trace(CodeBuilder& cdb, bool farfunc, unsigned* regsaved)
         memcpy(buffer + 4, funcsym_p->Sident, len);
         len += 4;
     }
-    cdb.append(genasm(CNIL, buffer, len));         // append func name
+    cdb.append(genasm(CNIL, (unsigned char *)buffer, len));         // append func name
     free(buffer);
 #else
     char name[IDMAX+IDOHD+1];

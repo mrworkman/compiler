@@ -59,6 +59,7 @@
 
 #include        "dwarf.h"
 #include        "dwarf2.h"
+#include        "parser.h"
 
 extern int seg_count;
 

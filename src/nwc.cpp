@@ -34,6 +34,7 @@
 #include        "outbuf.h"
 #include        "dt.h"
 #include        "tk.h"
+#include        "ty.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
@@ -137,7 +138,7 @@ int main(int argc,char *argv[])
 //  free(p);
 #else
   objmod = Obj::init(objbuf, finname, configv.csegname);
-  Obj::initfile(finname,configv.csegname);
+  Obj::initfile(finname,configv.csegname, NULL);
 #endif
 #endif
   PARSER = 1;
@@ -4015,7 +4016,7 @@ void fixdeclar(type *t)
         t = tn;                         /* next type                    */
     } /* while */
 }
-
+
 /*****************************
  * Generate an instance of the anonymous union given by tspec.
  */

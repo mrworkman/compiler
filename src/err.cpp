@@ -167,12 +167,12 @@ static void err_print(FILE *fp,const char *q,const char *format,va_list args)
 #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
     if (format[0] == '#')
     {
-        wrtpos(fp,FALSE);       // don't write line & draw ^ under it
+        // wrtpos(fp,FALSE);       // don't write line & draw ^ under it
         format++;
     }
     else
     {
-        wrtpos(fp,TRUE);        // write line & draw ^ under it
+        wrtpos(fp); // wrtpos(fp,TRUE);    // write line & draw ^ under it
     }
 #else
     wrtpos(fp); // write line & draw ^ under it

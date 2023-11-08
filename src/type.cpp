@@ -20,6 +20,8 @@
 #include "global.h"
 #include "type.h"
 #include "el.h"
+#include "oper.h"
+#include "outbuf.h"
 
 #if SCPP
 #include "parser.h"

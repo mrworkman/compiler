@@ -163,8 +163,10 @@ int exp2_retmethod(type *tfunc)
         }
 
 #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+        #ifdef OPT_IS_SET
         if (!OPT_IS_SET(OPTfreg_struct_return))
             return RET_STACK;
+        #endif
 #endif
         switch (type_size(tn))
         {   case CHARSIZE:

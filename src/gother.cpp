@@ -22,6 +22,7 @@
 #include        "oper.h"
 #include        "list.h"
 #include        "type.h"
+#include        "outbuf.h"
 
 #if SCPP
 #include        "parser.h"

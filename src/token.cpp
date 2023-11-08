@@ -823,7 +823,9 @@ void token_init()
     token_defkwds(kwtab1,arraysize(kwtab1)
 #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
                 - (ANSI ? OPTS_NON_ANSI : 0)
+                #ifdef OPT_IS_SET
                 - (OPT_IS_SET(OPTtraditional)? OPTS_NON_TRADITIONAL : 0)
+                #endif
 #endif
                                           );
     token_defkwds(kwtab2,arraysize(kwtab2));

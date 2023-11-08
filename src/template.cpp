@@ -179,7 +179,9 @@ STATIC param_t *template_parameter_list()
                 type *typ_spec;
 
                 if (p->Pident)
-                {   s = template_createsym(p->Pident, NULL, &(symbol *)scope_find(SCTtemparg)->root);
+                {
+                    auto *sym = (symbol *)scope_find(SCTtemparg)->root;
+                    s = template_createsym(p->Pident, NULL, &sym);
                     s->Ssequence = sequence;
                 }
                 pstate.STintemplate += 2;
@@ -211,7 +213,9 @@ STATIC param_t *template_parameter_list()
                 cpperr(EM_musthaveinit);        // must have initializer
 #endif
             else if (p->Pident)
-            {   s = template_createsym(p->Pident, NULL, &(symbol *)scope_find(SCTtemparg)->root);
+            {
+                auto sym = (symbol *)scope_find(SCTtemparg)->root;
+                s = template_createsym(p->Pident, NULL, &sym);
                 s->Ssequence = sequence;
             }
         }
@@ -311,7 +315,9 @@ STATIC param_t *template_parameter_list()
                 cpperr(EM_musthaveinit);        // must have initializer
 #endif
             if (p->Pident)
-            {   s = template_createsym(p->Pident, p->Ptype, &(symbol *)scope_find(SCTtemparg)->root);
+            {
+                auto sym = (symbol *)scope_find(SCTtemparg)->root;
+                s = template_createsym(p->Pident, p->Ptype, &sym);
                 s->Ssequence = sequence;
             }
         }
@@ -3789,6 +3795,9 @@ symbol *template_matchfunc(symbol *stemp,param_t *pl,int parsebody,
     }
 #endif
 
+    list_t scopelist;
+    int nscopes = 0;
+
     symbol_debug(stemp);
     assert(stemp->Sclass == SCfunctempl);
     assert(tyfunc(stemp->Stype->Tty));
@@ -3908,14 +3917,14 @@ printf("sf  : "); type_print(sf->Stype->Tnext);
     // Note equivalence of scope setting code to that in
     // template_instantiate_forward().
 
-    int nscopes = 0;
+    // int nscopes = 0; Declared at top of function.
 
     scsave = scope_end;
     if (!(parsebody & 4))
         Scope::setScopeEnd(scope_find(SCTglobal));
 
     // Generate list of all the scopes
-    list_t scopelist = scope_getList(stemp);
+    scopelist = scope_getList(stemp);
     symbol *ss;
 
     // Push all the scopes

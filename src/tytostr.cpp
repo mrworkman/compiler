@@ -24,6 +24,7 @@
 #include        "global.h"
 #include        "type.h"
 #include        "outbuf.h"
+#include        "oper.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"

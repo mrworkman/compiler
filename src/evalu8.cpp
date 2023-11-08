@@ -2232,7 +2232,7 @@ elem * evalu8(elem *e, goal_t goal)
         *e = esave;
         return e;
     }
-#if SCPP
+#if SCPP && _MSC_VER
     else if ((flags = _status87()) & 0x3F)
     {   // Should also give diagnostic warning for:
         // overflow, underflow, denormal, invalid

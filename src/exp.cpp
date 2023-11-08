@@ -50,7 +50,7 @@ STATIC elem *mul_exp(void);
 STATIC elem *una_exp(void);
 STATIC elem *primary_exp(void);
 STATIC elem *prim_post(elem *);
-STATIC elem *exp_sizeof(int);
+elem *exp_sizeof(int);
 
 #ifndef NAN
 static unsigned long nanarray[2] = {0,0x7FF80000 };
@@ -2361,12 +2361,12 @@ if (!bColcol)
             e = el_longt(tsbool,(tok.TKval == TKtrue));
             stoken();
             break;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case TKnull:
-            e = el_longt(tspvoid,0);
-            stoken();
-            break;
-#endif
+// #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+//         case TKnull:
+//             e = el_longt(tspvoid,0);
+//             stoken();
+//             break;
+// #endif
         case TKnullptr:
             e = el_longt(tsnullptr, 0);
             e->Eoper = OPnullptr;

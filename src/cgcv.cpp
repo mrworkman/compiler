@@ -32,9 +32,12 @@
 #include        "cpp.h"
 #endif
 #include        "outbuf.h"
+#include        "obj.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
+
+#include        "allocast.h"
 
 // Convert from SFL protections to CV4 protections
 #define SFLtoATTR(sfl)  (4 - (((sfl) & SFLpmask) >> 5))

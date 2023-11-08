@@ -5785,17 +5785,23 @@ const char *asm_opstr(OP *pop)
 /*******************************
  */
 
+#include <ctype.h>
+
 OP *asm_op_lookup(const char *s)
 {
     int i;
     char szBuf[20];
+    int s_len = strlen(s);
 
     //dbg_printf("asm_op_lookup('%s')\n",s);
-    if (strlen(s) >= sizeof(szBuf))
+    if (s_len >= sizeof(szBuf))
         return NULL;
     strcpy(szBuf,s);
 #if SCPP
-    strlwr(szBuf);
+//    strlwr(szBuf);
+    for (int i = 0; i < s_len; i++) {
+        szBuf[i] = tolower(szBuf[i]);
+    }
 #endif
 
     i = binary(szBuf,opcodestr,sizeof(opcodestr)/sizeof(opcodestr[0]));

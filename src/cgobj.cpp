@@ -15,9 +15,13 @@
 #include        <stdio.h>
 #include        <string.h>
 #include        <stdlib.h>
+#ifdef __DMC__
 #include        <malloc.h>
+#endif
 #include        <ctype.h>
+#ifdef _WIN32 || _WIN64
 #include        <direct.h>
+#endif
 
 #include        "filespec.h"
 
