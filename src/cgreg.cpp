@@ -890,11 +890,6 @@ int cgreg_assign(Symbol *retsym)
             if (reg == BP && !(allregs & mBP))
                 continue;
 
-#if 0 && TARGET_LINUX
-            // Need EBX for static pointer
-            if (reg == BX && !(allregs & mBX))
-                continue;
-#endif
             /* Don't assign register parameter to another register parameter
              */
             if ((s->Sclass == SCfastpar || s->Sclass == SCshadowreg) &&

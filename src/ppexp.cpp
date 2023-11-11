@@ -64,7 +64,7 @@ targ_llong msc_getnum()
   }
   return e;
 }
-
+
 /******************************
  * Groups right to left.
  * cond_exp ::= log_or_exp [ "?" cond_exp ":" cond_exp ]
@@ -253,7 +253,7 @@ STATIC targ_long equal_exp()
   }
   return e;
 }
-
+
 /******************************
  * Groups left to right.
  * rel_exp ::= shift_exp { relop shift_exp }

@@ -2151,7 +2151,7 @@ STATIC void template_deleteargtab()
     symbol_free(root);                  // free symbol table
 #endif
 }
-
+
 /****************************
  * Define a class template symbol.
  *      tk =    TKstruct, TKclass, TKunion
@@ -3634,7 +3634,7 @@ STATIC Classsym *template_expand2(symbol *stempl, param_t *template_argument_lis
 
     return si;
 }
-
+
 /*****************************************
  * Create symbol table for template expansion.
  * Input:
@@ -3733,7 +3733,7 @@ void template_deletesymtab()
     root = (symbol *)scope_pop();
     symbol_free(root);                          // free symbol table
 }
-
+
 /*******************************************
  * If arglist is a match for template function stemp, generate a
  * function based on the template, and return that symbol.

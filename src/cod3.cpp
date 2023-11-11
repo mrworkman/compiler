@@ -343,11 +343,7 @@ void cod3_set32()
     for (unsigned i = 0x80; i < 0x90; i++)
         inssize2[i] = W|T|6;
 
-#if TARGET_OSX
-    STACKALIGN = 16;   // 16 for OSX because OSX uses SIMD
-#else
     STACKALIGN = 4;
-#endif
 }
 
 /********************************
@@ -622,10 +618,6 @@ regm_t regmask(tym_t tym, tym_t tyf)
             return mST0;
 
         case TYcfloat:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-            if (I32 && tybasic(tyf) == TYnfunc)
-                return mDX | mAX;
-#endif
         case TYcdouble:
             if (I64)
                 return mXMM0 | mXMM1;
@@ -1358,10 +1350,6 @@ void doswitch(CodeBuilder& cdb, block *b)
         regm_t retregs = IDXREGS;
         if (dword)
             retregs |= mMSW;
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (I32 && config.flags3 & CFG3pic)
-            retregs &= ~mBX;                            // need EBX for GOT
-#endif
         bool modify = (I16 || I64 || vmin);
         scodelem(cdb,e,&retregs,0,!modify);
         unsigned reg = findreg(retregs & IDXREGS); // reg that result is in
@@ -1475,24 +1463,6 @@ void doswitch(CodeBuilder& cdb, block *b)
             b->Btablesize = 0;
             cgstate.stackclean--;
             return;
-#elif TARGET_OSX
-            /*     CALL L1
-             * L1: POP  R1
-             *     ADD  R1,disp[reg*4][R1]
-             *     JMP  R1
-             */
-            // Allocate scratch register r1
-            regm_t scratchm = ALLREGS & ~mask[reg];
-            unsigned r1;
-            allocreg(cdb,&scratchm,&r1,TYint);
-
-            cdb.genc2(CALL,0,0);                           //     CALL L1
-            cdb.gen1(0x58 + r1);                           // L1: POP R1
-            cdb.genc1(0x03,modregrm(2,r1,4),FLswitch,0);   // ADD R1,disp[reg*4][EBX]
-            cdb.last()->IEV1.Vswitch = b;
-            cdb.last()->Isib = modregrm(2,reg,r1);
-            cdb.gen2(0xFF,modregrm(3,4,r1));               // JMP R1
-#else
             if (config.flags3 & CFG3pic)
             {
                 /* MOV  R1,EBX
@@ -1556,28 +1526,6 @@ void doswitch(CodeBuilder& cdb, block *b)
             genjmp(cdb,JNE,FLblock,b->nthSucc(0)); // JNE default
         }
         getregs(cdb,mCX|mDI);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (config.flags3 & CFG3pic)
-        {   // Add in GOT
-            getregs(cdb,mDX);
-            cdb.genc2(CALL,0,0);        //     CALL L1
-            cdb.gen1(0x58 + DI);        // L1: POP EDI
-
-                                        //     ADD EDI,_GLOBAL_OFFSET_TABLE_+3
-            Symbol *gotsym = Obj::getGOTsym();
-            cdb.gencs(0x81,modregrm(3,0,DI),FLextern,gotsym);
-            cdb.last()->Iflags = CFoff;
-            cdb.last()->IEVoffset2 = 3;
-
-            makeitextern(gotsym);
-
-            cdb.append(genmovreg(CNIL, DX, DI));    // MOV EDX, EDI
-                                        // ADD EDI,offset of switch table
-            cdb.gencs(0x81,modregrm(3,0,DI),FLswitch,NULL);
-            cdb.last()->IEV2.Vswitch = b;
-        }
-        else
-#endif
         {
                                         // MOV DI,offset of switch table
             cdb.gencs(0xC7,modregrm(3,0,DI),FLswitch,NULL);
@@ -1631,15 +1579,6 @@ void doswitch(CodeBuilder& cdb, block *b)
         const int mod = (disp > 127) ? 2 : 1;     // 1 or 2 byte displacement
         if (csseg)
             cdb.gen1(SEGCS);            // table is in code segment
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (config.flags3 & CFG3pic)
-        {                               // ADD EDX,(ncases-1)*2[EDI]
-            cdb.genc1(0x03,modregrm(mod,DX,7),FLconst,disp);
-                                        // JMP EDX
-            cdb.gen2(0xFF,modregrm(3,4,DX));
-        }
-        else
-#endif
         {                               // JMP (ncases-1)*2[DI]
             cdb.genc1(0xFF,modregrm(mod,4,(I32 ? 7 : 5)),FLconst,disp);
             cdb.last()->Iflags |= csseg ? CFcs : 0;
@@ -2204,44 +2143,7 @@ void cdframeptr(CodeBuilder& cdb, elem *e, regm_t *pretregs)
 
 void cdgot(CodeBuilder& cdb, elem *e, regm_t *pretregs)
 {
-#if TARGET_OSX
-    regm_t retregs = *pretregs & allregs;
-    if  (!retregs)
-        retregs = allregs;
-    unsigned reg;
-    allocreg(cdb,&retregs, &reg, TYnptr);
-
-    cdb.genc(CALL,0,0,0,FLgot,0);     //     CALL L1
-    cdb.gen1(0x58 + reg);             // L1: POP reg
-
-    fixresult(cdb,e,retregs,pretregs);
-#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    regm_t retregs = *pretregs & allregs;
-    if  (!retregs)
-        retregs = allregs;
-    unsigned reg;
-    allocreg(cdb,&retregs, &reg, TYnptr);
-
-    cdb.genc2(CALL,0,0);        //     CALL L1
-    cdb.gen1(0x58 + reg);       // L1: POP reg
-
-                                //     ADD reg,_GLOBAL_OFFSET_TABLE_+3
-    symbol *gotsym = Obj::getGOTsym();
-    cdb.gencs(0x81,modregrm(3,0,reg),FLextern,gotsym);
-    /* Because the 2:3 offset from L1: is hardcoded,
-     * this sequence of instructions must not
-     * have any instructions in between,
-     * so set CFvolatile to prevent the scheduler from rearranging it.
-     */
-    code *cgot = cdb.last();
-    cgot->Iflags = CFoff | CFvolatile;
-    cgot->IEVoffset2 = (reg == AX) ? 2 : 3;
-
-    makeitextern(gotsym);
-    fixresult(cdb,e,retregs,pretregs);
-#else
     assert(0);
-#endif
 }
 
 /**************************************************
@@ -2250,63 +2152,8 @@ void cdgot(CodeBuilder& cdb, elem *e, regm_t *pretregs)
 
 code *load_localgot()
 {
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (config.flags3 & CFG3pic && I32)
-    {
-        if (localgot && !(localgot->Sflags & SFLdead))
-        {
-            localgot->Sflags &= ~GTregcand;     // because this hack doesn't work with reg allocator
-            elem *e = el_var(localgot);
-            regm_t retregs = mBX;
-            CodeBuilder cdb;
-            codelem(cdb,e,&retregs,FALSE);
-            el_free(e);
-            return cdb.finish();
-        }
-        else
-        {
-            elem *e = el_long(TYnptr, 0);
-            e->Eoper = OPgot;
-            regm_t retregs = mBX;
-            CodeBuilder cdb;
-            codelem(cdb,e,&retregs,FALSE);
-            el_free(e);
-            return cdb.finish();
-        }
-    }
-#endif
     return NULL;
 }
-
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-/*****************************
- * Returns:
- *      # of bytes stored
- */
-
-#define ONS_OHD 4               // max # of extra bytes added by obj_namestring()
-
-STATIC int obj_namestring(char *p,const char *name)
-{   unsigned len;
-
-    len = strlen(name);
-    if (len > 255)
-    {
-        short *ps = (short *)p;
-        p[0] = 0xFF;
-        p[1] = 0;
-        ps[1] = len;
-        memcpy(p + 4,name,len);
-        len += ONS_OHD;
-    }
-    else
-    {   p[0] = len;
-        memcpy(p + 1,name,len);
-        len++;
-    }
-    return len;
-}
-#endif
 
 code *genregs(code *c,unsigned op,unsigned dstreg,unsigned srcreg)
 { return gen2(c,op,modregxrmx(3,dstreg,srcreg)); }
@@ -2933,52 +2780,6 @@ void prolog_frame(CodeBuilder& cdb, unsigned farfunc, unsigned* xlocalsize, bool
 void prolog_frameadj(CodeBuilder& cdb, tym_t tyf, unsigned xlocalsize, bool enter, bool* pushalloc)
 {
     unsigned pushallocreg = (tyf == TYmfunc) ? CX : AX;
-#if !TARGET_LINUX               // seems that Linux doesn't need to fault in stack pages
-    if ((config.flags & CFGstack && !(I32 && xlocalsize < 0x1000)) // if stack overflow check
-        || (xlocalsize >= 0x1000 && config.exe & EX_flat)
-       )
-    {
-        if (I16)
-        {
-            // BUG: Won't work if parameter is passed in AX
-            movregconst(cdb,AX,xlocalsize,FALSE); // MOV AX,localsize
-            makeitextern(getRtlsym(RTLSYM_CHKSTK));
-                                                    // CALL _chkstk
-            cdb.gencs((LARGECODE) ? 0x9A : CALL,0,FLfunc,getRtlsym(RTLSYM_CHKSTK));
-            useregs((ALLREGS | mBP | mES) & ~getRtlsym(RTLSYM_CHKSTK)->Sregsaved);
-        }
-        else
-        {
-            /* Watch out for 64 bit code where EDX is passed as a register parameter
-             */
-            int reg = I64 ? R11 : DX;  // scratch register
-
-            /*      MOV     EDX, xlocalsize/0x1000
-             *  L1: SUB     ESP, 0x1000
-             *      TEST    [ESP],ESP
-             *      DEC     EDX
-             *      JNE     L1
-             *      SUB     ESP, xlocalsize % 0x1000
-             */
-            movregconst(cdb, reg, xlocalsize / 0x1000, FALSE);
-            cod3_stackadj(cdb, 0x1000);
-            code_orflag(cdb.last(), CFtarg2);
-            cdb.gen2sib(0x85, modregrm(0,SP,4),modregrm(0,4,SP));
-            if (I64)
-            {   cdb.gen2(0xFF, modregrmx(3,1,R11));   // DEC R11D
-                cdb.genc2(JNE,0,(targ_uns)-15);
-            }
-            else
-            {   cdb.gen1(0x48 + DX);                  // DEC EDX
-                cdb.genc2(JNE,0,(targ_uns)-12);
-            }
-            regimmed_set(reg,0);             // reg is now 0
-            cod3_stackadj(cdb, xlocalsize & 0xFFF);
-            useregs(mask[reg]);
-        }
-    }
-    else
-#endif
     {
         if (enter)
         {   // ENTER xlocalsize,0
@@ -6321,22 +6122,10 @@ static void do64bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev,int flags)
             // un-named external with is the start of .rodata or .data
         case FLextern:                      /* external data symbol         */
         case FLtlsdata:
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case FLgot:
-        case FLgotoff:
-#endif
             pbuf->flush();
             s = uev->sp.Vsym;               /* symbol pointer               */
             objmod->reftoident(pbuf->seg,pbuf->offset,s,uev->sp.Voffset,CFoffset64 | flags);
             break;
-
-#if TARGET_OSX
-        case FLgot:
-            funcsym_p->Slocalgotoffset = pbuf->getOffset();
-            ad = 0;
-            goto L1;
-#endif
-
         case FLfunc:                        /* function call                */
             s = uev->sp.Vsym;               /* symbol pointer               */
             assert(TARGET_SEGMENTED || !tyfarfunc(s->ty()));

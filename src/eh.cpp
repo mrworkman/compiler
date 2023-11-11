@@ -60,7 +60,7 @@ static symbol *eh_throw;        // throw function
 static symbol *eh_rethrow;      // rethrow function
 static symbol *eh_newp;         // ptr to storage allocator for thrown object
 
-
+
 /**************************************
  * Initialize exception handling code.
  */
@@ -606,7 +606,7 @@ void except_exception_spec_old(symbol *sfunc)
     f->Fexcspec = list;
     f->Fflags3 |= flags3 | Fdeclared;
 }
-
+
 /********************************
  * Get/set eh stack index.
  */
@@ -787,7 +787,7 @@ void except_release()
 #endif
     list_pop(&marklist);
 }
-
+
 /****************************************
  * Generate symbol for scope table for current function.
  * Returns:

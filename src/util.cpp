@@ -106,7 +106,7 @@ void util_exit(int exitcode)
     }
     exit(exitcode);                     /* terminate abnormally         */
 }
-
+
 /****************************
  * Send CRLF to stream.
  */
@@ -169,7 +169,7 @@ int ispow2(targ_ullong c)
         return i;
 }
 
-#if !(linux || __APPLE__ || __FreeBSD__ || __OpenBSD__)
+#if !(linux || __APPLE__)
 
 #if _WIN32
 

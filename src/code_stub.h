@@ -49,19 +49,10 @@
 #define DOUBLEREGS_16 0
 #define BYTEREGS_INIT 0
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-extern regm_t ALLREGS;
-extern regm_t BYTEREGS;
-#define ALLREGS_INIT            0
-#define ALLREGS_INIT_PIC        0
-#define BYTEREGS_INIT           0
-#define BYTEREGS_INIT_PIC       0
-#else
 #define ALLREGS                 0
 #define ALLREGS_INIT            ALLREGS
 #undef BYTEREGS
 #define BYTEREGS                0
-#endif
 
 struct code
 {

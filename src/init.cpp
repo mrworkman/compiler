@@ -50,7 +50,7 @@ STATIC size_t getArrayIndex(size_t i, size_t dim, char unknown);
 STATIC void initializer(symbol *);
 STATIC elem * dyn_init(symbol *);
 STATIC symbol *init_alloca();
-
+
 
 // Decide to put typeinfo symbols in code segment
 #define CSTABLES        (config.memmodel & 2)
@@ -227,7 +227,7 @@ void datadef(symbol *s)
                 assert(0);
         }
 }
-
+
 /************************************
  * Provide initializer for symbol s.
  * If statically initialized, output data directly to output
@@ -676,7 +676,7 @@ cret:
         scope_pop();
     }
 }
-
+
 /*************************************
  * Create typeinfo data for a struct.
  */
@@ -1053,7 +1053,7 @@ STATIC size_t getArrayIndex(size_t i, size_t dim, char unknown)
     }
     return i;
 }
-
+
 /*******************************
  * Read and write an initializer of type t.
  * Input:
@@ -1145,7 +1145,7 @@ STATIC elem * initelem(type *t, DtBuilder& dtb, symbol *s, targ_size_t offset)
     //dbg_printf("-initelem(): e = %p\n", e);
     return e;
 }
-
+
 /***************************
  * Read in initializer for a structure.
  * Watch out for bit fields.
@@ -1466,7 +1466,7 @@ Ldone:
     //printf("-initstruct(): ei = %p\n", ei);
     return ei;
 }
-
+
 /*************************
  * Read and write an initializer for an array of type t.
  */
@@ -1573,7 +1573,7 @@ Ldone:
     init_closebrack(brack);
     return e;
 }
-
+
 /***********************************
  * Convert from elem to dt.
  * Input:

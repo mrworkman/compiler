@@ -132,7 +132,7 @@ STATIC void appenddesr(elem **pe , elem *de);
 STATIC void base_initializer(symbol *s);
 STATIC void with_state(void);
 STATIC void except_try_state(int flags);
-
+
 /*********************************
  * Save state of globals so we can nest function definitions.
  */
@@ -180,7 +180,7 @@ void func_nest(symbol *s)
         globsym = globsymsave;
     }
 }
-
+
 /*********************************
  * Do function body.
  * function_body ::= type_decl_list function_statement
@@ -563,7 +563,7 @@ void func_body(symbol *s)
         brcombine();                    // attempt to simplify function
         if (inline_possible(funcsym_p))
             f->Fflags |= Finline;
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
         else
         {   // temporary warning to help find all the cases
             warerr(WM_no_inline,funcsym_p->Sident);     // can't inline the function
@@ -602,7 +602,7 @@ void func_body(symbol *s)
         queue_func(funcsym_p);
     startblock = NULL;
 }
-
+
 /*****************************
  * Adjust types of function parameters for non-prototyped parameters.
  * Promote floats to doubles.
@@ -992,7 +992,7 @@ STATIC void compound_state()
         // Form a new block, so we leave a handy spot to attach any destructors
         block_goto();
 }
-
+
 /******************************
  * Parse and read in an expression.
  * Call destructors on any temporaries introduced by this expression.
@@ -1225,7 +1225,7 @@ STATIC Srcpos statement(int flag)
   }
   return srcpos;
 }
-
+
 /**************************
  * Do a label.
  * Labels go into the label symbol table.
@@ -2320,7 +2320,7 @@ STATIC void goto_state()
   }
   chktok(TKsemi,EM_semi_member);
 }
-
+
 #if NTEXCEPTIONS
 
 /**********************************
@@ -2469,7 +2469,7 @@ STATIC void nttry_state()
 }
 
 #endif
-
+
 /*********************************
  * Determine if there is any path from startblock to bend that does not
  * also go through binit.
@@ -2807,7 +2807,7 @@ void func_expadddtors(elem **pe,
 }
 
 #undef DBG
-
+
 /*********************
  * Append destructor elem, de, to pe without disturbing the final
  * result of the elem pe.
@@ -3122,7 +3122,7 @@ STATIC void base_initializer(symbol *s_ctor)
 
     cpp_buildinitializer(s_ctor,baseinit,0);
 }
-
+
 /**********************************
  * Initialize
  */

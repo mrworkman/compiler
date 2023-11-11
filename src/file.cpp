@@ -23,7 +23,7 @@
 #include        <sys\stat.h>
 #endif
 
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__
 #include        <sys/stat.h>
 #include        <unistd.h>
 #endif
@@ -259,7 +259,7 @@ retry:
 #endif
     return 0;                   // not found
 }
-
+
 /*********************************************
  * Open a new file for input.
  * Watch out for open failures!
@@ -495,7 +495,7 @@ STATIC void file_openread(const char *name,blklst *b)
     //printf("file_openread('%s')\n",name);
 
     newname = file_nettranslate(name,"rb");
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__
     fd = open(newname,O_RDONLY,S_IREAD);
 #else
     fd = _sopen(newname,O_RDONLY | O_BINARY,_SH_DENYWR);
@@ -713,7 +713,7 @@ void wrtpos(FILE *fstream)
             p = eline;
             ptop = p + elini;
         }
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__
         else if (fstream == stderr)     /* line already written to .LST */
 #else
         else if (fstream == stdout)     /* line already written to .LST */
@@ -887,7 +887,7 @@ int file_exists(const char *fname)
     else
         result = 0;
     return result;
-#elif __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#elif __linux__ || __APPLE__
     struct stat buf;
 
     return stat(fname,&buf) == 0;       /* file exists if stat succeeded */
@@ -1014,7 +1014,7 @@ char *file_unique()
         p = (char *)malloc(len);
         //printf("malloc(%d) = %p\n",len,p);
         cstate.modname = p;
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if __linux__ || __APPLE__
         snprintf(p,len,"__%s%lu",finname,getpid());
 #else
         sprintf(p,"?%%%s%lu",finname,os_unique());

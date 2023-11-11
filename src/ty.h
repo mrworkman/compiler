@@ -310,11 +310,7 @@ inline unsigned tysimd(tym_t ty) { return tytab[ty & 0xFF] & TYFLsimd; }
 /* Array to give the 'relaxed' type for relaxed type checking   */
 extern unsigned char _tyrelax[];
 #define type_relax      (config.flags3 & CFG3relax)     // !=0 if relaxed type checking
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-#define type_semirelax  (config.flags3 & CFG3semirelax) // !=0 if semi-relaxed type checking
-#else
 #define type_semirelax  type_relax
-#endif
 
 /* Determine relaxed type       */
 inline unsigned tyrelax(tym_t ty) { return _tyrelax[tybasic(ty)]; }

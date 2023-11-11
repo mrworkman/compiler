@@ -68,7 +68,7 @@ symbol *symboldata(targ_size_t offset,tym_t ty)
     symbol_keep(s);                     // free when program terminates
     return s;
 }
-
+
 /*****************************
  * Create a new type that's a pointer
  * to an existing type.
@@ -147,18 +147,12 @@ type *reftoptr(type *t)
 
     switch (tybasic(t->Tty))
     {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case TYnref:
-        case TYfref:
-            ty = TYnptr;
-#else
         case TYnref:
             ty = TYnptr;
             goto L1;
         case TYfref:
             ty = TYfptr;
         L1:
-#endif
             et = type_allocn(ty,t->Tnext);
             break;
 
@@ -362,7 +356,7 @@ tym_t tym_conv(type *t)
     tym = (tym & ~mTYbasic) | nty;      /* preserve const and volatile bits */
     return tym;
 }
-
+
 /*****************************
  * Check that e->E1 is a valid lvalue. e could be an assignment operator
  * or a & operator.
@@ -596,7 +590,7 @@ targ_size_t _align(targ_size_t size,targ_size_t offset)
     }
     return offset;
 }
-
+
 /***************************************
  * Hydrate/dehydrate a list.
  */

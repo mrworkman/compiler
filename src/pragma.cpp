@@ -74,11 +74,6 @@ STATIC void prmessage(void);
 STATIC void prstring(int flag);
 STATIC void prident(void);
 STATIC void prcomment(void);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-STATIC void prassert(void);
-STATIC void prassertid(void);
-STATIC void prwarning(void);
-#endif
 STATIC void prpragma(void);
 STATIC void prerror(void);
 STATIC void prexit(void);
@@ -186,34 +181,6 @@ inline char *textbuf_reserve(char *pbuf, int n)
  * Use ENUMPRMAC macro to generate parallel data structures.
  */
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-
-#define ENUMPRMAC       \
-        X(__linemarker, prlinemarker)   \
-        X(assert,       prassert)       \
-        X(cpu,          prassertid)     \
-        X(define,       prdefine)       \
-        X(elif,         prelif)         \
-        X(else,         prelse)         \
-        X(elseif,       prelseif)       \
-        X(endif,        prendif)        \
-        X(error,        prerror)        \
-        X(ident,        prident)        \
-        X(if,           prif)           \
-        X(ifdef,        prifdef)        \
-        X(ifndef,       prifndef)       \
-        X(include,      princlude)      \
-        X(include_next, princlude_next) \
-        X(line,         prline)         \
-        X(lint,         prassertid)     \
-        X(machine,      prassertid)     \
-        X(pragma,       prpragma)       \
-        X(system,       prassertid)     \
-        X(unassert,     prassert)       \
-        X(undef,        prundef)        \
-        X(warning,      prwarning)      \
-
-#else
 #define ENUMPRMAC       \
         X(__linemarker, prlinemarker)   \
         X(define,       prdefine)       \
@@ -232,7 +199,6 @@ inline char *textbuf_reserve(char *pbuf, int n)
         X(pragma,       prpragma)       \
         X(undef,        prundef)        \
 
-#endif
 
 enum PR {
     #define X(a,b)      PR##a,
@@ -285,7 +251,7 @@ int pragma_search(const char *id)
 #else
 #define exp_ppon()
 #endif
-
+
 /********************************
  * Process TKpragma's.
  */
@@ -314,7 +280,7 @@ void pragma_process()
         }
         lexerr(EM_preprocess);          // unrecognized pragma
 }
-
+
 /***************************
  * Insert macro in symbol table, if it's not already there.
  * Returns:
@@ -434,7 +400,7 @@ L4:     mov     EAX,EBX
   return NULL;
 #endif
 }
-
+
 /***************************
  * Search for the parent of the macro in the macro symbol table.
  */
@@ -461,7 +427,7 @@ STATIC macro_t ** macfindparent(const char *p,unsigned hashval)
   }
   return mp;
 }
-
+
 /***************************
  * Put tok.TKid back in output file.
  */
@@ -1016,7 +982,7 @@ void macro_freelist(macro_t *m)
 }
 
 #endif /* TERMCODE */
-
+
 /**************************
  * Define a predefined macro (no arguments).
  */
@@ -1107,7 +1073,7 @@ int pragma_defined()
         chktok(TKrpar,EM_rpar);         /* ')' expected                 */
     return i;
 }
-
+
 /*************************
  * Comparison function for list_cmp().
  */
@@ -1224,7 +1190,7 @@ STATIC void prdefine()
 
     pstate.STflags |= PFLmacdef;
 }
-
+
 /********************************
  * Get dummy arg list.
  * Input:
@@ -1303,7 +1269,7 @@ STATIC phstring_t gargs(unsigned char *pflags)
     }
     return al;                  // pointer to start of arg_list
 }
-
+
 /*****************************
  * Read in macro text.
  * Replace comments with a single space.
@@ -1988,32 +1954,6 @@ void pragma_include(char *filename,int flag)
 ret:
     mem_free(filename);
 }
-
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-/*************************
- * #warning string
- * #warning (string)
- */
-
-STATIC void prwarning()
-{
-    char *p;
-    targ_size_t len;
-    ptoken();
-    if (tok.TKval != TKstring)
-    {   preerr(EM_string);                      // string expected
-        eatrol();
-        return;
-    }
-    p = combinestrings(&len);
-#if !SPP
-    warerr(WM_warning_message,p);
-#endif
-    MEM_PH_FREE(p);
-    if (tok.TKval != TKeol)
-        blankrol();
-}
-#endif
 
 /*************************
  * #message string
@@ -2737,22 +2677,6 @@ STATIC void prpragma()
                 return;
 
             case PRXoptimize:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                if (tok.TKval != TKident)
-                    goto err;
-                if (!strcmp(tok.TKid, "none"))
-                    go_flag("+none");
-                else if (!strcmp(tok.TKid, "all" ))
-                {
-                    printf("Calling go_flag with all\n");
-                    go_flag("+all");
-                }
-                else if (!strcmp(tok.TKid, "space" ))
-                    go_flag("+space");
-                else
-                    goto err;
-                break;
-#endif
             case PRXauto_inline:
             case PRXfunction:
             case PRXinline_depth:
@@ -3071,14 +2995,6 @@ STATIC void prlinex(bool linemarker)
             cstate.CSfilblk->BLsrcpos.Sfilptr = filename_indirect(filename_add(name));
         MEM_PH_FREE(name);
   }
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-  else
-  {
-// PATN: lLine used before set
-        cstate.CSfilblk->BLsrcpos.Slinnum = lLine;
-  }
-#endif
-
     if (linemarker)                     // if # constant identifier flags...
     {   while (tok.TKval == TKnum)
             stoken();                   // skip over flags
@@ -3232,15 +3148,6 @@ STATIC void scantoelseend()
                 case PRpragma:
                 case PRerror:
                 case PRident:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                case PRassert:
-                case PRunassert:
-                case PRsystem:
-                case PRcpu:
-                case PRlint:
-                case PRmachine:
-                case PRwarning:
-#endif
                     break;              /* scanto these pragmas         */
                 case -1:                // ignore unrecognized pragmas in
                                         // false conditionals
@@ -3255,7 +3162,7 @@ STATIC void scantoelseend()
         } /* if */
   } /* while */
 }
-
+
 /*******************************
  * Skip over a #define. This requires care as it can be
  * a multi-line definition.

@@ -19,14 +19,7 @@
 #include        <float.h>
 #include        <time.h>
 
-#if defined __OpenBSD__
-    #include <sys/param.h>
-    #if OpenBSD < 201111 // 5.0
-        #define HAVE_FENV_H 0
-    #else
-        #define HAVE_FENV_H 1
-    #endif
-#elif _MSC_VER
+#if _MSC_VER
     #define HAVE_FENV_H 0
 #else
     #define HAVE_FENV_H 1
@@ -34,14 +27,6 @@
 
 #if HAVE_FENV_H
 #include        <fenv.h>
-#endif
-
-#if __DMC__
-#include        <fp.h>
-#endif
-
-#if __FreeBSD__ || __OpenBSD__
-#define fmodl fmod
 #endif
 
 #if _MSC_VER

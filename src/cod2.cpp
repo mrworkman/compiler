@@ -901,11 +901,7 @@ void cdmul(CodeBuilder& cdb,elem *e,regm_t *pretregs)
             orthxmm(cdb,e,pretregs);
             return;
         }
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        orth87(cdb,e,pretregs);
-#else
         opdouble(cdb,e,pretregs,(oper == OPmul) ? CLIBdmul : CLIBddiv);
-#endif
         return;
     }
 

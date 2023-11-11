@@ -26,9 +26,6 @@
 #include        "fltables.c"
 
 targ_size_t     framehandleroffset;     // offset of C++ frame handler
-#if TARGET_OSX
-targ_size_t     localgotoffset; // offset of where localgot refers to
-#endif
 
 int cseg = CODE;                // current code segment
                                 // (negative values mean it is the negative

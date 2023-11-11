@@ -712,7 +712,7 @@ void savesymtab(func_t *f)
         globsym.top = 0;
   }
 }
-
+
 /***************************
  * Get the type_specifier.
  * Note:
@@ -800,22 +800,6 @@ int declaration_specifier(type **ptyp_spec, enum SC *pclass, unsigned long *pcla
   /* inlines and templates).                                                      ILR */
 
   msbug = 0;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-  if (tok.TKval == TK_extension)
-      stoken();                         // skip over __extension__ keyword
-  else if (tok.TKval == TK_attribute)
-  {
-      int attrtype;
-      int mod = getattributes(NULL,FALSE,&attrtype);
-      if (attrtype & ATTR_LINKMOD)
-          modifiersx = mod & ATTR_LINK_MODIFIERS;
-                                        // not sure how precedence works
-#if DEBUG
-      attrtype |= ~ATTR_LINKMOD;
-      assert(ATTR_CAN_IGNORE(attrtype));
-#endif
-  }
-#endif
 
 L2:
   switch (tok.TKval)
@@ -1273,7 +1257,7 @@ L2:
             sc_specifier = SCtypedef;
             break;
 
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
         case SCWinline | SCWextern:
             sc_specifier = SCeinline;
             break;
@@ -2953,7 +2937,7 @@ Lnd:                            // if new-declarator
     tstart->Tcount++;
     goto Lpop;
 }
-
+
 /*****************************
  * Get prototype for function or parameter list.
  * Input:
@@ -3328,7 +3312,7 @@ STATIC void getparamlst(type *tfunc,type *tprev)
     if (nactual > nparam)
         synerr(EM_num_args,nparam,"function",nactual);
 }
-
+
 /**********************************
  * Do declaration parsing for identifier.
  * Returns:
@@ -3810,7 +3794,7 @@ STATIC symbol * anonymous(Classsym *stag,enum SC sc_specifier)
         outdata(s);
     return s;
 }
-
+
 /**********************************
  * Given a declaration for a symbol, either declare a new symbol
  * or find which symbol it already is.
@@ -4186,7 +4170,7 @@ symbol *symdecl(char *vident,type *dt,enum SC sc_specifier, param_t *ptpl)
             (s->Sclass == SCextern || s->Sclass == SCcomdef) &&
             dt->Tty & mTYconst)
             s->Sclass = tyfunc(dt->Tty) ? SCglobal : SCpublic; //type_struct(dt) ? SCpublic : SCextern;
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
         else if (!CPP && !ClassInline(sc_specifier) && !SymInline(s))
         {
             s->Sclass = sc_specifier;   /* force current storage class  */
@@ -4286,7 +4270,7 @@ L8:
     //printf("s->Sclass = "); WRclass((enum SC)s->Sclass); printf("\n");
     return s;
 }
-
+
 /*******************************
  * Fill in symbol table entry for function, once we have determined
  * the correct symbol for it.
@@ -4315,10 +4299,6 @@ int funcdecl(symbol *s,enum SC sc_specifier,int pflags,Declar *decl)
     param_t *p;
     type *tf;
     int opnum;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    enum_SC save_class = s->Sclass;
-#endif
-
     if (CPP)
     {
         symbol_debug(s);
@@ -4843,9 +4823,6 @@ int funcdecl(symbol *s,enum SC sc_specifier,int pflags,Declar *decl)
         body = TRUE;
     }
 done:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    lnx_funcdecl(s,sc_specifier,save_class,body);
-#endif
     if (body && CPP && type_mangle(s->Stype) != mTYman_cpp)
     {
         //printf("defining '%s'\n", s->Sident);

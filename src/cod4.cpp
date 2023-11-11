@@ -824,17 +824,10 @@ void cdaddass(CodeBuilder& cdb,elem *e,regm_t *pretregs)
 
     if (tyfloating(tyml))
     {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (op == OPnegass)
-            cdnegass87(cdb,e,pretregs);
-        else
-            opass87(cdb,e,pretregs);
-#else
         if (op == OPnegass)
             cdb.append(opnegassdbl(e,pretregs));
         else
             cdb.append(opassdbl(e,pretregs,op));
-#endif
         return;
     }
     unsigned opsize = (I16 && tylong(tyml) && config.target_cpu >= TARGET_80386)
@@ -1337,11 +1330,7 @@ void cdmulass(CodeBuilder& cdb,elem *e,regm_t *pretregs)
 
     if (tyfloating(tyml))
     {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        opass87(cdb,e,pretregs);
-#else
         cdb.append(opassdbl(e,pretregs,op));
-#endif
         return;
     }
 
@@ -2288,10 +2277,6 @@ void cdcmp(CodeBuilder& cdb,elem *e,regm_t *pretregs)
         goto L5;
 
       case OPvar:
-#if TARGET_OSX
-        if (movOnly(e2))
-            goto L2;
-#endif
         if ((e1->Eoper == OPvar &&
              isregvar(e2,&rretregs,&reg) &&
              sz <= REGSIZE
@@ -2746,11 +2731,7 @@ void cdcnvt(CodeBuilder& cdb,elem *e, regm_t *pretregs)
                     cdd_u32(cdb,e,pretregs);
                     return;
                 }
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                retregs = mST0;
-#else
                 retregs = DOUBLEREGS;
-#endif
                 goto L1;
 
             case OPd_u64:

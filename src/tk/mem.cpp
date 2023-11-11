@@ -76,7 +76,7 @@ void err_message(const char *,...);
 #define ferr    stderr
 #define PRINT   fprintf(ferr,
 #endif
-
+
 /*******************************/
 
 void mem_setexception(enum MEM_E flag,...)
@@ -134,7 +134,7 @@ int mem_exception()
         }
     }
 }
-
+
 /****************************/
 
 #if MEM_DEBUG
@@ -168,7 +168,7 @@ char *mem_strdup(const char *s)
 }
 
 #endif /* MEM_DEBUG */
-
+
 /************* C++ Implementation ***************/
 
 #if __cplusplus && !MEM_NONE
@@ -273,7 +273,7 @@ void __cdecl operator delete[](void *p)
 #endif
 }
 #endif
-
+
 #if MEM_DEBUG
 
 static size_t mem_maxalloc;       /* max # of bytes allocated             */
@@ -281,10 +281,6 @@ static size_t mem_numalloc;       /* current # of bytes allocated         */
 
 #define BEFOREVAL       0x4F464542      /* value to detect underrun     */
 #define AFTERVAL        0x45544641      /* value to detect overrun      */
-
-#if SUN || SUN386
-static long afterval = AFTERVAL;        /* so we can do &afterval       */
-#endif
 
 /* The following should be selected to give maximum probability that    */
 /* pointers loaded with these values will cause an obvious crash. On    */
@@ -326,7 +322,7 @@ static struct mem_debug
         11111,
         0,
         BEFOREVAL,
-#if !(linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun)
+#if !(linux || __APPLE__)
         AFTERVAL
 #endif
 };
@@ -339,7 +335,7 @@ static struct mem_debug
 
 /* Convert from a mem_debug struct to a mem_ptr.        */
 #define mem_dltoptr(dl) ((void *) &((dl)->data[0]))
-
+
 /*****************************
  * Set new value of file,line
  */
@@ -374,7 +370,7 @@ static void mem_fillin(const char *fil, int lin)
         fflush(ferr);
 #endif
 }
-
+
 /****************************
  * If MEM_DEBUG is not on for some modules, these routines will get
  * called.
@@ -407,7 +403,7 @@ void mem_freefp(void *p)
 {
         mem_free(p);
 }
-
+
 /***********************
  * Debug versions of mem_calloc(), mem_free() and mem_realloc().
  */
@@ -434,11 +430,8 @@ void *mem_calloc_debug(size_t n, const char *fil, int lin)
     dl->Mline = lin;
     dl->Mnbytes = n;
     dl->Mbeforeval = BEFOREVAL;
-#if SUN || SUN386 /* bus error if we store a long at an odd address */
-    memcpy(&(dl->data[n]),&afterval,sizeof(AFTERVAL));
-#else
+    /* bus error if we store a long at an odd address */
     *(long *) &(dl->data[n]) = AFTERVAL;
-#endif
 
     /* Add dl to start of allocation list       */
     dl->Mnext = mem_alloclist.Mnext;
@@ -453,7 +446,7 @@ void *mem_calloc_debug(size_t n, const char *fil, int lin)
         mem_maxalloc = mem_numalloc;
     return mem_dltoptr(dl);
 }
-
+
 void mem_free_debug(void *ptr, const char *fil, int lin)
 {
         struct mem_debug *dl;
@@ -471,11 +464,8 @@ void mem_free_debug(void *ptr, const char *fil, int lin)
                 PRINT "'%s'(%d)\n",fil,lin);
                 goto err2;
         }
-#if SUN || SUN386 /* Bus error if we read a long from an odd address    */
-        if (memcmp(&dl->data[dl->Mnbytes],&afterval,sizeof(AFTERVAL)) != 0)
-#else
+        /* Bus error if we read a long from an odd address    */
         if (*(long *) &dl->data[dl->Mnbytes] != AFTERVAL)
-#endif
         {
                 PRINT "Pointer x%lx overrun\n",(long)ptr);
                 goto err2;
@@ -509,7 +499,7 @@ err:
         assert(0);
         /* NOTREACHED */
 }
-
+
 /*******************
  * Debug version of mem_realloc().
  */
@@ -558,11 +548,8 @@ static void mem_checkdl(struct mem_debug *dl)
             PRINT "Pointer x%lx underrun\n",(long)p);
             goto err2;
     }
-#if SUN || SUN386 /* Bus error if we read a long from an odd address    */
-    if (memcmp(&dl->data[dl->Mnbytes],&afterval,sizeof(AFTERVAL)) != 0)
-#else
+    /* Bus error if we read a long from an odd address    */
     if (*(long *) &dl->data[dl->Mnbytes] != AFTERVAL)
-#endif
     {
             PRINT "Pointer x%lx overrun\n",(long)p);
             goto err2;
@@ -607,7 +594,7 @@ L1:
 }
 
 #else
-
+
 /***************************/
 
 void *mem_malloc(size_t numbytes)
@@ -655,7 +642,7 @@ void *mem_calloc(size_t numbytes)
         /*printf("calloc(%d) = x%lx, mem_count = %d\n",numbytes,p,mem_count);*/
         return p;
 }
-
+
 /***************************/
 
 void *mem_realloc(void *oldmem_ptr,size_t newnumbytes)
@@ -691,7 +678,7 @@ void mem_free(void *ptr)
         free(ptr);
     }
 }
-
+
 /***************************/
 /* This is our low-rent fast storage allocator  */
 
@@ -824,7 +811,7 @@ char *mem_fstrdup(const char *s)
 }
 
 #endif
-
+
 /***************************/
 
 void mem_init()
@@ -838,7 +825,7 @@ void mem_init()
                 mem_numalloc = 0;
                 mem_maxalloc = 0;
                 mem_alloclist.Mnext = NULL;
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if linux || __APPLE__
                 *(long *) &(mem_alloclist.data[0]) = AFTERVAL;
 #endif
 #endif

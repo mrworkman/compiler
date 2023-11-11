@@ -208,9 +208,6 @@ extern  LocalSection Fast;
 extern  LocalSection Auto;
 extern  LocalSection EEStack;
 extern  LocalSection Alloca;
-#if TARGET_OSX
-extern  targ_size_t localgotoffset;
-#endif
 
 /* cgcod.c */
 extern int pass;

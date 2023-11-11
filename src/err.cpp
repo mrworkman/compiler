@@ -164,19 +164,8 @@ void err_message(const char *format,...)
 
 static void err_print(FILE *fp,const char *q,const char *format,va_list args)
 {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (format[0] == '#')
-    {
-        // wrtpos(fp,FALSE);       // don't write line & draw ^ under it
-        format++;
-    }
-    else
-    {
-        wrtpos(fp); // wrtpos(fp,TRUE);    // write line & draw ^ under it
-    }
-#else
+
     wrtpos(fp); // write line & draw ^ under it
-#endif
     fputs(q,fp);
     vfprintf(fp,format,args);
     crlf(fp);
@@ -369,12 +358,6 @@ static short war_to_msg[] =
         EM_badnumber,
         EM_ccast,
         EM_obsolete,
-    #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        EM_skip_attribute,
-        EM_warning_message,
-        EM_bad_vastart,
-        EM_undefined_inline,
-    #endif
 #endif
 };
 
@@ -431,7 +414,7 @@ void warerr(unsigned warnum,...)
     }
     va_end(ap);
 }
-
+
 /**************************
  * A non-recoverable error has occurred.
  */

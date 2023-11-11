@@ -39,7 +39,7 @@
 #include        "page.h"
 #endif
 
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
 #include        <sys/stat.h>
 #include        <unistd.h>
 #endif
@@ -1806,7 +1806,7 @@ int ph_read(char *filename)
     //dbg_printf("ph_read('%s') done\n",filename);
     return 0;
 }
-
+
 /**********************************************
  * Do our own storage allocator, a replacement
  * for malloc/free. This one uses our page package.

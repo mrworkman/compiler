@@ -1096,11 +1096,7 @@ void getcmd(int argc,char **argv)
     switch (model)
     {
             case 'N':
-#if TARGET_LINUX
-                      config.exe = EX_LINUX;
-#else
                       config.exe = EX_WIN32;
-#endif
                       config.defstructalign = 8 - 1; // NT uses 8 byte alignment
             Lx2:
                       config.memmodel = Smodel;
@@ -1115,11 +1111,7 @@ void getcmd(int argc,char **argv)
                       break;
 
             case 'A':
-#if TARGET_LINUX
-                      config.exe = EX_LINUX64;
-#else
                       config.exe = EX_WIN64;
-#endif
                       config.fpxmmregs = TRUE;
                       config.defstructalign = 8 - 1; // NT uses 8 byte alignment
                       config.flags |= CFGnoebp;
@@ -1556,7 +1548,7 @@ void getcmd(int argc,char **argv)
 
     linkage = config.linkage;
 }
-
+
 /*****************************
  * Predefine a macro to 1
  */

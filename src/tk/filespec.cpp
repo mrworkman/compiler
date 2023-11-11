@@ -25,7 +25,7 @@
 #include        <ctype.h>
 #endif
 
-#if M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX || linux || __APPLE__
 #include        <stdlib.h>
 #include        <unistd.h>
 #endif
@@ -48,7 +48,7 @@
 #endif /* MPW */
 #endif /* VMS */
 #endif
-
+
 /**********************/
 
 char * filespecaddpath(const char *path,const char *filename)
@@ -87,7 +87,7 @@ char * filespecaddpath(const char *path,const char *filename)
 /**********************/
 char * filespecrootpath(char *filespec)
 {
-#if SUN || M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX || linux || __APPLE__
 #define DIRCHAR '/'
 #endif
 #if MSDOS || __OS2__ || __NT__ || _WIN32
@@ -112,7 +112,7 @@ char * filespecrootpath(char *filespec)
 #endif
 
     /* get current working directory path */
-#if SUN || M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX || linux || __APPLE__
     cwd_t = (char *)getcwd(NULL, 256);
 #endif
 #if MSDOS || __OS2__ || __NT__ || _WIN32
@@ -134,7 +134,7 @@ char * filespecrootpath(char *filespec)
     if (cwd[strlen(cwd) - 1] == DIRCHAR)
         cwd[strlen(cwd) - 1] = '\0';
 #endif
-#if SUN || M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX ||linux || __APPLE__
     free(cwd_t);
 #endif
     p = filespec;
@@ -151,7 +151,7 @@ char * filespecrootpath(char *filespec)
             {
                 cwd_t = cwd;
                 cwd = (char *)mem_calloc(strlen(cwd_t) + 1 + strlen(p) + 1);
-#if SUN || M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX || linux || __APPLE__
                 sprintf(cwd, "%s/%s", cwd_t, p);  /* add relative directory */
 #endif
 #if MSDOS || __OS2__ || __NT__ || _WIN32
@@ -172,7 +172,7 @@ char * filespecrootpath(char *filespec)
         {   /* ... save remaining string */
             cwd_t = cwd;
             cwd = (char *)mem_calloc(strlen(cwd_t) + 1 + strlen(p) + 1);
-#if SUN || M_UNIX || M_XENIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if M_UNIX || linux || __APPLE__
             sprintf(cwd, "%s/%s", cwd_t, p);  /* add relative directory */
 #endif
 #if MSDOS || __OS2__ || __NT__ || _WIN32
@@ -403,7 +403,7 @@ char * filespecbackup(const char *filespec)
 #if MSDOS || __OS2__ || __NT__ || _WIN32
     return filespecforceext(filespec,"BAK");
 #endif
-#if BSDUNIX || linux || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
+#if linux || __APPLE__
     char *p,*f;
 
     /* Prepend .B to file name, if it isn't already there       */

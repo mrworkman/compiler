@@ -131,7 +131,7 @@ unsigned char _chartype[257] =
 
         /* the remaining 128 bytes are 0        */
 };
-
+
 /*********************************
  * Make a copy of the current token.
  */
@@ -286,7 +286,7 @@ void token_dehydrate(token_t **pt)
 #endif
 
 #endif
-
+
 /*********************************
  * Read body of function into a list, and return that list.
  * Also used to read in class and function template definitions.
@@ -536,7 +536,7 @@ Srcpos token_linnum()
 }
 
 #endif
-
+
 #if !SPP
 
 /***************************************
@@ -607,14 +607,6 @@ struct Keyword kwtab1[] =
         "signed",       TKsigned,       // place at end for linux option to
         "volatile",     TKvolatile,     // exclude them
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-#define OPTS_NON_TRADITIONAL 3          // ANSI + const,signed,volatile
-#define OPTS_NON_ANSI        1          // asm
-//#define OPTS_NON_ANSI      3          // asm,typeof,restrict
-//      "typeof",       TK_typeof,
-        "restrict",     TKrestrict,
-        "asm",          TK_asm,
-#else
         // Be compatible with IBM's OS/2 C compiler.
         "_Cdecl",       TK_cdecl,
         "_Far16",       TK_far16,
@@ -637,7 +629,6 @@ struct Keyword kwtab1[] =
         "__out",        TK_out,
         "__body",       TK_body,
         "__invariant",  TK_invariant,
-#endif
 };
 
 struct Keyword kwtab_cpp[] =
@@ -763,14 +754,7 @@ void token_init()
     igncomment = (config.flags3 & CFG3comment) == 0;
 #else
 
-    token_defkwds(kwtab1,arraysize(kwtab1)
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                - (ANSI ? OPTS_NON_ANSI : 0)
-                #ifdef OPT_IS_SET
-                - (OPT_IS_SET(OPTtraditional)? OPTS_NON_TRADITIONAL : 0)
-                #endif
-#endif
-                                          );
+    token_defkwds(kwtab1,arraysize(kwtab1));
     token_defkwds(kwtab2,arraysize(kwtab2));
 
     if (config.flags4 & CFG4alternate)
@@ -973,7 +957,7 @@ void token_setlocale(const char *string)
     else
         synerr(EM_nolocale,string);     // locale not supported
 }
-
+
 /***********************************************
  * Gut level token parser.
  * Parses chars into tokens
@@ -1198,11 +1182,6 @@ loop1:
                         if (!(blflags & BLexpanded && bl && bl->BLflags & BLexpanded))
                         {   if (m->Mflags & Mdefined && !(flag & 2))
                             {   phstring_t args;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                                // extension over used, declarations and statements
-                                if (m->Mval == TK_extension)
-                                    goto loop1;
-#endif
                                 assert(!(m->Mflags & Minuse));
 
                                 if (!m->Mtext)
@@ -1584,7 +1563,7 @@ loop1:
   } /* switch */
   return tok.TKval;
 } /* token */
-
+
 /****************************************
  * Read and throw away C++ comment.
  * Input:
@@ -2177,7 +2156,7 @@ char *combinestrings(targ_size_t *plen, tym_t *ptym)
     *ptym = ty;
     return mstring;
 }
-
+
 /*************************************
  * Read in a character constant.
  * Input:

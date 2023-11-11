@@ -70,12 +70,6 @@ enum WM
         WM_badnumber    = 24,
         WM_ccast        = 25,
         WM_obsolete     = 26,
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        WM_skip_attribute   = 27, // skip GNUC attribute specification
-        WM_warning_message  = 28, // preprocessor warning message
-        WM_bad_vastart      = 29, // args for builtin va_start bad
-        WM_undefined_inline = 30, // static inline not expanded or defined
-#endif
 };
 
 // Language for error messages

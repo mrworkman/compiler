@@ -35,7 +35,7 @@ STATIC elem *   inline_ifcan(elem *e);
 STATIC elem *   inline_expand(elem *e , symbol *sfunc);
 STATIC elem *   inline_args(elem *e , int *pn);
 STATIC void     inline_expandwalk(elem *e);
-
+
 /**********************************
  * Return !=0 if function can be inline'd.
  */

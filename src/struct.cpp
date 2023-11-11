@@ -506,7 +506,7 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
         return s->Stype;
     }
 }
-
+
 /*************************************
  * Parse base class list.
  * Input:
@@ -1065,14 +1065,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                 newfieldsize = type_size(typ_spec);
                 width = getwidth(newfieldsize * 8); // get width of hole
                 bit += width;           // add to current bit position
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                if (width == 0 || bit >= sizeof(int) * 8)
-                {   offset += (bit+7)/8;
-                    offset = alignmember(typ_spec,newfieldsize,offset);
-                    fieldsize = 0;
-                    bit = 0;            /* align to next boundary       */
-                }
-#else
                 if (fieldsize != newfieldsize ||
                     width == 0 ||
                     bit >= fieldsize * 8)
@@ -1080,7 +1072,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                     fieldsize = 0;
                     bit = 0;            /* align to next word           */
                 }
-#endif
             }
             /* Look for anonymous unions        */
             else if ((tok.TKval == TKsemi || tok.TKval == TKcomma)
@@ -1099,11 +1090,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                 /* This is not a bit field, so align on next int        */
                 if (bit)                /* if previous decl was a field */
                 {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    offset += (bit+7)/8;        /* advance past used bits */
-#else
                     offset += fieldsize;        /* advance past field   */
-#endif
                     bit = 0;
                     fieldsize = 0;
                 }
@@ -1544,23 +1531,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                     width = getwidth(newfieldsize * 8);
                     if (width == 0)
                         synerr(EM_decl_0size_bitfield); // no declarator allowed
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    // Very weird alignment
-                    // if bits available in remaining word,
-                    //   no matter what type, assign bits
-                    //   i.e. char x; int y:17 are in same word
-                    // But if bit field will cross word boundary
-                    //   align based on type
-                    // Switching types does not start new alignment
-                    //   i.e. int y:17; short x:3 - The 17th bit of y is
-                    //        in same byte as x.
-                    if ((offset%4 * 8) + bit + width > sizeof(int) * 8)
-                    {
-                        offset = alignmember(memtype,newfieldsize,offset);
-                        bit = 0;        /* align to next word           */
-                        fieldsize = newfieldsize;
-                    }
-#else
                     if (newfieldsize != fieldsize ||
                         bit + width > fieldsize * 8)
                     {
@@ -1568,7 +1538,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                         bit = 0;        /* align to next word           */
                         fieldsize = newfieldsize;
                     }
-#endif
                 }
                 else                    /* no bit field                 */
                 {
@@ -1582,11 +1551,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                     width = 0;          /* so bit won't screw up        */
                     if (bit)            /* if previous decl was a field */
                     {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                        offset += (bit+7)/8;    /* advance past used bits */
-#else
                         offset += fieldsize;    /* advance past field   */
-#endif
                         bit = 0;
                         fieldsize = 0;
                     }
@@ -1618,21 +1583,9 @@ STATIC type * strdcllst(Classsym *stag,int flags)
                 }
                 else /* struct or class */
                 {
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    // gcc does not align by type until crossing word boundary
-                    if (s->Sclass != SCfield)
-#endif
                         offset = alignmember(s->Stype,memalignsize,offset);
                     s->Smemoff = offset;
                     s->Sbit = bit;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    // now modify offset and start bit according to type size
-                    while(s->Sbit > memsize*8)
-                    {
-                        s->Sbit -= 8;
-                        s->Smemoff += 1;
-                    }
-#endif
                     bit += width;       /* position of next member      */
                     size = memsize;
                     if (s->Sclass != SCfield)
@@ -1665,12 +1618,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
   st->Sstructsize = (st->Sflags & STRunion)
                 ? size                  /* size of union                */
                 : (bit)
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                // gcc uses bit count instead of type for size
-                        ? offset + (bit+7)/8
-#else
                         ? offset + size
-#endif
                         : offset;
 
   if (type_chksize(st->Sstructsize))    // if size exceeds 64Kb
@@ -1847,7 +1795,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
     file_progress();                    // report progress
     return tclass;
 }
-
+
 /************************
  * Determine if *ps is a struct symbol or not.
  * If it is a typedef's struct symbol, modify *ps to be the
@@ -2534,7 +2482,7 @@ STATIC targ_size_t n2_structaddsize(type *t,targ_size_t size,targ_size_t *poffse
         *poffset &= 0xFFFF;
     return offset;
 }
-
+
 /****************************************
  * This function is used during thunk generation to determine the correct
  * displacement values to multiply inherited classes on the Smptrbase list.
@@ -2968,7 +2916,7 @@ STATIC void chkmemtyp(symbol *s)
         }
   }
 }
-
+
 /**********************************
  * Declare vptr member of class stag.
  * Input:
@@ -3224,7 +3172,7 @@ L2:
         sfunc->Sfunc->Fflags |= Fintro; // an 'introducing' function
     return result;
 }
-
+
 /*********************************************
  * Determine if overriding virtual function is ill-formed.
  * C++98 10.3
@@ -3790,7 +3738,7 @@ void n2_classfriends(Classsym *stag)
         list_free(&st->Sclassfriends,FPNULL);
     }
 }
-
+
 /*****************************
  * Check for existing member name.
  * Issue diagnostic if it does.
@@ -4215,7 +4163,7 @@ STATIC void n2_makefriends(Classsym *sc,symbol *sfriend)
         }
     }
 }
-
+
 /*****************************
  * Look down list of virtual functions. If there are any there that
  * belong in Sopoverload list or Scastoverload list and aren't there
@@ -4638,7 +4586,7 @@ STATIC unsigned long n2_memberclass()
     }
     return class_m;
 }
-
+
 /****************************
  * Generate type of generated member function.
  */
@@ -4912,7 +4860,7 @@ STATIC symbol * n2_createfunc(Classsym *stag,const char *name,
     funcsym_p = funcsym_save;
     return sfunc;
 }
-
+
 /*****************************
  * Create a function that is a constructor for tclass.
  */
@@ -5133,7 +5081,7 @@ symbol *n2_vecdtor(Classsym *stag, elem *enelems)
     }
     return s;
 }
-
+
 /**********************************
  * Create shell around operator delete(void *,unsigned)
  * so that only the first argument is needed.
@@ -5175,7 +5123,7 @@ symbol *n2_delete(Classsym *stag,symbol *sfunc,unsigned nelems)
     }
     return s;
 }
-
+
 /*********************************
  * Generate assignment operator if possible for class stag.
  * X& X::operator =(X&);
@@ -5501,7 +5449,7 @@ void n2_createopeq(Classsym *stag,int flag)
         }
     }
 }
-
+
 /*********************************
  * Determine if constructor scpct is a copy constructor.
  * Returns:

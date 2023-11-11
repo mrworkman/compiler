@@ -161,12 +161,6 @@ int exp2_retmethod(type *tfunc)
                 return RET_STACK;
         }
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        #ifdef OPT_IS_SET
-        if (!OPT_IS_SET(OPTfreg_struct_return))
-            return RET_STACK;
-        #endif
-#endif
         switch (type_size(tn))
         {   case CHARSIZE:
             case SHORTSIZE:
@@ -525,7 +519,7 @@ err:
     synerr(EM_simple_dtor);             // invalid simple destructor
     return e;
 }
-
+
 /***********************
  * E1.MOS is converted to *(&E1 + offset(MOS))
  * If bit field, create
@@ -1361,7 +1355,7 @@ elem *doarray(elem *e1)
     handleaccess(e1);
     return e1;
 }
-
+
 /***************************
  * Convert E1->MOS to (*E1).MOS, let dodot() do the rest.
  */
@@ -1415,7 +1409,7 @@ elem *doarrow(elem *e1)
         e1 = dodot(e1, e1->ET, FALSE);
     return e1;
 }
-
+
 /****************************
  * Resolve (ei .* em).
  */
@@ -1509,7 +1503,7 @@ err:
     el_free(em);
     return ei;
 }
-
+
 /********************************
  * Create:
  *               OPcall                         OPucall
@@ -1681,7 +1675,7 @@ elem *builtinFunc(elem *ec)
     elem *e2;
 
     if (e->Eoper == OPvar &&
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
         // In linux this is controlled by an option instead of adding defines to
         // change xxxxx to _inline_xxxx.
         #ifdef __DMC__
@@ -1783,7 +1777,7 @@ elem *builtinFunc(elem *ec)
 
         s = e->EV.sp.Vsym;
         symbol_debug(s);
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
         if (ec->Eoper == OPcall)        /* forget about OPucall for now */
 #else
         if (s->Sident[0] == '_' && memcmp(s->Sident + 1,"inline_",7) == 0
@@ -1794,7 +1788,7 @@ elem *builtinFunc(elem *ec)
             // If not C mangling, don't recognize it
             if (CPP && type_mangle(s->Stype) != mTYman_c)
                 goto ret;
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
             i = binary(s->Sident,inlinefunc,arraysize(inlinefunc));
 #else
             i = binary(s->Sident + 8,inlinefunc,arraysize(inlinefunc));
@@ -1868,7 +1862,7 @@ elem *builtinFunc(elem *ec)
                     if (e2->Eoper != OPparam)
                         goto ret;
                     ec->E1 = e2->E2;            // s
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
+#if linux || __APPLE__
                     en = ec->E2->E1;            // n
                     ev = e2->E1;
                     if ((en->Eoper == OPconst))
@@ -2235,7 +2229,7 @@ STATIC elem * strarg(elem *e)
         e = el_unat(OPstrpar,e->ET,e);
     return e;
 }
-
+
 /*****************************
  * Generate call to a function.
  * Input:
@@ -2280,10 +2274,6 @@ elem *xfunccall(elem *efunc,elem *ethis,list_t pvirtbase,list_t arglist)
         funcid = "function";
     }
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (strcmp(funcid,"__builtin_next_arg") == 0)
-        return lnx_builtin_next_arg(efunc,arglist);
-#endif
     // Construct function prototype based on types of parameters
     if (!CPP && !(tfunc->Tflags & TFprototype)) // if no prototype
     {   // Generate a prototype based on the types of the parameters
@@ -2602,7 +2592,7 @@ void chkintegral(elem *e)
             typerr(EM_illegal_op_types,e->E1->ET,t2); // illegal operand types
     }
 }
-
+
 /******************************
  * Do type checking. That is, convert e to type t. Detect pointer
  * mismatches.
@@ -2647,16 +2637,6 @@ STATIC elem * exp2_paramchk(elem *e,type *t,int param)
   type_print(t);
 #endif
   ty = tybasic(t->Tty);
-
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-  if ((ty == TYstruct) && (t->Ttag->Sstruct->Sflags & STRunion) &&
-          t->Tty & mTYtransu)
-  {
-      //dbg_printf("found transparent union formal parameter\n");
-      t = list_symbol(t->Ttag->Sstruct->Sfldlst)->Stype;
-      ty = tybasic(t->Tty);
-  }
-#endif
 
   // If t is a reference type, and e is what t refers to, add a
   // reference operator in front of e.
@@ -3137,7 +3117,7 @@ doit:
     type_setty(&e->ET,e->ET->Tty | ety);
     return e;
 }
-
+
 /***************************
  * Return !=0 if types are compatible.
  * Regard pointer and array types as equivalent.
@@ -3223,7 +3203,7 @@ int typecompat(type *t1,type *t2)
     //printf("typecompat returns %d\n", i);
     return i;
 }
-
+
 /****************************
  * Return TRUE if type lists are compatible.
  */
@@ -3830,7 +3810,7 @@ int template_paramlstmatch(type *t1, type *t2)
     //printf("-template_paramlstmatch() nomatch\n");
     return FALSE;
 }
-
+
 /*****************************
  * Convert E1-E2 to (E1-E2)/size
  * Input:
@@ -3917,7 +3897,7 @@ elem *minscale(elem *e)
     eb->EV.Vptrdiff = size;             /* divisor (or shift count)     */
     return e;
 }
-
+
 /*****************************
  * Convert (E1 op E2) to (E1 op s1*E2)
  * E1 must be a pointer and E2 must be an integral type.
@@ -3973,7 +3953,7 @@ void scale(elem *eop)
     eop->E2 = el_bint(OPmul,t,e2,esize);
     eop->E1 = e1;                               /* in case we swapped them      */
 }
-
+
 /*****************************
  * Do implicit conversions (pg. 41 of K & R)
  * Input:
@@ -4293,7 +4273,7 @@ void impcnv(elem *e)
         el_settype(e,tresult);
     }
 }
-
+
 /*******************************
  * Bring pointers to a common type.
  * Suitable for == < : operators.
@@ -4454,7 +4434,7 @@ int exp2_ptrconv(type *tfrom,type *tto)
 ret:
     return result;
 }
-
+
 /* Construct a table that gives the action when casting from one type   */
 /* to another.                                                          */
 
@@ -4463,13 +4443,8 @@ ret:
 #define USHLNG  OPu16_32
 #define DBLLNG  OPd_s32
 #define LNGDBL  OPs32_d
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-#define DBLULNG LNGLNG
-#define ULNGDBL LNGLNG
-#else
 #define DBLULNG OPd_u32
 #define ULNGDBL OPu32_d
-#endif
 #define DBLSHT  OPd_s16
 #define SHTDBL  OPs16_d
 #define DBLUSH  OPd_u16
@@ -4486,13 +4461,8 @@ ret:
 #define PTRLPTR OPnp_fp
 #define OFFSET  OPoffset
 #define FPTR    OPvp_fp
-#if TARGET_OSX
-#define TOF16   NONE
-#define FRF16   PAINT
-#else
 #define TOF16   OPnp_f16p
 #define FRF16   OPf16p_np
-#endif
 
 #define NONE    OPMAX           /* no conversion                        */
 #define PAINT   (OPMAX+1)       /* just 'paint' new type over the old one */
@@ -4515,9 +4485,6 @@ ret:
 #define CLDOUBLE (OPMAX+17)
 #define NPTR    (OPMAX+18)
 #define FTOC    (OPMAX+19)      // real or imaginary to complex
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-#define LNGLNG  (OPMAX+20)
-#endif
 #define ZERO    (OPMAX+21)      // result is a constant 0
 #define ENUM    (OPMAX+22)
 #define BOOL    OPbool          // boolean conversion
@@ -4862,10 +4829,6 @@ L1:
     {
         case ERROR:
         error:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-            if (oldty == TYvoid)        /* allow assignment from void */
-                goto paint;
-#endif
             typerr(EM_illegal_cast,oldt,newt);  // illegal cast
             goto paint;
 
@@ -4898,9 +4861,6 @@ L1:
         case INT:       t = tsint;      goto retry;
         case UINT:      t = tsuns;      goto retry;
         case ULONG:     t = tsulong;    goto retry;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case LNGLNG:    t = tsllong;    goto retry;
-#endif
         retry:
             e = cast(cast(e,t),newt);
             break;
@@ -5009,7 +4969,7 @@ elem_print(e);
 ret:
     return e;
 }
-
+
 /**********************************
  * Create the second exp for an element
  * which is the size of the first one (do alignment too).

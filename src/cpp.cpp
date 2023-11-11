@@ -1173,7 +1173,7 @@ yesmatch:
     }
     return match - adjustment;
 }
-
+
 /**********************************
  * Determine if there is a user-defined conversion to convert from e1 to t2.
  * If there is, return !=0 and a revised e1.
@@ -1665,7 +1665,7 @@ nomatch:
 #endif
     return sexact;
 }
-
+
 /**************************
  * Determine matching of arglist to function sfunc.
  * Input:
@@ -2378,7 +2378,7 @@ STATIC symbol * cpp_overloadfunc(symbol *sfunc,type *tthis,
     }
     return s;
 }
-
+
 /*********************************
  * Determine which overloaded function starting with sfunc matches
  * type t.
@@ -2611,7 +2611,7 @@ notsame:
     //dbg_printf("-cpp_funccmp(): notsame\n");
     return 0;
 }
-
+
 /********************************
  * Look to see if we should replace this operator elem with a
  * function call to an overloaded operator function.
@@ -2851,7 +2851,7 @@ elem *cpp_ind(elem *e)
     }
     return e;
 }
-
+
 /*********************************
  * Determine if function sfunc is a friend or a member of class sclass.
  * Returns:
@@ -2940,7 +2940,7 @@ int cpp_classisfriend(Classsym *s,Classsym *sclass)
 
     return 0;
 }
-
+
 /**********************************
  * Find member of class. Do not worry about access.
  * Worry about ambiguities.
@@ -3120,7 +3120,7 @@ STATIC symbol * cpp_findmemberx(Classsym *sclass,const char *sident,
     //dbg_printf("\tdone, s->Sident = '%s'\n",s ? s->Sident : "NULL");
     return s;
 }
-
+
 /**********************************
  * Determine access level to member smember from class sclass.
  * Assume presence of smember and ambiguity checking are already done.
@@ -3403,7 +3403,7 @@ elem *cpp_fixptrtype(elem *e,type *tclass)
     el_settype(e,newpointer(tclass));
     return e;
 }
-
+
 /************************************
  * Return address of vtable.
  */
@@ -3745,7 +3745,7 @@ int cpp_vtbloffset(Classsym *sclass,symbol *sfunc)
     }
     return i;
 }
-
+
 /*********************************
  * Get pointer to a function given:
  *      tclass  Class function is a member of (not the same as sfunc->Sscope
@@ -3839,7 +3839,7 @@ elem * cpp_getfunc(type *tclass,symbol *sfunc,elem **pethis)
     }
     return pfunc;
 }
-
+
 /*******************************
  * Call constructor for ethis.
  * Input:
@@ -4214,7 +4214,7 @@ elem *cpp_constructor(elem *ethis,type *tclass,list_t arglist,elem *enelems,
 ret:
     return e;
 }
-
+
 /*****************************
  * Generate a function call to destructor.
  * Input:
@@ -4369,7 +4369,7 @@ elem *cpp_destructor(type *tclass,elem *eptr,elem *enelems,int dtorflag)
     }
     return e;
 }
-
+
 /****************************
  * Given the list of static constructors and destructors, build
  * two special functions that call them.
@@ -4399,10 +4399,6 @@ void cpp_build_STI_STD()
     {   symbol *sdtor;
 
         sdtor = cpp_build_STX(name,destructor_list);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        Obj::staticctor(sdtor,1,pstate.STinitseg);
-        dtor = 0;
-#else
         // Append call to __fatexit(sdtor) to constructor list
         {   elem *e;
             list_t arglist;
@@ -4412,7 +4408,6 @@ void cpp_build_STI_STD()
             list_append(&constructor_list,e);
             dtor = 1;
         }
-#endif
     }
 
     // Do constructors (_STI)
@@ -4463,12 +4458,9 @@ STATIC symbol * cpp_build_STX(char *name,list_t tor_list)
     assert(globsym.top == 0);           // no local symbols
     queue_func(s);                      /* queue for output             */
     symbol_keep(s);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    output_func();                      // output now for relocation ref */
-#endif
     return s;
 }
-
+
 /***************************
  * Get pointer to local symbol with name for function.
  * Ignore scoping.
@@ -4584,7 +4576,7 @@ STATIC list_t cpp_meminitializer(list_t bl,symbol *s)
     }
     return arglist;
 }
-
+
 /*********************************
  * Take initializer list and build initialization expression for
  * constructor s_ctor.
@@ -4799,7 +4791,7 @@ void cpp_buildinitializer(symbol *s_ctor,list_t baseinit,int flag)
     funcsym_p = funcsym_save;
     cstate.CSpsymtab = psymtabsave;
 }
-
+
 /**************************
  * Add code to constructor function.
  */
@@ -4952,7 +4944,7 @@ STATIC int fixctorwalk(
             return sawthis;
     }
 }
-
+
 /********************************
  * Generate constructor for tclass if we don't have one but need one.
  * Returns:
@@ -5012,7 +5004,7 @@ int cpp_ctor(Classsym *stag)
     }
     return 0;
 }
-
+
 /********************************
  * Determine if inline destructor needs to be created for tclass.
  */
@@ -5379,7 +5371,7 @@ int cpp_needInvariant(type *tclass)
     }
     return FALSE;
 }
-
+
 /**************************
  * Add code to invariant function.
  * This parallels cpp_fixdestructor().

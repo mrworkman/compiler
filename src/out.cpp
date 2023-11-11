@@ -373,14 +373,10 @@ void dt_writeToObj(Obj& objmod, dt_t *dt, int seg, targ_size_t& offset)
                 if (tybasic(dt->Dty) == TYcptr)
                     objmod.reftocodeseg(seg,offset,dt->DTabytes);
                 else
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    objmod.reftodatseg(seg,offset,dt->DTabytes,dt->DTseg,flags);
-#else
                 /*else*/ if (dt->DTseg == DATA)
                     objmod.reftodatseg(seg,offset,dt->DTabytes,DATA,flags);
                 else
                     objmod.reftofarseg(seg,offset,dt->DTabytes,dt->DTseg,flags);
-#endif
                 offset += size(dt->Dty);
                 break;
             }

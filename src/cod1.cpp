@@ -17,7 +17,7 @@
 #include        <stdlib.h>
 #include        <time.h>
 
-#if __sun || _MSC_VER
+#if _MSC_VER
 #include        <alloca.h>
 #endif
 
@@ -1289,9 +1289,6 @@ void getlvalue(CodeBuilder& cdb,code *pcs,elem *e,regm_t keepmsk)
     case FLcsdata:
     case FLgot:
     case FLgotoff:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    case FLtlsdata:
-#endif
     L3:
         pcs->Irm = modregrm(0,0,BPRM);
     L2:
@@ -3323,29 +3320,7 @@ static void funccall(CodeBuilder& cdb,elem *e,unsigned numpara,unsigned numalign
                 fl = el_fl(e1);
             if (tym1 == TYifunc)
                 cdbe.gen1(0x9C);                             // PUSHF
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-            assert(!farfunc);
-            if (s != tls_get_addr_sym)
-            {
-                //printf("call %s\n", s->Sident);
-                cdbe.append(load_localgot());
-                cdbe.gencs(0xE8,0,fl,s);    // CALL extern
-            }
-            else if (I64)
-            {
-                /* Prepend 66 66 48 so GNU linker has patch room
-                 */
-                assert(!farfunc);
-                cdbe.gen1(0x66);
-                cdbe.gen1(0x66);
-                cdbe.gencs(0xE8,0,fl,s);      // CALL extern
-                cdbe.last()->Irex = REX | REX_W;
-            }
-            else
-                cdbe.gencs(0xE8,0,fl,s);    // CALL extern
-#else
             cdbe.gencs(farfunc ? 0x9A : 0xE8,0,fl,s);    // CALL extern
-#endif
             code_orflag(cdbe.last(), farfunc ? (CFseg | CFoff) : (CFselfrel | CFoff));
         }
   }
@@ -3362,11 +3337,6 @@ static void funccall(CodeBuilder& cdb,elem *e,unsigned numpara,unsigned numalign
         tym_t e11ty = tybasic(e11->Ety);
         assert(!I16 || (e11ty == (farfunc ? TYfptr : TYnptr)));
         cdb.append(load_localgot());
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (config.flags3 & CFG3pic && I32)
-            keepmsk |= mBX;
-#endif
-
         /* Mask of registers destroyed by the function call
          */
         regm_t desmsk = (mBP | ALLREGS | mES | XMMREGS) & ~fregsaved;
@@ -4474,15 +4444,6 @@ void loaddata(CodeBuilder& cdb,elem *e,regm_t *pretregs)
                 cdb.gen2(0xD1,modregrmx(3,4,reg));           // SHL reg,1
                 code_orrex(cdb.last(), REX_W);
             }
-
-#if TARGET_OSX
-            else if (e->Eoper == OPvar && movOnly(e))
-            {
-                allocreg(cdb,&regm,&reg,TYoffset);   // get a register
-                loadea(cdb,e,&cs,0x8B,reg,0,0,0);    // MOV reg,data
-                fixresult(cdb,e,regm,pretregs);
-            }
-#endif
             else
             {   cs.IFL2 = FLconst;
                 cs.IEV2.Vsize_t = 0;
@@ -4700,10 +4661,6 @@ void loaddata(CodeBuilder& cdb,elem *e,regm_t *pretregs)
         }
 #endif
         int op = 0x8A;                                  // byte MOV
-#if TARGET_OSX
-        if (movOnly(e))
-            op = 0x8B;
-#endif
         assert(forregs & BYTEREGS);
         if (!I16)
         {

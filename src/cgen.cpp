@@ -697,9 +697,6 @@ struct fixlist
     int         Lflags;         // CFxxxx
     targ_size_t Loffset;        // addr of reference to symbol
     targ_size_t Lval;           // value to add into location
-#if TARGET_OSX
-    symbol      *Lfuncsym;      // function the symbol goes in
-#endif
     fixlist *Lnext;             // next in threaded list
 
     static int nodel;           // don't delete from within searchfixlist
@@ -855,9 +852,6 @@ size_t addtofixlist(symbol *s,targ_size_t soffset,int seg,targ_size_t val,int fl
         ln->Lseg = seg;
         ln->Lflags = flags;
         ln->Lval = val;
-#if TARGET_OSX
-        ln->Lfuncsym = funcsym_p;
-#endif
 
         fixlist **pv = Flarray::add(s);
         ln->Lnext = *pv;
@@ -910,11 +904,7 @@ void searchfixlist(symbol *s)
                 // resolve directly.
                 if (s->Sseg == p->Lseg &&
                     (s->Sclass == SCstatic ||
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                     (!(config.flags3 & CFG3pic) && s->Sclass == SCglobal)) &&
-#else
                         s->Sclass == SCglobal) &&
-#endif
                     s->Sxtrnnum == 0 && p->Lflags & CFselfrel)
                 {   targ_size_t ad;
 
@@ -924,14 +914,7 @@ void searchfixlist(symbol *s)
                 }
                 else
                 {
-#if TARGET_OSX
-                    symbol *funcsymsave = funcsym_p;
-                    funcsym_p = p->Lfuncsym;
-                    Obj::reftoident(p->Lseg,p->Loffset,s,p->Lval,p->Lflags);
-                    funcsym_p = funcsymsave;
-#else
                     objmod->reftoident(p->Lseg,p->Loffset,s,p->Lval,p->Lflags);
-#endif
                 }
                 *lp = p->Lnext;
                 mem_free(p);            /* remove from list             */
@@ -1007,14 +990,7 @@ STATIC int outfixlist_dg(void *parameter, void *pkey, void *pvalue)
                     objmod->wkext(s, NULL);
                 }
             }
-#if TARGET_OSX
-            symbol *funcsymsave = funcsym_p;
-            funcsym_p = ln->Lfuncsym;
-            Obj::reftoident(ln->Lseg,ln->Loffset,s,ln->Lval,ln->Lflags);
-            funcsym_p = funcsymsave;
-#else
             objmod->reftoident(ln->Lseg,ln->Loffset,s,ln->Lval,ln->Lflags);
-#endif
             *plnext = ln->Lnext;
 #if TERMCODE
             mem_free(ln);

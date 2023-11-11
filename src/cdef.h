@@ -246,7 +246,7 @@ typedef long double longdouble;
 
 // Precompiled header variations
 #define MEMORYHX        (_WINDLL && _WIN32)     // HX and SYM files are cached in memory
-#define MMFIO           (_WIN32 || __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun)  // if memory mapped files
+#define MMFIO           (_WIN32 || __linux__ || __APPLE__)  // if memory mapped files
 #define LINEARALLOC     _WIN32  // if we can reserve address ranges
 
 // H_STYLE takes on one of these precompiled header methods

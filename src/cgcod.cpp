@@ -17,7 +17,7 @@
 #include        <stdlib.h>
 #include        <time.h>
 
-#if __sun || _MSC_VER
+#if _MSC_VER
 #include        <alloca.h>
 #endif
 
@@ -2443,11 +2443,6 @@ reload:                                 /* reload result from memory    */
         case OPrelconst:
             cdrelconst(cdb,e,pretregs);
             break;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case OPgot:
-            cdgot(cdb,e,pretregs);
-            break;
-#endif
         default:
             loaddata(cdb,e,pretregs);
             break;

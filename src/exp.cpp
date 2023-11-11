@@ -297,7 +297,7 @@ done:
   pstate.STinexp--;
   return e;
 }
-
+
 /******************************
  * Groups right to left.
  * cond_exp ::= log_or_exp [ "?" cond_exp ":" cond_exp ]
@@ -815,7 +815,7 @@ STATIC elem *equal_exp()
   }
   return e;
 }
-
+
 /******************************
  * Groups left to right.
  * rel_exp ::= shift_exp { relop shift_exp }
@@ -1174,7 +1174,7 @@ STATIC elem *memptr_exp()
   }
   return e;
 }
-
+
 /******************************
  * Groups right to left.
  * una_exp ::=  * una_exp
@@ -1433,11 +1433,6 @@ STATIC elem *una_exp()
             }
             e->ET->Tcount++;
             goto done;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        case TK_bltin_const:            // return 1 if compile time constant expression
-            e = exp_isconst();          // otherwise return 0
-            goto done;
-#endif
         case TKsizeof:
         case TK_typeinfo:
         case TK_typemask:
@@ -1674,7 +1669,7 @@ STATIC elem *una_exp()
 done:
     return e;
 }
-
+
 /******************************
  * Primary expression.
  * Groups left to right.
@@ -2586,7 +2581,7 @@ STATIC elem *prim_post(elem *e)
         stoken();
     }
 }
-
+
 /****************************
  * Returns a bit mask:
  */
@@ -3202,7 +3197,7 @@ STATIC elem *exp_new(int global)
     type_free(t);
     return e;
 }
-
+
 /*****************************
  * Parse and return delete expression.
  *      delete cast-expression
@@ -3391,7 +3386,7 @@ STATIC elem *exp_delete(int global)
     }
     return e;
 }
-
+
 /**************************
  * Parse and return elem for:
  *      simple_type_name (expression_list)
