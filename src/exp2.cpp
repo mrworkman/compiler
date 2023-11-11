@@ -1678,11 +1678,7 @@ elem *builtinFunc(elem *ec)
 #if linux || __APPLE__
         // In linux this is controlled by an option instead of adding defines to
         // change xxxxx to _inline_xxxx.
-        #ifdef __DMC__
-        OPT_IS_SET(OPTfinline_functions)
-        #else
         0
-        #endif
 #else
         // Look for _inline_xxxx() functions and replace with appropriate opcode
         (CPP || !(e->ET->Tflags & TFgenerated)) // function must be prototyped

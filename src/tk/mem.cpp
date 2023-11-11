@@ -14,15 +14,11 @@
 #include        <stddef.h>
 
 #if __cplusplus
-#if __DMC__
-#include        <new.h>
-#else
 #include        <new>
-#endif
 #endif
 
 #ifndef malloc
-#if __SC__ || __DMC__ ||  _MSC_VER
+#if _MSC_VER
 #include        <malloc.h>
 #else
 #include        <stdlib.h>
@@ -533,15 +529,6 @@ void *mem_realloc_debug(void *oldp, size_t n, const char *fil, int lin)
 
 static void mem_checkdl(struct mem_debug *dl)
 {   void *p;
-#if (__SC__ || __DMC__) && !_WIN32
-    unsigned u;
-
-    /* Take advantage of fact that SC's allocator stores the size of the
-     * alloc in the unsigned immediately preceding the allocation.
-     */
-    u = ((unsigned *)dl)[-1] - sizeof(unsigned);
-    assert((u & (sizeof(unsigned) - 1)) == 0 && u >= mem_debug_size(dl->Mnbytes));
-#endif
     p = mem_dltoptr(dl);
     if (dl->Mbeforeval != BEFOREVAL)
     {
@@ -566,7 +553,7 @@ err2:
 void mem_check()
 {   register struct mem_debug *dl;
 
-#if (__SC__ || _MSC_VER) && !defined(malloc)
+#if _MSC_VER && !defined(malloc)
     int i;
 
     i = _heapset(0xF4);
@@ -687,53 +674,6 @@ static size_t heapleft;
 
 /***************************/
 
-#if 0 && __SC__ && __INTSIZE == 4 && __I86__ && !_DEBUG_TRACE && _WIN32 && (SCC || SCPP || JAVA)
-
-__declspec(naked) void *mem_fmalloc(size_t numbytes)
-{
-    __asm
-    {
-        mov     EDX,4[ESP]
-        mov     EAX,heap
-        add     EDX,3
-        mov     ECX,heapleft
-        and     EDX,~3
-        je      L5A
-        cmp     EDX,ECX
-        ja      L2D
-        sub     ECX,EDX
-        add     EDX,EAX
-        mov     heapleft,ECX
-        mov     heap,EDX
-        ret     4
-
-L2D:    push    EBX
-        mov     EBX,EDX
-//      add     EDX,03FFFh
-//      and     EDX,~03FFFh
-        add     EDX,03C00h
-        mov     heapleft,EDX
-L3D:    push    heapleft
-        call    mem_malloc
-        test    EAX,EAX
-        mov     heap,EAX
-        jne     L18
-        call    mem_exception
-        test    EAX,EAX
-        jne     L3D
-        pop     EBX
-L5A:    xor     EAX,EAX
-        ret     4
-
-L18:    add     heap,EBX
-        sub     heapleft,EBX
-        pop     EBX
-        ret     4
-    }
-}
-
-#else
-
 void *mem_fmalloc(size_t numbytes)
 {   void *p;
 
@@ -786,8 +726,6 @@ L1:
     goto L2;
 }
 
-#endif
-
 /***************************/
 
 void *mem_fcalloc(size_t numbytes)
@@ -829,10 +767,7 @@ void mem_init()
                 *(long *) &(mem_alloclist.data[0]) = AFTERVAL;
 #endif
 #endif
-#if (__ZTC__ || __SC__ || __DMC__) && !defined(malloc)
-                free(malloc(1));        /* initialize storage allocator */
-#endif
-#if MEM_DEBUG && (__SC__ || _MSC_VER) && !defined(malloc)
+#if MEM_DEBUG && _MSC_VER && !defined(malloc)
                 {   int i;
 
                     i = _heapset(0xF4);
@@ -860,7 +795,7 @@ void mem_term()
                 PRINT "Max amount ever allocated == %ld bytes\n",
                         mem_maxalloc);
 #endif
-#if (__SC__ || _MSC_VER) && !defined(malloc)
+#if _MSC_VER && !defined(malloc)
                 {   int i;
 
                     i = _heapset(0xF4);

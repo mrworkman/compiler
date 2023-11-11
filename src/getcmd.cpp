@@ -57,13 +57,8 @@ EEcontext eecontext;
 
 unsigned long netspawn_flags = 0;
 
-#if __DMC__
-char __cdecl switch_E = 0;              // for LINRECOR.ASM
-int  __cdecl _version = VERSIONINT;
-#else
 char switch_E = 0;
 int  _version = VERSIONINT;
-#endif
 
 char version[] = "(SCVersion)@" COMPILER " " VERSION SUFFIX;
 char copyright[] = COPYRIGHT;
@@ -134,10 +129,6 @@ void getcmd(int argc,char **argv)
     }
 #if SPP
     getcmd_cflags(&argc,&argv);         // handle CFLAGS
-#endif
-#if __DMC__ && _WIN32
-    if (response_expand(&argc,&argv))   /* expand response files        */
-        cmderr(EM_response_file);       // can't open response file
 #endif
     configv.verbose = 1;
     configv.errmax = 5;

@@ -31,10 +31,6 @@
 #include        "iasm.h"
 #include        "cpp.h"
 
-#if __DMC__
-#undef setjmp
-#endif
-
 #if !DEMO && !SPP
 
 //#define EXTRA_DEBUG 1

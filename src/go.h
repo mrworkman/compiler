@@ -10,10 +10,6 @@
  * Source:      https://github.com/dlang/dmd/blob/master/src/ddmd/backend/go.h
  */
 
-#if __DMC__
-#pragma once
-#endif
-
 #ifndef GO_H
 #define GO_H 1
 

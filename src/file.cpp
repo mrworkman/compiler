@@ -536,9 +536,6 @@ STATIC void file_openread(const char *name,blklst *b)
         b->BLbuf = buf.buf;
         b->BLtext = b->BLbuf + 1;
         b->BLbufp = b->BLbuf + 3;
-#if __DMC__
-        buf = NULL;
-#endif
     }
     else
     {
@@ -906,19 +903,6 @@ int file_exists(const char *fname)
 long file_size(const char *fname)
 {
     //printf("file_size(%s)\n", fname);
-#if __DMC__
-    long result;
-    char *newname;
-
-    newname = NetSpawnTranslateFileName((char *)fname,"rb");
-    if (newname)
-    {   result = filesize(newname);
-        NetSpawnDisposeFile(newname);
-    }
-    else
-        result = -1L;
-    return result;
-#else
     long result;
     struct stat buf;
 
@@ -927,7 +911,6 @@ long file_size(const char *fname)
     else
         result = -1L;
     return result;
-#endif
 }
 
 /***********************************

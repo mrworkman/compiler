@@ -20,7 +20,7 @@
 #include        <fcntl.h>
 #include        <ctype.h>
 
-#if __DMC__ || __linux__
+#if __linux__
 #include        <malloc.h>
 #endif
 

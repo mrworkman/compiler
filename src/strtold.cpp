@@ -16,21 +16,11 @@
 #include        <float.h>
 #include        <string.h>
 #include        <math.h>
-#if _WIN32 && __DMC__
-#include        <fenv.h>
-#include        <fltpnt.h>
-#endif
 #if __linux__ || __APPLE__
 #include        <errno.h>
 #endif
 
 #include        "longdouble.h"
-
-#if _WIN32 && __DMC__
-// from \sc\src\include\setlocal.h
-extern char * __cdecl __locale_decpoint;
-void __pascal __set_errno (int an_errno);
-#endif
 
 #if _WIN32 || __linux__ || __APPLE__
 
@@ -146,36 +136,7 @@ longdouble strtold_dm(const char *p,char **endp)
         int pow;
         int ndigits;
         const char *pinit = p;
-#if __DMC__
-        static char infinity[] = "infinity";
-        static char nans[] = "nans";
-#endif
         unsigned int old_cw;
-
-#if _WIN32 && __DMC__
-        fenv_t flagp;
-        fegetenv(&flagp);  /* Store all exceptions, and current status word */
-        if (_8087)
-        {
-            // disable exceptions from occurring, set max precision, and round to nearest
-#if __DMC__
-            __asm
-            {
-                fstcw   word ptr old_cw
-                mov     EAX,old_cw
-                mov     ECX,EAX
-                and     EAX,0xf0c0
-                or      EAX,033fh
-                mov     old_cw,EAX
-                fldcw   word ptr old_cw
-                mov     old_cw,ECX
-            }
-#else
-            old_cw = _control87(_MCW_EM | _PC_64  | _RC_NEAR,
-                                _MCW_EM | _MCW_PC | _MCW_RC);
-#endif
-        }
-#endif
 
         while (isspace(*p))
             p++;
@@ -193,39 +154,6 @@ longdouble strtold_dm(const char *p,char **endp)
         msdec = lsdec = 0;
         msscale = 1;
         ndigits = 0;
-
-#if __DMC__
-        switch (*p)
-        {   case 'i':
-            case 'I':
-                if (memicmp(p,infinity,8) == 0)
-                {   p += 8;
-                    goto L4;
-                }
-                if (memicmp(p,infinity,3) == 0)         /* is it "inf"? */
-                {   p += 3;
-                L4:
-                    ldval = HUGE_VAL;
-                    goto L3;
-                }
-                break;
-            case 'n':
-            case 'N':
-                if (memicmp(p,nans,4) == 0)             /* "nans"?      */
-                {   p += 4;
-                    ldval = NANS;
-                    goto L5;
-                }
-                if (memicmp(p,nans,3) == 0)             /* "nan"?       */
-                {   p += 3;
-                    ldval = NAN;
-                L5:
-                    if (*p == '(')              /* if (n-char-sequence) */
-                        goto Lerr;              /* invalid input        */
-                    goto L3;
-                }
-        }
-#endif
 
         if (*p == '0' && (p[1] == 'x' || p[1] == 'X'))
         {   int guard = 0;
@@ -267,11 +195,7 @@ longdouble strtold_dm(const char *p,char **endp)
                     exp -= dot;
                     i = *++p;
                 }
-#if _WIN32 && __DMC__
-                if (i == *__locale_decpoint && !dot)
-#else
                 if (i == '.' && !dot)
-#endif
                 {       p++;
                         dot = 4;
                 }
@@ -318,23 +242,6 @@ longdouble strtold_dm(const char *p,char **endp)
 
                 if (msdec)
                 {
-#if __DMC__
-                    // The 8087 has no instruction to load an
-                    // unsigned long long
-                    if (msdec < 0)
-                    {
-                        *(long long *)&ldval = msdec;
-                        ((unsigned short *)&ldval)[4] = 0x3FFF + 63;
-                    }
-                    else
-                    {   // But does for a signed one
-                        __asm
-                        {
-                            fild        qword ptr msdec
-                            fstp        tbyte ptr ldval
-                        }
-                    }
-#else
                     int e2 = 0x3FFF + 63;
 
                     // left justify mantissa
@@ -356,7 +263,6 @@ longdouble strtold_dm(const char *p,char **endp)
                     u.s.mantissa = msdec;
                     u.s.exp = e2;
                     ldval = u.ld;
-#endif
 
 #if 0
                     if (0)
@@ -369,18 +275,7 @@ longdouble strtold_dm(const char *p,char **endp)
                     }
 #endif
                     // Exponent is power of 2, not power of 10
-#if _WIN32 && __DMC__
-                    __asm
-                    {
-                        fild    dword ptr exp
-                        fld     tbyte ptr ldval
-                        fscale                  // ST(0) = ST(0) * (2**ST(1))
-                        fstp    ST(1)
-                        fstp    tbyte ptr ldval
-                    }
-#else
                     ldval = ldexpl(ldval,exp);
-#endif
                 }
                 goto L6;
             }
@@ -408,11 +303,7 @@ longdouble strtold_dm(const char *p,char **endp)
                     exp -= dot;
                     i = *++p;
                 }
-#if _WIN32 && __DMC__
-                if (i == *__locale_decpoint && !dot)
-#else
                 if (i == '.' && !dot)
-#endif
                 {       p++;
                         dot++;
                 }
@@ -448,82 +339,32 @@ longdouble strtold_dm(const char *p,char **endp)
                 goto Lerr;              // return 0.0
         }
 
-#if _WIN32 && __DMC__
-        __asm
-        {
-            fild        qword ptr msdec
-            mov         EAX,msscale
-            cmp         EAX,1
-            je          La1
-            fild        long ptr msscale
-            fmul
-            fild        qword ptr lsdec
-            fadd
-        La1:
-            fstp        tbyte ptr ldval
-        }
-#else
         ldval = msdec;
         if (msscale != 1)               /* if stuff was accumulated in lsdec */
             ldval = ldval * msscale + lsdec;
-#endif
+
         if (ldval)
         {   unsigned u;
 
             u = 0;
             pow = 4096;
 
-#if _WIN32 && __DMC__
-            //printf("msdec = x%x, lsdec = x%x, msscale = x%x\n",msdec,lsdec,msscale);
-            //printf("dval = %g, x%llx, exp = %d\n",dval,dval,exp);
-            __asm fld   tbyte ptr ldval
-#endif
-
             while (exp > 0)
             {
                 while (exp >= pow)
                 {
-#if _WIN32 && __DMC__
-                        __asm
-                        {
-                            mov         EAX,u
-                            imul        EAX,10
-                            fld         tbyte ptr postab[EAX]
-                            fmul
-                        }
-#else
                         ldval *= postab[u];
-#endif
                         exp -= pow;
                 }
                 pow >>= 1;
                 u++;
             }
-#if _WIN32 && __DMC__
-            __asm fstp  tbyte ptr ldval
-#endif
             while (exp < 0)
             {   while (exp <= -pow)
                 {
-#if _WIN32 && __DMC__
-                        __asm
-                        {
-                            mov         EAX,u
-                            imul        EAX,10
-                            fld         tbyte ptr ldval
-                            fld         tbyte ptr negtab[EAX]
-                            fmul
-                            fstp        tbyte ptr ldval
-                        }
-#else
                         ldval *= negtab[u];
-#endif
                         if (ldval == 0)
-#if _WIN32 && __DMC__
-                                __set_errno (ERANGE);
-#else
                                 errno = ERANGE;
-#endif
                         exp += pow;
                 }
                 pow >>= 1;
@@ -541,11 +382,7 @@ longdouble strtold_dm(const char *p,char **endp)
         }
     L6: // if overflow occurred
         if (ldval == HUGE_VAL)
-#if _WIN32 && __DMC__
-            __set_errno (ERANGE);               // range error
-#else
             errno = ERANGE;
-#endif
 
     L1:
         if (endp)
@@ -553,20 +390,6 @@ longdouble strtold_dm(const char *p,char **endp)
             *endp = (char *) p;
         }
     L3:
-#if _WIN32 && __DMC__
-        fesetenv(&flagp);               // reset floating point environment
-        if (_8087)
-        {
-            __asm
-            {
-                xor     EAX,EAX
-                fstsw   AX
-                fclex
-                fldcw   word ptr old_cw
-            }
-        }
-#endif
-
         return (sign) ? -ldval : ldval;
 
     Lerr:

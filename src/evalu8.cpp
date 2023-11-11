@@ -49,19 +49,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 
 extern void error(const char *filename, unsigned linnum, unsigned charnum, const char *format, ...);
 
-#if __DMC__
-    #define HAVE_FLOAT_EXCEPT 1
-
-    static int testFE()
-    {
-        return _status87() & 0x3F;
-    }
-
-    static void clearFE()
-    {
-        _clear87();
-    }
-#elif HAVE_FENV_H
+#if HAVE_FENV_H
     #define HAVE_FLOAT_EXCEPT 1
 
     static int testFE()
@@ -105,31 +93,6 @@ static int ignore_exceptions;
  */
 
 static int resolve_sizeof;
-
-/************************************
- * Helper to do % for long doubles.
- */
-
-#if __DMC__
-longdouble _modulo(longdouble x, longdouble y)
-{   short sw;
-
-    __asm
-    {
-        fld     tbyte ptr y
-        fld     tbyte ptr x             // ST = x, ST1 = y
-FM1:    // We don't use fprem1 because for some inexplicable
-        // reason we get -5 when we do _modulo(15, 10)
-        fprem                           // ST = ST % ST1
-        fstsw   word ptr sw
-        fwait
-        mov     AH,byte ptr sw+1        // get msb of status word in AH
-        sahf                            // transfer to flags
-        jp      FM1                     // continue till ST < ST1
-        fstp    ST(1)                   // leave remainder on stack
-    }
-}
-#endif
 
 /**********************
  * Return boolean result of constant elem.
@@ -1434,11 +1397,7 @@ elem * evalu8(elem *e, goal_t goal)
                     break;
                 case TYldouble:
                 case TYildouble:
-#if __DMC__
-                    e->EV.Vldouble = _modulo(d1, d2);
-#else
                     e->EV.Vldouble = fmodl(d1, d2);
-#endif
                     break;
                 case TYcfloat:
                     switch (tym2)
@@ -1469,13 +1428,8 @@ elem * evalu8(elem *e, goal_t goal)
                     {
                         case TYldouble:
                         case TYildouble:
-#if __DMC__
-                            e->EV.Vcldouble.re = _modulo(e1->EV.Vcldouble.re, d2);
-                            e->EV.Vcldouble.im = _modulo(e1->EV.Vcldouble.im, d2);
-#else
                             e->EV.Vcldouble.re = fmodl(e1->EV.Vcldouble.re, d2);
                             e->EV.Vcldouble.im = fmodl(e1->EV.Vcldouble.im, d2);
-#endif
                             break;
                         default:
                             assert(0);
@@ -1700,11 +1654,7 @@ elem * evalu8(elem *e, goal_t goal)
                 break;
             case TYfloat:
             case TYifloat:
-#if __DMC__
-                e->EV.Vfloat = fabsf(e1->EV.Vfloat);
-#else
                 e->EV.Vfloat = fabs(e1->EV.Vfloat);
-#endif
                 break;
             case TYldouble:
             case TYildouble:
@@ -1826,72 +1776,6 @@ elem * evalu8(elem *e, goal_t goal)
         e->EV.Vint = i;
         break;
 
-#if __DMC__
-    case OPord:
-        i++;
-    case OPunord:
-        // BUG: complex numbers
-        i ^= d1 !<>= d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnlg:
-        i++;
-    case OPlg:
-        // BUG: complex numbers
-        i ^= d1 <> d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnleg:
-        i++;
-    case OPleg:
-        // BUG: complex numbers
-        i ^= d1 <>= d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnule:
-        i++;
-    case OPule:
-        // BUG: complex numbers
-        i ^= d1 !> d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnul:
-        i++;
-    case OPul:
-        // BUG: complex numbers
-        i ^= d1 !>= d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnuge:
-        i++;
-    case OPuge:
-        // BUG: complex numbers
-        i ^= d1 !< d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnug:
-        i++;
-    case OPug:
-        // BUG: complex numbers
-        i ^= d1 !<= d2;
-        e->EV.Vint = i;
-        break;
-
-    case OPnue:
-        i++;
-    case OPue:
-        // BUG: complex numbers
-        i ^= d1 !<> d2;
-        e->EV.Vint = i;
-        break;
-
-#endif
     case OPs16_32:
         e->EV.Vlong = (targ_short) i1;
         break;

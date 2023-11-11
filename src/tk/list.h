@@ -6,10 +6,6 @@
 #ifndef LIST_H
 #define LIST_H  1
 
-#if __SC__
-#pragma once
-#endif
-
 /*
  * List is a complete package of functions to deal with singly linked
  * lists of pointers or integers.

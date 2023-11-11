@@ -96,12 +96,6 @@ int main(int argc,char *argv[])
 
 #else
 
-#if __I86__ && __DMC__
-  {     extern int __cdecl _8087;
-        _8087 = 0;                      /* no fuzzy floating point      */
-                                        /* (use emulation only)         */
-  }
-#endif
 #if _WIN32 && !_WINDOWS
     // Set unbuffered output in case output is redirected to a file
     // and we need to see how far it got before a crash.

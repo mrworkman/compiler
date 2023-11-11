@@ -264,34 +264,7 @@ size_t vec_testbit(size_t b,vec_t v)
   }
 #endif
   assert(b < vec_numbits(v));
-#if __I86__ >= 3 && __SC__
-  _asm
-  {
-#if __INTSIZE == 4
-        mov     EAX,b
-        mov     ECX,v
-        bt      [ECX],EAX
-        sbb     EAX,EAX
-#elif __COMPACT__ || __LARGE__ || __VCM__
-        mov     AX,b
-        les     BX,v
-        bt      ES:[BX],AX
-        sbb     AX,AX
-#else
-        mov     AX,b
-        mov     CX,v
-        bt      [CX],AX
-        sbb     AX,AX
-#endif
-  }
-#ifdef DEBUG
-  {     int x = _AX;
-        assert((x != 0) == ((*(v + (b >> VECSHIFT)) & MASK(b)) != 0));
-  }
-#endif
-#else
   return *(v + (b >> VECSHIFT)) & MASK(b);
-#endif
 }
 
 #endif
@@ -438,9 +411,6 @@ void vec_orass(vec_t v1,vec_t v2)
                 cmp     DI,CX
                 jb      L2
             L1: pop     DS
-        #if __SC__ <= 0x610
-                jmp     Lret
-        #endif
         }
 #else
         for (; v1 < vtop; v1++,v2++)

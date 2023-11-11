@@ -970,9 +970,6 @@ Lcont:
  */
 
 int
-#if __DMC__
- __cdecl
-#endif
  autosort_cmp(const void *ps1, const void *ps2)
 {
     symbol *s1 = *(symbol **)ps1;

@@ -28,10 +28,6 @@
 #include        <dos.h>
 #endif
 
-#if __DMC__
-#include        <controlc.h>
-#endif
-
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
@@ -131,10 +127,8 @@ char *unsstr(unsigned i)
  * Hex digit?
  */
 
-#ifndef __DMC__
 int ishex(int c)
 { return isdigit(c) || isxdigit(c); }
-#endif
 
 /**************************************
  * Ignore nulls, CRs, rubouts

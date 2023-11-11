@@ -14,11 +14,7 @@
 #include        <string.h>
 #include        <stdlib.h>
 
-#if __DMC__
-#include        <new.h>
-#else
 #include        <new>
-#endif
 
 #include        "cc.h"
 #include        "global.h"

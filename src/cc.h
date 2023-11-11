@@ -10,10 +10,6 @@
  * Source:      https://github.com/dlang/dmd/blob/master/src/ddmd/backend/cc.h
  */
 
-#if __DMC__
-#pragma once
-#endif
-
 #ifndef CC_H
 #define CC_H    1
 
@@ -1293,10 +1289,6 @@ struct Symbol
 
     static unsigned sizeCheck();
 };
-
-#if __DMC__
-#pragma SC align
-#endif
 
 // Class, struct or union
 

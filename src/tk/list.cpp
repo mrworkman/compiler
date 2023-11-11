@@ -37,17 +37,12 @@ int list_inited = 0;            /* 1 if initialized                     */
 /* Free storage allocation      */
 #ifndef list_new
 
-#if (__ZTC__ || __SC__) && !MEM_DEBUG
-#define list_new()              ((list_t) mem_fmalloc(sizeof(struct LIST)))
-#define list_delete(list)       mem_ffree(list)
-#else
 #if MEM_DEBUG
 #define list_new()              ((list_t) mem_calloc_debug(sizeof(struct LIST),file,line))
 #else
 #define list_new()              ((list_t) mem_malloc(sizeof(struct LIST)))
 #endif
 #define list_delete(list)       mem_free(list)
-#endif
 
 #endif
 

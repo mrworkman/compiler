@@ -655,23 +655,13 @@ static void genftst(CodeBuilder& cdb,elem *e,int pop)
  */
 
 unsigned char loadconst(elem *e, int im)
-#if __DMC__
-__in
-{
-    elem_debug(e);
-    assert(im == 0 || im == 1);
-}
-__body
-#endif
 {
     static float fval[7] =
         {0.0,1.0,PI,LOG2T,LOG2E,LOG2,LN2};
     static double dval[7] =
         {0.0,1.0,PI,LOG2T,LOG2E,LOG2,LN2};
     static longdouble ldval[7] =
-#if __DMC__    // from math.h
-    {0.0,1.0,M_PI_L,M_LOG2T_L,M_LOG2E_L,M_LOG2_L,M_LN2_L};
-#elif _MSC_VER // struct longdouble constants
+#if _MSC_VER // struct longdouble constants
     {ld_zero, ld_one, ld_pi, ld_log2t, ld_log2e, ld_log2, ld_ln2};
 #else          // C99 hexadecimal floats (GCC, CLANG, ...)
 #define M_PI_L          0x1.921fb54442d1846ap+1L        // 3.14159 fldpi
@@ -3492,13 +3482,6 @@ static void genrnd(CodeBuilder& cdb, short cw)
  */
 
 static void genctst(CodeBuilder& cdb,elem *e,int pop)
-#if __DMC__
-__in
-{
-    assert(pop == 0 || pop == 1);
-}
-__body
-#endif
 {
     // Generate:
     //  if (NOSAHF && pop)
@@ -3719,22 +3702,6 @@ void cdconvt87(CodeBuilder& cdb, elem *e, regm_t *pretregs)
  */
 
 void cload87(CodeBuilder& cdb, elem *e, regm_t *pretregs)
-#if __DMC__
-__in
-{
-    //printf("e = %p, *pretregs = %s)\n", e, regm_str(*pretregs));
-    //elem_print(e);
-    assert(!I16);
-    if (I32)
-    {
-        assert(config.inline8087);
-        elem_debug(e);
-        assert(*pretregs & (mST01 | mPSW));
-        assert(!(*pretregs & ~(mST01 | mPSW)));
-    }
-}
-__body
-#endif
 {
     tym_t ty = tybasic(e->Ety);
     code cs;

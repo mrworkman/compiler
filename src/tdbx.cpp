@@ -14,11 +14,6 @@
 
 #include        <stdio.h>
 #include        <string.h>
-
-#ifdef __DMC__
-#include        <malloc.h>
-#endif
-
 #include        <time.h>
 #include        "cc.h"
 #include        "global.h"

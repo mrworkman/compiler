@@ -26,11 +26,6 @@
 #include        "outbuf.h"
 #include        "utf.h"
 
-#if _WIN32 && __DMC__
-// from \sc\src\include\setlocal.h
-extern "C" char * __cdecl __locale_decpoint;
-#endif
-
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
@@ -39,11 +34,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
  */
 
 #define isoctal(x)      ('0' <= (x) && (x) < '8')
-#ifdef __DMC__
-#define ishex(x)        isxdigit(x)
-#else
 #define ishex(x)        (isxdigit(x) || isdigit(x))
-#endif
 
 STATIC enum_TK innum(void);
 STATIC enum_TK inchar(int flags);
@@ -2393,7 +2384,7 @@ STATIC void checkAllowedUniversal(unsigned uc)
  *      tok_ident[]     holds the identifier
  */
 
-#if !__DMC__                            /* it's in loadline.c   */
+/* it's in loadline.c   */
 void inident()
 {
     int err = FALSE;
@@ -2420,7 +2411,6 @@ void inident()
     //printf("After inident xc '%c', bl %x, id %s\n",xc,bl,tok_ident);
     idhash += ((p - tok_ident) << 8) + (*(p - 1) & 0xFF);
 }
-#endif
 
 /********************************
  * Look for \uxxxx or \UXXXXXXXX
@@ -3092,10 +3082,6 @@ STATIC enum_TK inreal(const char *p)
 done:
     tok_string[i] = 0;
     errno = 0;
-#if _WIN32 && __DMC__
-    char *save = __locale_decpoint;
-    __locale_decpoint = ".";
-#endif
 
     switch (xc)
     {
@@ -3127,9 +3113,6 @@ done:
             result = TKreal_d;
             break;
     }
-#if _WIN32 && __DMC__
-    __locale_decpoint = save;
-#endif
     // ANSI C99 says let it slide
     if (errno == ERANGE && !ANSI)
         warerr(WM_badnumber);           // number is not representable

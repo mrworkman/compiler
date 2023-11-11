@@ -35,7 +35,7 @@
 #include        <windows.h>
 #endif
 
-#if __DMC__ || __GNUC__ || _MSC_VER
+#if __GNUC__ || _MSC_VER
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 #else
@@ -77,9 +77,6 @@ void os_error(int line)
 #endif
 
 #define os_error() os_error(__LINE__)
-#if __DMC__
-#pragma noreturn(os_error)
-#endif
 
 #if _WIN32
 /*********************************

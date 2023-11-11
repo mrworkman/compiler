@@ -10,10 +10,6 @@
  * Source:      https://github.com/dlang/dmd/blob/master/src/ddmd/backend/type.h
  */
 
-#if __DMC__
-#pragma once
-#endif
-
 #ifndef __TYPE_H
 #define __TYPE_H
 

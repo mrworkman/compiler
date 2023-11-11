@@ -15,10 +15,6 @@
 #include        <stdio.h>
 #include        <string.h>
 
-#ifdef __DMC__
-#include        <malloc.h>
-#endif
-
 #if __GNUC__ || __clang__
 #include        <alloca.h>
 #endif

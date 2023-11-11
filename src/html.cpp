@@ -488,20 +488,6 @@ void Html::scanComment()
  */
 
 int Html::isCommentStart()
-#ifdef __DMC__
-    __out(result)
-    {
-        if (result == 0)
-            ;
-        else if (result == 1)
-        {
-            assert(p[-2] == '-' && p[-1] == '-');
-        }
-        else
-            assert(0);
-    }
-    __body
-#endif /* __DMC__ */
     {   unsigned char *s;
 
         if (p[0] == '<' && p[1] == '!')

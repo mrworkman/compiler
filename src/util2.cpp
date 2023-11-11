@@ -26,11 +26,6 @@
 #include        "el.h"
 #endif
 
-#if _WIN32 && __DMC__
-//#include      "scdll.h"
-#include        <controlc.h>
-#endif
-
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 

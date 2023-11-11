@@ -117,10 +117,6 @@ __declspec(noreturn) void util_assert(const char *, int);
 #else
 void util_exit(int);
 void util_assert(const char *, int);
-#if __DMC__
-#pragma ZTC noreturn(util_exit)
-#pragma ZTC noreturn(util_assert)
-#endif
 #endif
 
 void util_progress();
@@ -156,7 +152,7 @@ char *unsstr(unsigned);
 int isignore(int);
 int isillegal(int);
 
-#if !defined(__DMC__) && !defined(_MSC_VER)
+#if !defined(_MSC_VER)
 int ishex(int);
 #endif
 
@@ -195,11 +191,6 @@ void err_fatal(unsigned,...) __attribute__((analyzer_noreturn));
 void err_exit();
 void err_nomem();
 void err_fatal(unsigned,...);
-#if __DMC__
-#pragma ZTC noreturn(err_exit)
-#pragma ZTC noreturn(err_nomem)
-#pragma ZTC noreturn(err_fatal)
-#endif
 #endif
 
 int cpperr(unsigned,...);
