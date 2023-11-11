@@ -146,11 +146,7 @@ void cgcs_term()
 #ifdef DEBUG
     debugw && dbg_printf("freeing hcstab\n");
 #endif
-#if TX86
     util_free(hcstab);
-#else
-    MEM_PARF_FREE(hcstab);
-#endif
     hcstab = NULL;
     hcsmax = 0;
 }
@@ -197,7 +193,6 @@ STATIC void ecom(elem **pe)
     case OPxorass:
     case OPorass:
     case OPvecsto:
-#if TX86
         /* Reverse order of evaluation for double op=. This is so that  */
         /* the pushing of the address of the second operand is easier.  */
         /* However, with the 8087 we don't need the kludge.             */
@@ -207,7 +202,6 @@ STATIC void ecom(elem **pe)
                 ecom(&e->E2);
         }
         else
-#endif
         {
             /* Don't mark the increment of an i++ or i-- as a CSE, if it */
             /* can be done with an INC or DEC instruction.               */
@@ -267,9 +261,7 @@ STATIC void ecom(elem **pe)
         touchfunc(1);
         return;
     case OPstrpar:                      /* so we don't break logexp()   */
-#if TX86
     case OPinp:                 /* never CSE the I/O instruction itself */
-#endif
     case OPprefetch:            // don't CSE E2 or the instruction
         ecom(&e->E1);
         /* FALL-THROUGH */
@@ -290,9 +282,7 @@ STATIC void ecom(elem **pe)
         return;
 
     case OPparam:
-#if TX86
     case OPoutp:
-#endif
         ecom(&e->E1);
     case OPinfo:
         ecom(&e->E2);
@@ -337,11 +327,9 @@ STATIC void ecom(elem **pe)
     case OPand:
     case OPeqeq:
     case OPne:
-#if TX86
     case OPscale:
     case OPyl2x:
     case OPyl2xp1:
-#endif
         ecom(&e->E1);
         ecom(&e->E2);
         break;
@@ -372,9 +360,7 @@ STATIC void ecom(elem **pe)
     case OPvoid:
     case OPbsf: case OPbsr: case OPbswap: case OPpopcnt: case OPvector:
     case OPld_u64:
-#if TX86
     case OPsqrt: case OPsin: case OPcos:
-#endif
     case OPoffset: case OPnp_fp: case OPnp_f16p: case OPf16p_np:
     case OPvecfill:
         ecom(&e->E1);
@@ -387,11 +373,9 @@ STATIC void ecom(elem **pe)
   if (tym == TYstruct ||
       tym == TYvoid ||
       e->Ety & mTYvolatile
-#if TX86
       || tyxmmreg(tym)
       // don't CSE doubles if inline 8087 code (code generator can't handle it)
       || (tyfloating(tym) && config.inline8087)
-#endif
      )
         return;
 
@@ -457,11 +441,7 @@ STATIC unsigned cs_comphash(elem *e)
 
     elem_debug(e);
     op = e->Eoper;
-#if TX86
     hash = (e->Ety & (mTYbasic | mTYconst | mTYvolatile)) + (op << 8);
-#else
-    hash = e->Ety + op;
-#endif
     if (!OTleaf(op))
     {   hash += (size_t) e->E1;
         if (OTbinary(op))
@@ -489,11 +469,7 @@ STATIC void addhcstab(elem *e,int hash)
         // With 32 bit compiles, we've got memory to burn
         hcsmax += hcsmax + 128;
         assert(h < hcsmax);
-#if TX86
         hcstab = (hcs *) util_realloc(hcstab,hcsmax,sizeof(hcs));
-#else
-        hcstab = (hcs *) MEM_PARF_REALLOC(hcstab,hcsmax*sizeof(hcs));
-#endif
         //printf("hcstab = %p; hcsarray.top = %d, hcsmax = %d\n",hcstab,hcsarray.top,hcsmax);
   }
   hcstab[h].Helem = e;

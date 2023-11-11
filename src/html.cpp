@@ -23,11 +23,6 @@
 
 #include "html.h"
 
-#if MARS
-#include <assert.h>
-#include "root.h"
-//#include "../mars/mars.h"
-#else
 #include "outbuf.h"
 #include "msgs2.h"
 
@@ -35,7 +30,6 @@ extern void html_err(const char *, unsigned, unsigned, ...);
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
-#endif
 
 int mymemicmp(const char *s1, const char *s2, int n)
 {
@@ -122,11 +116,7 @@ void Html::error(const char *format, ...)
  * concatenate it all together, and store in buf.
  */
 
-#if MARS
-void Html::extractCode(OutBuffer *buf)
-#else
 void Html::extractCode(Outbuffer *buf)
-#endif
 {
     //printf("Html::extractCode()\n");
     dbuf = buf;                 // save for other routines
@@ -170,11 +160,7 @@ void Html::extractCode(Outbuffer *buf)
                     int c;
 
                     c = charEntity();
-#if MARS
-                    buf->writeUTF8(c);
-#else
                     buf->writeByte(c);
-#endif
                 }
                 else
                     p++;
@@ -203,9 +189,6 @@ void Html::extractCode(Outbuffer *buf)
     buf->writeByte(0);                          // ending sentinel
 #if SCPP
     //printf("Code is: '%s'\n", buf->toString() + 3);
-#endif
-#if MARS
-    //printf("D code is: '%s'\n", (char *)buf->data);
 #endif
 }
 

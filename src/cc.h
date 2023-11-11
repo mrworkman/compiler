@@ -33,14 +33,6 @@
 #define SPP             0
 #endif
 
-#ifndef MARS
-#define MARS            0       // not compiling MARS code
-#endif
-
-#ifndef HTOD
-#define HTOD            0
-#endif
-
 #define GENOBJ          1       // generating .obj file
 
 #define mskl(i)         (1L << (i))     /* convert int to mask          */
@@ -107,8 +99,8 @@ enum LANG
 #include        "msgs2.h"
 #endif
 #include        "ty.h"
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-#include        "../tk/mem.h"
+#if __linux__ || __APPLE__
+#include        "./tk/mem.h"
 #else
 #include        "mem.h"
 #endif
@@ -118,9 +110,6 @@ enum LANG
 #if SPP
 #define COMPILER "Preprocessor"
 #define ACTIVITY "preprocessing..."
-#elif HTOD
-#define COMPILER ".h to D Migration Tool"
-#define ACTIVITY "migrating..."
 #else
 #define COMPILER "C/C++ Compiler"
 #define ACTIVITY "compiling..."
@@ -176,9 +165,7 @@ typedef struct TYPE type;
 typedef struct Symbol symbol;
 typedef Symbol Funcsym;
 struct elem;
-#if !MARS
 typedef struct MACRO macro_t;
-#endif
 typedef list_t symlist_t;       /* list of pointers to Symbols          */
 struct symtab_t;
 struct code;
@@ -198,21 +185,6 @@ struct Srcpos
     #define srcpos_name(p)      (srcpos_sfile(p).SFname)
     short Sfilnum;              // file number
 #endif
-#if MARS
-    const char *Sfilename;
-    #define srcpos_name(p)      ((p)->Sfilename)
-
-    static Srcpos create(const char *filename, unsigned linnum, unsigned charnum)
-    {
-        // Cannot have constructor because Srcpos is used in a union
-        Srcpos sp;
-        sp.Sfilename = filename;
-        sp.Slinnum = linnum;
-        sp.Scharnum = charnum;
-        return sp;
-    }
-#endif
-
     void print(const char *func);
 
     static unsigned sizeCheck();
@@ -234,7 +206,6 @@ enum
     PFLextdef        = 0x40,    // we had an external def
     PFLhxwrote       = 0x80,    // already generated HX ph file
     PFLhxdone        = 0x100,   // done with HX ph file
-#if TX86
     PFLhxread        = 0x200,   // have read in an HX ph file
     PFLhxgen         = 0x400,   // need to generate HX ph file
     PFLphread        = 0x800,   // read a ph file
@@ -243,7 +214,6 @@ enum
     PFLsymdef        = 0x4000,  // declared a global Symbol in the source
     PFLinclude       = 0x8000,  // read a .h file
     PFLmfc           = 0x10000, // something will affect MFC compatibility
-#endif
 };
 
 typedef char sthflags_t;
@@ -283,9 +253,7 @@ struct Pstate
     char STinexcept;            // if !=0 then in exception handler
     block *STbfilter;           // current exception filter
 #endif
-#if !MARS
     int STinitseg;              // segment for static constructor function pointer
-#endif
     Funcsym *STfuncsym_p;       // if inside a function, then this is the
                                 // function Symbol.
 
@@ -295,18 +263,14 @@ struct Pstate
     #define preprocessor     (pstate.STflags & PFLpreprocessor)
     #define inline_asm       (pstate.STflags & (PFLmasm | PFLbasm))
 
-#if !MARS
     int STinparamlist;          // if != 0, then parser is in
                                 // function parameter list
     int STingargs;              // in template argument list
     list_t STincalias;          // list of include aliases
     list_t STsysincalias;       // list of system include aliases
-#endif
 
-#if TX86
     // should probably be inside #if HYDRATE, but unclear for the dmc source
     sthflags_t SThflag;         // FLAG_XXXX: hydration flag
-#endif
 
     Classsym *STclasssym;       // if in the scope of this class
     symlist_t STclasslist;      // list of classes that have deferred inline
@@ -383,29 +347,12 @@ typedef char enum_SC;
  *      in a function. startblock heads the list.
  */
 
-#if MARS
 class ClassDeclaration;
 class Declaration;
 class Module;
-#endif
 
 struct Blockx
 {
-#if MARS
-    block *startblock;
-    block *curblock;
-    Funcsym *funcsym;
-    Symbol *context;            // eh frame context variable
-    int scope_index;            // current scope index
-    int next_index;             // value for next scope index
-    unsigned flags;             // value to OR into Bflags
-    block *tryblock;            // current enclosing try block
-    elem *init;                 // static initializer
-    ClassDeclaration *classdec;
-    Declaration *member;        // member we're compiling for
-    Module *module;             // module we're in
-#endif
-
     static unsigned sizeCheck();
 };
 
@@ -470,21 +417,9 @@ struct block
             #define Bcatchtype BS.BICATCH.catchtype
         } BICATCH;                      // BCcatch
 #endif
-#if MARS
-        struct
-        {   Symbol *catchtype;          // one type for each catch block
-            #define Bcatchtype BS.BIJCATCH.catchtype
-
-            unsigned *actionTable;      // EH_DWARF: indices into typeTable, first is # of entries
-        } BIJCATCH;                     // BCjcatch
-#endif
-#if NTEXCEPTIONS || MARS
+#if NTEXCEPTIONS
         struct
         {
-#if MARS
-            Symbol *jcatchvar;          // __d_throw() fills in this
-            #define jcatchvar BS.BI_TRY.jcatchvar
-#endif
             int Bscope_index;           // index into scope table
             #define Bscope_index BS.BI_TRY.Bscope_index
             int Blast_index;            // enclosing index into scope table
@@ -833,9 +768,7 @@ struct baseclass_t
     baseclass_flags_t BCflags;          // base class flags
     Classsym         *BCparent;         // immediate parent of this base class
                                         //     in Smptrbase
-#if TX86
     baseclass_t      *BCpbase;          // parent base, NULL if did not come from a parent
-#endif
 
     static unsigned sizeCheck();
 };
@@ -1045,11 +978,9 @@ struct struct_t
     targ_size_t Snonvirtsize;   // size of struct excluding virtual classes
     list_t Svirtual;            // freeable list of mptrs
                                 // that go into vtbl[]
-#if TX86
     list_t *Spvirtder;          // pointer into Svirtual that points to start
                                 // of virtual functions for this (derived) class
     symlist_t Sopoverload;      // overloaded operator funcs (list freeable)
-#endif
     symlist_t Scastoverload;    // overloaded cast funcs (list freeable)
     symlist_t Sclassfriends;    // list of classes of which this is a friend
                                 // (list is freeable)
@@ -1304,7 +1235,7 @@ struct Symbol
 
     regm_t Spregm();            // return mask of Spreg and Spreg2
 
-#if SCPP || MARS
+#if SCPP
     Symbol *Sscope;             // enclosing scope (could be struct tag,
                                 // enclosing inline function for statics,
                                 // or namespace)
@@ -1319,8 +1250,6 @@ struct Symbol
 #define isscover(s)             ((s)->Sclass == SCstruct || (s)->Sclass == SCenum || (s)->Sclass == SCtemplate)
     unsigned Ssequence;         // sequence number (used for 2 level lookup)
                                 // also used as 'parameter number' for SCTtemparg
-#elif MARS
-    const char *prettyIdent;    // the symbol identifer as the user sees it
 #endif
 
 //#if TARGET_OSX
@@ -1363,11 +1292,6 @@ struct Symbol
     }_SXR;
     regm_t      Sregsaved;      // mask of registers not affected by this func
 
-#if MARS
-    unsigned lnoscopestart;     // life time of var
-    unsigned lnoscopeend;       // the line after the scope
-#endif
-
     char Sident[1];             // identifier string (dynamic array)
 
     int needThis();             // !=0 if symbol needs a 'this' pointer
@@ -1394,15 +1318,9 @@ struct Aliassym : Symbol { };
 //struct Funcsym : Symbol { };
 
 // Determine if this Symbol is stored in a COMDAT
-#if MARS
-#define symbol_iscomdat(s)      ((s)->Sclass == SCcomdat ||             \
-        config.flags2 & CFG2comdat && (s)->Sclass == SCinline ||        \
-        config.flags4 & CFG4allcomdat && ((s)->Sclass == SCglobal))
-#else
 #define symbol_iscomdat(s)      ((s)->Sclass == SCcomdat ||             \
         config.flags2 & CFG2comdat && (s)->Sclass == SCinline ||        \
         config.flags4 & CFG4allcomdat && ((s)->Sclass == SCglobal || (s)->Sclass == SCstatic))
-#endif
 
 /* Format the identifier for presentation to the user   */
 #if SCPP
@@ -1526,7 +1444,6 @@ enum FL
 
 ////////// Srcfiles
 
-#if !MARS
 // Collect information about a source file.
 typedef unsigned sfile_flags_t;
 enum
@@ -1587,7 +1504,6 @@ struct Srcfiles
 
 #define sfile(fi)               (*srcfiles.pfiles[fi])
 #define srcfiles_name(fi)       (sfile(fi).SFname)
-#endif
 
 /**************************************************
  * This is to support compiling expressions within the context of a function.

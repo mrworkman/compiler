@@ -18,11 +18,7 @@
 
 struct seg_data;
 
-#if MARS && TARGET_WINDOS
-#define VIRTUAL virtual
-#else
 #define VIRTUAL static
-#endif
 
 class Obj
 {
@@ -97,15 +93,7 @@ class Obj
 
     static void gotref(symbol *s);
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    static unsigned addstr(Outbuffer *strtab, const char *);
-    static symbol *getGOTsym();
-    static void refGOTsym();
-#endif
-
-#if TARGET_WINDOS
     VIRTUAL int seg_debugT();           // where the symbolic debug type data goes
-#endif
 };
 
 class ElfObj : public Obj

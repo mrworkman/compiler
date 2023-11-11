@@ -64,12 +64,7 @@ STATIC void tdb_loaddll()
 
 void tdb_error(unsigned line)
 {
-#if MARS
-        printf("Fatal error with file '%s'\n", ftdbname);
-        err_exit();
-#else
         err_fatal(EM_tdb,ftdbname, line);               // error
-#endif
 }
 
 /*************************************

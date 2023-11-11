@@ -181,12 +181,7 @@ enum
     mTYnothrow      = 0x00200000,    // nothrow function
 
     // Used only by C/C++ compiler
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    mTYnoret        = 0x01000000,    // function has no return
-    mTYtransu       = 0x01000000,    // transparent union
-#else
     mTYfar16        = 0x01000000,
-#endif
     mTYstdcall      = 0x02000000,
     mTYfastcall     = 0x04000000,
     mTYinterrupt    = 0x08000000,
@@ -194,12 +189,7 @@ enum
     mTYpascal       = 0x20000000,
     mTYsyscall      = 0x40000000,
     mTYjava         = 0x80000000,
-
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    mTYTFF          = 0xFE000000,
-#else
     mTYTFF          = 0xFF000000,
-#endif
 };
 
 inline tym_t tybasic(tym_t ty) { return ty & mTYbasic; }

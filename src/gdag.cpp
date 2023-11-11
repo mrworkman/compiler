@@ -11,7 +11,7 @@
  */
 
 
-#if (SCPP || MARS) && !HTOD
+#if SCPP
 
 #include        <stdio.h>
 #include        <time.h>
@@ -41,15 +41,11 @@ static Aetype aetype;
 
 inline int cse_float(elem *e)
 {
-#if TX86
     // Don't CSE floating stuff if generating
     // inline 8087 code, the code generator
     // can't handle it yet
     return !(tyfloating(e->Ety) && config.inline8087 &&
            e->Eoper != OPvar && e->Eoper != OPconst);
-#else
-    return 1;
-#endif
 }
 
 /************************************
@@ -135,9 +131,6 @@ void builddags()
                     || b->BC == BC_lpad
 #if SCPP
                     || b->BC == BCcatch
-#endif
-#if MARS
-                    || b->BC == BCjcatch
 #endif
                    )
                         vec_clear(aevec);
@@ -527,12 +520,10 @@ L1:     e = *pe;
         else if (OTbinary(op))
         {
                 if (e->Ecount > 0 && OTrel(op) && e->Ecount < 4
-#if TX86
                     /* Don't CSE floating stuff if generating   */
                     /* inline 8087 code, the code generator     */
                     /* can't handle it yet                      */
                     && !(tyfloating(e->E1->Ety) && config.inline8087)
-#endif
                    )
                         e = delcse(pe);
                 if (ERTOL(e))
@@ -619,9 +610,6 @@ void boolopt()
                     || b->BC == BC_lpad
 #if SCPP
                     || b->BC == BCcatch
-#endif
-#if MARS
-                    || b->BC == BCjcatch
 #endif
                    )
                         vec_clear(aevec);

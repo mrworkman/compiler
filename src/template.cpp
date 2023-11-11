@@ -50,11 +50,9 @@ void template_explicit_instantiation();
 void template_instantiate_classmember(Symbol *st, TMF *tmf);
 void template_instantiate_classmember(Symbol *st, Symbol *si);
 
-#if TX86
 symlist_t template_ftlist;              // list of template function symbols
 symbol *template_class_list;
 symbol **template_class_list_p;
-#endif
 
 INITIALIZED_STATIC_DEF list_t template_xlist;
 
@@ -526,7 +524,6 @@ STATIC void template_class_decl(
 
     switch (tok.TKval)
     {
-#if TX86
         case TK_export: structflags |= STRexport;       goto L5;
         case TK_declspec:
                     {   tym_t ty;
@@ -538,7 +535,6 @@ STATIC void template_class_decl(
                                 structflags |= STRimport;
                             goto L5;
                     }
-#endif
         L5:
                 stoken();
                 break;
@@ -2357,21 +2353,7 @@ void template_instantiate()
                             }
                             stoken();           /* skip over ','        */
                         }
-#if TX86
                         s = template_matchfunc(s,pl,TRUE,TMATCHexact,NULL);
-#else
-#if PUBLIC_EXT
-                        template_expansion = TRUE;
-#endif
-//
-// Need to call template_implemented_already so that if the template function
-// already has this expansion implemented, it is not implemented again.
-//
-                        if ((se = template_implemented_already( stemp, pl )) != NULL)
-                            s = se;
-                        else
-                            s = template_matchfunc(stemp,pl,TRUE, TMATCHexact,NULL);
-#endif
                         param_free(&pl);
                         if (!s)
                             goto err;
@@ -2610,11 +2592,9 @@ void template_instantiate()
 #if PUBLIC_EXT
   if (template_access != SCglobal)
 #endif
-#if TX86
   // VC 2.0 does not instantiate functions for which a declaration exists
   // but no body does. So, we don't either.
   if (config.flags4 & CFG4tempinst)
-#endif
   {
     /* Instantiate any undefined functions that we can using function
         templates.
@@ -2654,7 +2634,7 @@ void template_instantiate()
 
   }
     list_free(&template_ftlist,FPNULL);
-#if PUBLIC_EXT && TX86 // DJB
+#if PUBLIC_EXT // DJB
     list_free(&expand_list,FPNULL);
 #endif
 }
@@ -4616,13 +4596,8 @@ Match template_matchtype(type *tp,type *te,elem *ee,param_t *ptpl, param_t *ptal
         type_debug(te);
 
         /* ignore name mangling */
-#if TX86
         tpty = tp->Tty & ~(mTYexport | mTYimport);
         tety = te->Tty & ~(mTYexport | mTYimport);
-#else
-        tpty = tp->Tty & ~mTYMAN;
-        tety = te->Tty & ~mTYMAN;
-#endif
         if (tyref(tety))
             // cv-qualified references are ignored
             tety &= ~(mTYconst | mTYvolatile);
@@ -4647,10 +4622,8 @@ Match template_matchtype(type *tp,type *te,elem *ee,param_t *ptpl, param_t *ptal
                 te = te->Talternate;
                 type_debug(te);
             }
-#if TX86
             if (tyref(tety))
                 te = te->Tnext;
-#endif
             // Adding cv to a reference type is a no match:
             //  f(t&) cannot take a (const t) as an argument
             if (tybasic(tp->Tty) != TYident &&
@@ -4951,11 +4924,7 @@ else if (flags & 8 && strcmp(sprimary->Sident, se->Sident))
                         if (conv)
                         {
                             match = TMATCHstandard;
-#if TX86
                             adj += (conv >> 8);
-#else
-                            adj += 0x100;
-#endif
                             goto L27;
                         }
                     }
@@ -5209,7 +5178,6 @@ samety:
             if (ten & ~tpn)
                 goto nomatch;
 
-#if TX86
             // Regard certain implicit pointer conversions as matches
             tety = tybasic(tety);
             tpty = tybasic(tpty);
@@ -5220,7 +5188,6 @@ samety:
             if (tpty == TYfptr && (tety == TYnptr || tety == TYsptr || tety == TYcptr))
                 goto Lcont;
             goto nomatch;
-#endif
         }
         else if (tybasic(tety) == TYmemptr && tybasic(tpty) == TYmemptr)
         {

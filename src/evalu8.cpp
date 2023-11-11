@@ -88,7 +88,7 @@ extern void error(const char *filename, unsigned linnum, unsigned charnum, const
     {
         feclearexcept(FE_ALL_EXCEPT);
     }
-#elif defined _MSC_VER && TX86
+#elif defined _MSC_VER
     #define HAVE_FLOAT_EXCEPT 1
 
     static int testFE()
@@ -182,9 +182,7 @@ int boolres(elem *e)
                 case TYbool:
                 case TYwchar_t:
                 case TYenum:
-#if !MARS
                 case TYmemptr:
-#endif
                 case TYlong:
                 case TYulong:
                 case TYdchar:
@@ -1249,7 +1247,7 @@ elem * evalu8(elem *e, goal_t goal)
     case OPdiv:
         if (!boolres(e2))                       // divide by 0
         {
-#if SCPP || MARS
+#if SCPP
             if (!tyfloating(tym))
 #endif
                 goto div0;
@@ -1424,17 +1422,12 @@ elem * evalu8(elem *e, goal_t goal)
         }
         break;
     case OPmod:
-#if MARS
-        if (!tyfloating(tym))
-#endif
         {
             if (!boolres(e2))
             {
                 div0:
 #if SCPP
                     synerr(EM_divby0);
-#elif MARS
-                    error(e->Esrcpos.Sfilename, e->Esrcpos.Slinnum, e->Esrcpos.Scharnum, "divide by zero");
 #endif
                     break;
             }
@@ -1587,10 +1580,6 @@ elem * evalu8(elem *e, goal_t goal)
             e->EV.Vllong = l1 >> i2;
         }
 #endif
-#if MARS
-        // Always unsigned
-        e->EV.Vullong = ((targ_ullong) l1) >> i2;
-#endif
         break;
 
     case OPbtst:
@@ -1598,15 +1587,6 @@ elem * evalu8(elem *e, goal_t goal)
             i2 = sizeof(targ_ullong) * 8;
         e->EV.Vullong = (((targ_ullong) l1) >> i2) & 1;
         break;
-
-#if MARS
-    case OPashr:
-        if ((targ_ullong) i2 > sizeof(targ_ullong) * 8)
-            i2 = sizeof(targ_ullong) * 8;
-        // Always signed
-        e->EV.Vllong = l1 >> i2;
-        break;
-#endif
 
     case OPpair:
         switch (_tysize[tym])
@@ -1759,11 +1739,9 @@ elem * evalu8(elem *e, goal_t goal)
                 break;
         }
         break;
-#if TX86
     case OPsqrt:
     case OPsin:
     case OPcos:
-#endif
     case OPrndtol:
     case OPrint:
         return e;
@@ -2134,7 +2112,7 @@ elem * evalu8(elem *e, goal_t goal)
         break;
     }
     case OPind:
-#if 0 && MARS
+#if 0
         /* The problem with this is that although the only reaching definition
          * of the variable is null, it still may never get executed, as in:
          *   int* p = null; if (p) *p = 3;
@@ -2220,7 +2198,6 @@ elem * evalu8(elem *e, goal_t goal)
     default:
         return e;
   }
-#if TX86
     int flags;
 
     if (!ignore_exceptions &&
@@ -2241,7 +2218,6 @@ elem * evalu8(elem *e, goal_t goal)
 //      else if (flags & 0x08)          // overflow
 //          warerr(WM_badnumber);
     }
-#endif
 #endif
 
   /*dbg_printf("result = x%lx\n",e->EV.Vlong);*/

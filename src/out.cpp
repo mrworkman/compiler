@@ -86,9 +86,6 @@ void outthunk(symbol *sthunk,symbol *sfunc,unsigned p,tym_t thisty,
 
 void outdata(symbol *s)
 {
-#if HTOD
-    return;
-#endif
     int seg;
     targ_size_t offset;
     int flags;
@@ -108,7 +105,7 @@ void outdata(symbol *s)
     s->Sdt = NULL;                      // it will be free'd
     targ_size_t datasize = 0;
     tym_t ty = s->ty();
-#if SCPP && TARGET_WINDOS
+#if SCPP
     if (eecontext.EEcompile)
     {   s->Sfl = (s->ty() & mTYfar) ? FLfardata : FLextern;
         s->Sseg = UNKNOWN;
@@ -381,10 +378,6 @@ void dt_writeToObj(Obj& objmod, dt_t *dt, int seg, targ_size_t& offset)
 #else
                 /*else*/ if (dt->DTseg == DATA)
                     objmod.reftodatseg(seg,offset,dt->DTabytes,DATA,flags);
-#if MARS
-                else if (dt->DTseg == CDATA)
-                    objmod.reftodatseg(seg,offset,dt->DTabytes,CDATA,flags);
-#endif
                 else
                     objmod.reftofarseg(seg,offset,dt->DTabytes,dt->DTseg,flags);
 #endif
@@ -968,9 +961,7 @@ STATIC void writefunc2(symbol *sfunc);
 
 void writefunc(symbol *sfunc)
 {
-#if HTOD
-    return;
-#elif SCPP
+#if SCPP
     writefunc2(sfunc);
 #else
     cstate.CSpsymtab = &globsym;
@@ -1185,12 +1176,6 @@ STATIC void writefunc2(symbol *sfunc)
                 list_free(&b->Bsucc,FPNULL);
             }
 #endif
-#if MARS
-            if (b->Belem->Eoper == OPhalt)
-            {   b->BC = BCexit;
-                list_free(&b->Bsucc,FPNULL);
-            }
-#endif
         }
         if (b->BC == BCasm)
             anyasm = 1;
@@ -1273,11 +1258,7 @@ STATIC void writefunc2(symbol *sfunc)
         else
             if (config.flags & CFGsegs) // if user set switch for this
             {
-#if SCPP || TARGET_WINDOS
                 objmod->codeseg(cpp_mangle(funcsym_p),1);
-#else
-                objmod->codeseg(funcsym_p->Sident, 1);
-#endif
                                         // generate new code segment
             }
         cod3_align(cseg);               // align start of function
@@ -1384,28 +1365,6 @@ STATIC void writefunc2(symbol *sfunc)
     if (config.fulltypes && config.fulltypes != CV8)
         cv_func(sfunc);                 // debug info for function
 
-#if MARS
-    /* This is to make uplevel references to SCfastpar variables
-     * from nested functions work.
-     */
-    for (si = 0; si < globsym.top; si++)
-    {
-        Symbol *s = globsym.tab[si];
-
-        switch (s->Sclass)
-        {   case SCfastpar:
-                s->Sclass = SCauto;
-                break;
-        }
-    }
-    /* After codgen() and writing debug info for the locals,
-     * readjust the offsets of all stack variables so they
-     * are relative to the frame pointer.
-     * Necessary for nested function access to lexically enclosing frames.
-     */
-     cod3_adjSymOffsets();
-#endif
-
     if (symbol_iscomdat(sfunc))         // if generated a COMDAT
     {
         assert(csegsave != CSEGSAVE_DEFAULT);
@@ -1487,9 +1446,6 @@ void out_reset()
 
 symbol *out_readonly_sym(tym_t ty, void *p, int len)
 {
-#if HTOD
-    return;
-#endif
 #if 0
     printf("out_readonly_sym(ty = x%x)\n", ty);
     for (int i = 0; i < len; i++)
@@ -1505,8 +1461,7 @@ symbol *out_readonly_sym(tym_t ty, void *p, int len)
 
     symbol *s;
 
-    if (config.objfmt == OBJ_ELF ||
-        (MARS && (config.objfmt == OBJ_OMF || config.objfmt == OBJ_MSCOFF)))
+    if (config.objfmt == OBJ_ELF)
     {
         /* MACHOBJ can't go here, because the const data segment goes into
          * the _TEXT segment, and one cannot have a fixup from _TEXT to _TEXT.
@@ -1563,12 +1518,8 @@ void out_readonly_comdat(Symbol *s, const void *p, unsigned len, unsigned nzeros
 void Srcpos::print(const char *func)
 {
     printf("%s(", func);
-#if MARS
-    printf("Sfilename = %s", Sfilename ? Sfilename : "null");
-#else
     Sfile *sf = Sfilptr ? *Sfilptr : NULL;
     printf("Sfilptr = %p (filename = %s)", sf, sf ? sf->SFname : "null");
-#endif
     printf(", Slinnum = %u", Slinnum);
     printf(")\n");
 }

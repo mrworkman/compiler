@@ -142,7 +142,6 @@ enum TK {
         TK_out,
         TK_body,
         TK_invariant,
-#if TX86
         TK_Seg16,
         TK_System,
         TK__emit__,
@@ -172,24 +171,6 @@ enum TK {
         TK_stdcall,
         TK_syscall,
         TK_try,
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        TK_attribute,
-        TK_extension,
-        TK_format,
-        TK_restrict,
-        TK_bltin_const,
-#endif
-#else
-        TKcomp,
-        TKextended,
-        TK_handle,
-        TK_machdl,
-        TK_pasobj,
-//#if CPP
-        TK__class,
-        TKinherited,
-//#endif
-#endif
         TK_unaligned,
         TKsymbol,                       // special internal token
 
@@ -204,9 +185,6 @@ enum TK {
         TKandand,TKshl,TKshr,TKrcur,TKeq,TKaddass,TKminass,TKmulass,TKdivass,
         TKmodass,TKshrass,TKshlass,TKandass,TKxorass,TKorass,TKsemi,
         TKadd,TKellipsis,
-#if !TX86 || TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        TKdollar,
-#endif
 
  /* The following relational tokens must be in the same order as the
     corresponding operators.
@@ -355,7 +333,6 @@ void token_term(void);
 #define ptoken()        rtoken(1)
 #define token()         rtoken(0)
 
-#if !MARS
 /* from pragma.c */
 //enum_TK ptoken(void);
 void pragma_process();
@@ -366,9 +343,8 @@ void listident(void);
 void pragma_term(void);
 macro_t *defmac(const char *name , const char *text);
 int pragma_defined(void);
-#endif
 
-#if SPP && TX86
+#if SPP
 #define token_linnum()  getlinnum()
 #endif
 

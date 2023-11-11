@@ -351,23 +351,6 @@ enum OP_DB
     OPdi = 4,
     OPdl = 8,
 #endif
-#if MARS
-    // Integral types
-    OPdb,
-    OPds,
-    OPdi,
-    OPdl,
-
-    // Float types
-    OPdf,
-    OPdd,
-    OPde,
-
-    // Deprecated
-    OPdw = OPds,
-    OPdq = OPdl,
-    OPdt = OPde,
-#endif
 };
 
 

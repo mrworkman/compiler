@@ -34,9 +34,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 
 #define outtype(tym)    outword(tym)    /* fix this later               */
 
-#if TX86
 bool init_staticctor;   /* TRUE if this is a static initializer */
-#endif
 
 STATIC elem * initelem(type *, DtBuilder&, symbol *,targ_size_t);
 STATIC elem * initstruct(type *, DtBuilder&, symbol *,targ_size_t);
@@ -169,12 +167,10 @@ void datadef(symbol *s)
         {
             case SCauto:
             case SCregister: {
-#if TX86
                 if (s->Stype->Tty & mTYcs)
                 {   s->Sclass = SCstatic;
                     goto Lstatic;
                 }
-#endif
                 symbol_add(s);
 
                 marksi = globsym.top;
@@ -221,11 +217,9 @@ void datadef(symbol *s)
             case SCextern:
                 if (type_isvla(s->Stype))
                     synerr(EM_no_vla);          // can't be a VLA
-#if TX86
                 if (s->Stype->Tty & mTYfar)
                     s->Sfl = FLfardata;
                 else
-#endif
                     s->Sfl = FLextern;
                 break;
             default:
@@ -823,11 +817,9 @@ symbol *init_typeinfo_data(type *ptype)
         {   // Generate reference to extern
           Lextern:
             s->Sclass = SCextern;
-#if TX86
             if (s->Stype->Tty & mTYcs)
                 s->Sfl = FLcsdata;
             else
-#endif
                 s->Sfl = FLextern;
         }
         else
@@ -1107,13 +1099,11 @@ STATIC elem * initelem(type *t, DtBuilder& dtb, symbol *s, targ_size_t offset)
         case TYcfloat:
         case TYcdouble:
         case TYcldouble:
-#if TX86
         case TYnullptr:
         case TYnptr:
         case TYsptr:
         case TYcptr:
         case TYhptr:
-#endif
         case TYfptr:
         case TYvptr:
         case TYenum:
@@ -1897,11 +1887,7 @@ void init_vbtbl(
                 dim = size;
             }
         }
-#if TX86
         TOOFFSET(pdata + b->BCvbtbloff,b2->BCoffset - vbptr_off);
-#else
-        *(unsigned long *)(pdata + b->BCvbtbloff) = b2->BCoffset - vbptr_off;
-#endif
     }
 
     DtBuilder dtb;
@@ -2032,10 +2018,8 @@ assert(0); // can't find any cases of this, must be an anachronism
             elem *ec;
 
             e1 = e->E1;
-#if TX86
             if (e1->Eoper == OPoffset)
                 e1 = e1->E1;
-#endif
             ec = NULL;
             if (e1->Eoper == OPinfo)
             {   if (e1->E1->Eoper == OPctor &&
@@ -2075,10 +2059,8 @@ assert(0); // can't find any cases of this, must be an anachronism
                                 if (ec)
                                     ec->Eoper = OPstrthis;
                                 e = list_elem(arglist);
-#if TX86
                                 if (e->E1->Eoper == OPoffset)
                                     list_setelem(arglist,selecte1(e,e->E1->ET));
-#endif
                                 goto L3;
                             }
 
@@ -2163,7 +2145,6 @@ assert(0); // can't find any cases of this, must be an anachronism
                     {   type *tret;
 
                         tret = newpointer(e->ET);
-#if TX86
                         if (!I32)
                         {   tret->Tty = TYfptr;
                             if (e->Eoper == OPind &&
@@ -2173,7 +2154,6 @@ assert(0); // can't find any cases of this, must be an anachronism
                                 goto L1;
                             }
                         }
-#endif
                         e = el_unat(OPaddr,tret,e);
                     }
                     else if (dflag & DTRsnull)

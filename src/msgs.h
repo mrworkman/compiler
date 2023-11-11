@@ -291,14 +291,7 @@
 #define EM_bad_ref_init         84
 #define EM_no_mem_init          85
 #define EM_del_ptr_const        86
-
-#if TX86
 #define EM_colcol_exp           89
-#else
-#define EM_ptr_ref              97
-#define EM_mult_decl            98
-#endif
-
 #define EM_exception_specs      99
 #define EM_eh_types             100
 #define EM_catch_masked         101
@@ -331,7 +324,6 @@
 #define EM_using_semi           128
 #define EM_using_member         129
 
-#if TX86
 #define EM_bad_leave            0
 #define EM_finally_or_except    1
 #define EM_try_needs_win32      2
@@ -344,5 +336,4 @@
 #define EM_pch_first            9
 #define EM_thread_and_dllimport 10
 #define EM_no_CV3               11
-#endif
 

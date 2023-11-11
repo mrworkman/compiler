@@ -73,7 +73,6 @@ void code_orflag(code *c,unsigned flag)
     }
 }
 
-#if TX86
 /*****************************
  * Set rex bits on last code in list.
  */
@@ -86,7 +85,6 @@ void code_orrex(code *c,unsigned rex)
         c->Irex |= rex;
     }
 }
-#endif
 
 /**************************************
  * Set the opcode fields in cs.
@@ -101,29 +99,6 @@ code *setOpcode(code *c, code *cs, unsigned op)
  * Concatenate two code lists together. Return pointer to result.
  */
 
-#if TX86 && __INTSIZE == 4 && __DMC__
-__declspec(naked) code *cat(code *c1,code *c2)
-{
-    _asm
-    {
-        mov     EAX,c1-4[ESP]
-        mov     ECX,c2-4[ESP]
-        test    EAX,EAX
-        jne     L6D
-        mov     EAX,ECX
-        ret
-
-L6D:    mov     EDX,EAX
-        cmp     dword ptr [EAX],0
-        je      L7B
-L74:    mov     EDX,[EDX]
-        cmp     dword ptr [EDX],0
-        jne     L74
-L7B:    mov     [EDX],ECX
-        ret
-    }
-}
-#else
 code *cat(code *c1,code *c2)
 {   code **pc;
 
@@ -134,7 +109,6 @@ code *cat(code *c1,code *c2)
     *pc = c2;
     return c1;
 }
-#endif
 
 
 /************************************
@@ -204,9 +178,7 @@ code *gen(code *c,code *cs)
 #ifdef DEBUG                            /* this is a high usage routine */
     assert(cs);
 #endif
-#if TX86
     assert(I64 || cs->Irex == 0);
-#endif
     code* ce = code_malloc();
     *ce = *cs;
     //printf("ce = %p %02x\n", ce, ce->Iop);
@@ -227,9 +199,7 @@ void CodeBuilder::gen(code *cs)
 #ifdef DEBUG                            /* this is a high usage routine */
     assert(cs);
 #endif
-#if TX86
     assert(I64 || cs->Irex == 0);
-#endif
     code* ce = code_malloc();
     *ce = *cs;
     //printf("ce = %p %02x\n", ce, ce->Iop);
@@ -247,9 +217,7 @@ code *gen1(code *c,unsigned op)
   ce = code_calloc();
   ce->Iop = op;
   ccheck(ce);
-#if TX86
   assert(op != LEA);
-#endif
   if (c)
   {     cstart = c;
         while (code_next(c)) c = code_next(c);  /* find end of list     */
@@ -264,15 +232,12 @@ void CodeBuilder::gen1(unsigned op)
     code *ce = code_calloc();
     ce->Iop = op;
     ccheck(ce);
-#if TX86
     assert(op != LEA);
-#endif
 
     *pTail = ce;
     pTail = &ce->next;
 }
 
-#if TX86
 code *gen2(code *c,unsigned op,unsigned rm)
 { code *ce,*cstart;
 
@@ -344,7 +309,6 @@ void CodeBuilder::gen2sib(unsigned op, unsigned rm, unsigned sib)
     *pTail = ce;
     pTail = &ce->next;
 }
-#endif
 
 /********************************
  * Generate an ASM sequence.
@@ -400,7 +364,6 @@ void CodeBuilder::genasm(block *label)
     pTail = &ce->next;
 }
 
-#if TX86
 code *gencs(code *c,unsigned op,unsigned ea,unsigned FL2,symbol *s)
 {   code cs;
 
@@ -519,7 +482,6 @@ void CodeBuilder::genc(unsigned op, unsigned ea, unsigned FL1, targ_size_t EV1, 
 
     gen(&cs);
 }
-#endif
 
 /********************************
  * Generate 'instruction' which is actually a line number.
@@ -581,7 +543,6 @@ void CodeBuilder::genadjesp(int offset)
     }
 }
 
-#if TX86
 /********************************
  * Generate 'instruction' which tells the scheduler that the fpu stack has
  * changed.
@@ -610,7 +571,6 @@ void CodeBuilder::genadjfpu(int offset)
         gen(&cs);
     }
 }
-#endif
 
 /********************************
  * Generate 'nop'
@@ -917,12 +877,10 @@ size_t addtofixlist(symbol *s,targ_size_t soffset,int seg,targ_size_t val,int fl
         if (I64 && !(flags & CFoffset64))
             numbytes = 4;
 
-#if TARGET_WINDOS
         /* This can happen when generating CV8 data
          */
         if (flags & CFseg)
             numbytes += 2;
-#endif
 #endif
 #ifdef DEBUG
         assert(numbytes <= sizeof(zeros));

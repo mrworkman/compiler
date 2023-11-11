@@ -51,7 +51,7 @@ int nteh_EBPoffset_prev()       { return -nteh_contextsym_size() + 8; }
 int nteh_EBPoffset_info()       { return -nteh_contextsym_size() + 4; }
 int nteh_EBPoffset_esp()        { return -nteh_contextsym_size() + 0; }
 
-int nteh_offset_sindex()        { return MARS ? 16 : 20; }
+int nteh_offset_sindex()        { return 20; }
 int nteh_offset_sindex_seh()    { return 20; }
 int nteh_offset_info()          { return 4; }
 
@@ -92,11 +92,6 @@ STATIC symbol *nteh_scopetable()
 
 void nteh_filltables()
 {
-#if MARS
-    symbol *s = s_table;
-    symbol_debug(s);
-    except_fillInEHTable(s);
-#endif
 }
 
 /****************************
@@ -108,9 +103,6 @@ void nteh_gentables(Symbol *sfunc)
 {
     symbol *s = s_table;
     symbol_debug(s);
-#if MARS
-    //except_fillInEHTable(s);
-#else
     /* NTEH table for C.
      * The table consists of triples:
      *  parent index
@@ -152,12 +144,8 @@ void nteh_gentables(Symbol *sfunc)
     }
     assert(sz != 0);
     s->Sdt = dtb.finish();
-#endif
 
     outdata(s);                 // output the scope table
-#if MARS
-    nteh_framehandler(sfunc, s);
-#endif
     s_table = NULL;
 }
 
@@ -169,17 +157,6 @@ void nteh_declarvars(Blockx *bx)
 {   symbol *s;
 
     //printf("nteh_declarvars()\n");
-#if MARS
-    if (!(bx->funcsym->Sfunc->Fflags3 & Fnteh)) // if haven't already done it
-    {   bx->funcsym->Sfunc->Fflags3 |= Fnteh;
-        s = symbol_name(s_name_context,SCbprel,tsint);
-        s->Soffset = -5 * 4;            // -6 * 4 for C __try, __except, __finally
-        s->Sflags |= SFLfree | SFLnodebug;
-        type_setty(&s->Stype,mTYvolatile | TYint);
-        symbol_add(s);
-        bx->context = s;
-    }
-#else
     if (!(funcsym_p->Sfunc->Fflags3 & Fnteh))   // if haven't already done it
     {   funcsym_p->Sfunc->Fflags3 |= Fnteh;
         if (!s_context)
@@ -196,27 +173,7 @@ void nteh_declarvars(Blockx *bx)
         s->Sflags |= SFLfree;
         symbol_add(s);
     }
-#endif
 }
-
-/**************************************
- * Generate elem that sets the context index into the scope table.
- */
-
-#if MARS
-elem *nteh_setScopeTableIndex(Blockx *blx, int scope_index)
-{
-    elem *e;
-    Symbol *s;
-
-    s = blx->context;
-    symbol_debug(s);
-    e = el_var(s);
-    e->EV.sp.Voffset = nteh_offset_sindex();
-    return el_bin(OPeq, TYint, e, el_long(TYint, scope_index));
-}
-#endif
-
 
 /**********************************
  * Return pointer to context symbol.
@@ -244,9 +201,7 @@ unsigned nteh_contextsym_size()
 
     if (usednteh & NTEH_try)
     {
-#if MARS
-        sz = 5 * 4;
-#elif SCPP
+#if SCPP
         sz = 6 * 4;
 #else
         assert(0);
@@ -301,7 +256,6 @@ void nteh_usevars()
 #endif
 }
 
-#if TX86
 /*********************************
  * Generate NT exception handling function prolog.
  */
@@ -345,13 +299,10 @@ void nteh_prolog(CodeBuilder& cdb)
     cs.IEV2.Vint = -1;
     cdb.gen(&cs);                 // PUSH -1
 
-    if (MARS || (usednteh & NTEHcpp))
+    if (usednteh & NTEHcpp)
     {
         // PUSH &framehandler
         cs.IFL2 = FLframehandler;
-#if MARS
-        nteh_scopetable();
-#endif
     }
     else
     {
@@ -419,11 +370,7 @@ void nteh_epilog(CodeBuilder& cdb)
     code cs;
     unsigned reg;
 
-#if MARS
-    reg = CX;
-#else
     reg = (tybasic(funcsym_p->Stype->Tnext->Tty) == TYvoid) ? AX : CX;
-#endif
     useregs(mask[reg]);
 
     cs.Iop = 0x8B;
@@ -518,11 +465,7 @@ void nteh_framehandler(Symbol *sfunc, Symbol *scopetable)
         symbol_debug(scopetable);
         CodeBuilder cdb;
         cdb.gencs(0xB8+AX,0,FLextern,scopetable);  // MOV EAX,&scope_table
-#if MARS
-        cdb.gencs(0xE9,0,FLfunc,getRtlsym(RTLSYM_D_HANDLER));      // JMP _d_framehandler
-#else
         cdb.gencs(0xE9,0,FLfunc,getRtlsym(RTLSYM_CPP_HANDLER));    // JMP __cpp_framehandler
-#endif
 
         code *c = cdb.finish();
         pinholeopt(c,NULL);
@@ -701,11 +644,7 @@ void nteh_unwind(CodeBuilder& cdb,regm_t retregs,unsigned index)
     reg = CX;
 #endif
 
-#if MARS
-    local_unwind = RTLSYM_D_LOCAL_UNWIND2;
-#else
     local_unwind = RTLSYM_LOCAL_UNWIND2;
-#endif
     desregs = (~getRtlsym(local_unwind)->Sregsaved & (ALLREGS)) | mask[reg];
     code *cs1;
     code *cs2;
@@ -726,16 +665,8 @@ void nteh_unwind(CodeBuilder& cdb,regm_t retregs,unsigned index)
     cdbx.genc2(0x68,0,index);                      // PUSH index
     cdbx.gen1(0x50 + reg);                         // PUSH ECX
 
-#if MARS
-    //cdbx.gencs(0xB8+AX,0,FLextern,nteh_scopetable());    // MOV EAX,&scope_table
-    cdbx.gencs(0x68,0,FLextern,nteh_scopetable());         // PUSH &scope_table
-
-    cdbx.gencs(0xE8,0,FLfunc,getRtlsym(local_unwind));        // CALL __d_local_unwind2()
-    cod3_stackadj(cdbx, -12);
-#else
     cdbx.gencs(0xE8,0,FLfunc,getRtlsym(local_unwind));        // CALL __local_unwind2()
     cod3_stackadj(cdbx, -8);
-#endif
 
     cdb.append(cs1);
     cdb.append(cdbx);
@@ -763,11 +694,7 @@ code *linux_unwind(regm_t retregs,unsigned index)
     reg = CX;
 #endif
 
-#if MARS
-    local_unwind = RTLSYM_D_LOCAL_UNWIND2;
-#else
     local_unwind = RTLSYM_LOCAL_UNWIND2;
-#endif
     desregs = (~getRtlsym(local_unwind)->Sregsaved & (ALLREGS)) | mask[reg];
     code *cs1;
     code *cs2;
@@ -777,15 +704,8 @@ code *linux_unwind(regm_t retregs,unsigned index)
     getregs(cdb,desregs);
     cdb.genc2(0x68,0,index);                  // PUSH index
 
-#if MARS
-//    cdb.gencs(0x68,0,FLextern,nteh_scopetable());               // PUSH &scope_table
-
-    cdb.gencs(0xE8,0,FLfunc,getRtlsym(local_unwind));        // CALL __d_local_unwind2()
-    cod3_stackadj(cdb, -4);
-#else
     cdb.gencs(0xE8,0,FLfunc,getRtlsym(local_unwind));        // CALL __local_unwind2()
     cod3_stackadj(cdb, -8);
-#endif
 
     CodeBuilder cdb1(cs1);
     CodeBuilder cdb2(cs2);
@@ -795,113 +715,5 @@ code *linux_unwind(regm_t retregs,unsigned index)
 
 #endif
 
-/*************************************************
- * Set monitor, hook monitor exception handler.
- */
-
-#if MARS
-
-void nteh_monitor_prolog(CodeBuilder& cdb, Symbol *shandle)
-{
-    /*
-     *  PUSH    handle
-     *  PUSH    offset _d_monitor_handler
-     *  PUSH    FS:__except_list
-     *  MOV     FS:__except_list,ESP
-     *  CALL    _d_monitor_prolog
-     */
-    CodeBuilder cdbx;
-
-    assert(config.exe == EX_WIN32);    // BUG: figure out how to implement for other EX's
-
-    if (shandle->Sclass == SCfastpar)
-    {   assert(shandle->Spreg != DX);
-        assert(shandle->Spreg2 == NOREG);
-        cdbx.gen1(0x50 + shandle->Spreg);   // PUSH shandle
-    }
-    else
-    {
-        // PUSH shandle
-        useregs(mCX);
-        cdbx.genc1(0x8B,modregrm(2,CX,4),FLconst,4 * (1 + needframe) + shandle->Soffset + localsize);
-        cdbx.last()->Isib = modregrm(0,4,SP);
-        cdbx.gen1(0x50 + CX);                      // PUSH ECX
-    }
-
-    Symbol *smh = getRtlsym(RTLSYM_MONITOR_HANDLER);
-    cdbx.gencs(0x68,0,FLextern,smh);             // PUSH offset _d_monitor_handler
-    makeitextern(smh);
-
-    code cs;
-    useregs(mDX);
-    cs.Iop = 0x8B;
-    cs.Irm = modregrm(0,DX,BPRM);
-    cs.Iflags = CFfs;
-    cs.Irex = 0;
-    cs.IFL1 = FLextern;
-    cs.IEVsym1 = getRtlsym(RTLSYM_EXCEPT_LIST);
-    cs.IEVoffset1 = 0;
-    cdb.gen(&cs);                   // MOV EDX,FS:__except_list
-
-    cdbx.gen1(0x50 + DX);                  // PUSH EDX
-
-    Symbol *s = getRtlsym(RTLSYM_MONITOR_PROLOG);
-    regm_t desregs = ~s->Sregsaved & ALLREGS;
-    getregs(cdbx,desregs);
-    cdbx.gencs(0xE8,0,FLfunc,s);       // CALL _d_monitor_prolog
-
-    cs.Iop = 0x89;
-    NEWREG(cs.Irm,SP);
-    cdbx.gen(&cs);                         // MOV FS:__except_list,ESP
-
-    cdb.append(cdbx);
-}
-
-#endif
-
-/*************************************************
- * Release monitor, unhook monitor exception handler.
- * Input:
- *      retregs         registers to not destroy
- */
-
-#if MARS
-
-void nteh_monitor_epilog(CodeBuilder& cdb,regm_t retregs)
-{
-    /*
-     *  CALL    _d_monitor_epilog
-     *  POP     FS:__except_list
-     */
-
-    assert(config.exe == EX_WIN32);    // BUG: figure out how to implement for other EX's
-
-    Symbol *s = getRtlsym(RTLSYM_MONITOR_EPILOG);
-    //desregs = ~s->Sregsaved & ALLREGS;
-    regm_t desregs = 0;
-    code *cs1;
-    code *cs2;
-    gensaverestore(retregs& desregs,&cs1,&cs2);
-    cdb.append(cs1);
-
-    getregs(cdb,desregs);
-    cdb.gencs(0xE8,0,FLfunc,s);               // CALL __d_monitor_epilog
-
-    cdb.append(cs2);
-
-    code cs;
-    cs.Iop = 0x8F;
-    cs.Irm = modregrm(0,0,BPRM);
-    cs.Iflags = CFfs;
-    cs.Irex = 0;
-    cs.IFL1 = FLextern;
-    cs.IEVsym1 = getRtlsym(RTLSYM_EXCEPT_LIST);
-    cs.IEVoffset1 = 0;
-    cdb.gen(&cs);                       // POP FS:__except_list
-}
-
-#endif
-
-#endif // TX86
 
 #endif

@@ -150,11 +150,7 @@ token_t *token_copy()
         token_freelist = t->TKnext;
     }
     else
-#if TX86
         t = (token_t *) mem_fmalloc(sizeof(token_t));
-#else
-        t = (token_t *) MEM_PH_MALLOC(sizeof(token_t));
-#endif
         // tokens are kept in ph and on available free list
     *t = tok;
 #ifdef DEBUG
@@ -250,10 +246,8 @@ void token_hydrate(token_t **pt)
                 symbol_hydrate(&tl->TKsym);
                 break;
         }
-#if TX86
         filename_translate(&tl->TKsrcpos);
         srcpos_hydrate(&tl->TKsrcpos);
-#endif
         pt = &tl->TKnext;
     }
 }
@@ -285,9 +279,7 @@ void token_dehydrate(token_t **pt)
                 symbol_dehydrate(&tl->TKsym);
                 break;
         }
-#if TX86
         srcpos_dehydrate(&tl->TKsrcpos);
-#endif
         pt = &tl->TKnext;
     }
 }
@@ -566,8 +558,6 @@ enum_TK token_peek()
 }
 
 #endif
-
-#if TX86
 
 #if !SPP
 
@@ -694,7 +684,6 @@ struct Keyword kwtab_cpp[] =
 };
 
 // Non-ANSI compatible keywords
-#if _WIN32
 struct Keyword kwtab2[] =
 {
         // None, single, or double _ keywords
@@ -732,52 +721,6 @@ struct Keyword kwtab2[] =
         "__syscall",    TK_syscall,
         "__try",        TK_try,
 };
-#endif
-
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-// linux is a little different about ANSI
-// if -ansi or -traditional selected, the root keyword is removed,
-// but the __keyword and __keyword__ are still accepted.
-// The GNU header files take advantage of this to create header files
-// that work with the -ansi and -traditional options
-// Plus there are a number of additional __keywords and __keywords__.
-
-struct Keyword kwtab2[] =
-{
-//    "__alignof",      TK_alignof,
-//    "__alignof__",    TK_alignof,
-    "__asm",            TK_asm,
-    "__asm__",          TK_asm,
-    "__attribute",      TK_attribute,
-    "__attribute__",    TK_attribute,
-    "__builtin_constant_p", TK_bltin_const,
-    "__cdecl",          TK_cdecl,       // Not GNU keyword
-//    "__complex",      TK_complex,
-//    "__complex__",    TK_complex,
-    "__const",          TKconst,
-    "__const__",        TKconst,
-    "__declspec",       TK_declspec,
-    "__extension__",    TK_extension,
-//    "__imag",         TK_imaginary,
-//    "__imag__",       TK_imaginary,
-    "__inline",         TKinline,       // remember to handle CPP keyword
-    "__inline__",       TKinline,       // when inline for "C" implemented
-    "inline",           TKinline,       // linux kernel uses inline for C
-//    "__iterator",     TK_iterator,
-//    "__iterator__",   TK_iterator,
-//    "__label__",      TK_label,
-//    "__real",         TK_real,
-//    "__real__",       TK_real,
-    "__restrict",       TKrestrict,
-    "__restrict__",     TKrestrict,
-    "__signed",         TKsigned,
-    "__signed__",       TKsigned,
-//    "__typeof",       TK_typeof,
-//    "__typeof__",     TK_typeof,
-    "__volatile",       TKvolatile,
-    "__volatile__",     TKvolatile,
-};
-#endif
 
 // Alternate tokens from C++98 2.11 Table 4
 struct Keyword kwtab3[] =
@@ -1009,8 +952,6 @@ void token_setdbcs(int db)
         }
     }
 }
-
-#endif // TX86
 
 /************************************************
  * Set locale.
@@ -3061,8 +3002,6 @@ done:
 #endif
         return TKnum;
 }
-
-#if TX86
 
 /**************************************
  * Read in characters, converting them to real.
@@ -3218,9 +3157,6 @@ done:
     return result;
 }
 
-#endif
-
-
 /****************************
  * Read in pragma.
  * Pragmas must start in first column.
@@ -3370,8 +3306,6 @@ bool iswhite(int c)                     /* is c white space?            */
  *      else -1
  */
 
-#if !(TX86 && __DMC__ && !_DEBUG_TRACE)
-
 int binary(const char *p, const char * *table,int high)
 { int low,mid;
   signed char cond;
@@ -3394,61 +3328,6 @@ int binary(const char *p, const char * *table,int high)
   }
   return -1;
 }
-
-#else
-
-int binary(const char *p, const char * *table,int high)
-{
-#define len high        // reuse parameter storage
-    _asm
-    {
-
-;First find the length of the identifier.
-        xor     EAX,EAX         ;Scan for a 0.
-        mov     EDI,p
-        mov     ECX,EAX
-        dec     ECX             ;Longest possible string.
-        repne   scasb
-        mov     EDX,high        ;EDX = high
-        not     ECX             ;length of the id including '/0', stays in ECX
-        dec     EDX             ;high--
-        js      short Lnotfound
-        dec     EAX             ;EAX = -1, so that eventually EBX = low (0)
-        mov     len,ECX
-
-        even
-L4D:    lea     EBX,1[EAX]      ;low = mid + 1
-        cmp     EBX,EDX
-        jg      Lnotfound
-
-        even
-L15:    lea     EAX,[EBX + EDX] ;EAX = low + high
-
-;Do the string compare.
-
-        mov     EDI,table
-        sar     EAX,1           ;mid = (low + high) >> 1;
-        mov     ESI,p
-        mov     EDI,[4*EAX+EDI] ;Load table[mid]
-        mov     ECX,len         ;length of id
-        repe    cmpsb
-
-        je      short L63       ;return mid if equal
-        jns     short L4D       ;if (cond < 0)
-        lea     EDX,-1[EAX]     ;high = mid - 1
-        cmp     EBX,EDX
-        jle     L15
-
-Lnotfound:
-        mov     EAX,-1          ;Return -1.
-
-        even
-L63:
-    }
-#undef len
-}
-
-#endif
 
 /******************************************
  */
@@ -3536,11 +3415,7 @@ void token_term()
 
     for (; token_freelist; token_freelist = tn)
     {   tn = token_freelist->TKnext;
-#if TX86
         mem_ffree(token_freelist);
-#else
-        MEM_PH_FREE(token_freelist);
-#endif
     }
     MEM_PARC_FREE(tok_string);
     MEM_PARC_FREE(tok_arg);

@@ -154,54 +154,12 @@ One and only one of these macros must be set by the makefile:
  * Target machine types:
  */
 
-#if !MARS
 #define DM_TARGET_CPU_X86 1
-#define TX86            1               // target is Intel 80X86 processor
-#endif
-
-#if DM_TARGET_CPU_X86
-#define TX86            1               // target is Intel 80X86 processor
-#endif
-
-// Set to 1 using the makefile
-#ifndef TARGET_LINUX
-#if 0 //__linux__
-#define TARGET_LINUX    1
-#else
-#define TARGET_LINUX    0               // target is a linux executable
-#endif
-#endif
-
-// Set to 1 using the makefile
-#ifndef TARGET_OSX
-#define TARGET_OSX      0               // target is an OSX executable
-#endif
-
-// Set to 1 using the makefile
-#ifndef TARGET_FREEBSD
-#define TARGET_FREEBSD  0               // target is a FreeBSD executable
-#endif
-
-// Set to 1 using the makefile
-#ifndef TARGET_OPENBSD
-#define TARGET_OPENBSD  0               // target is an OpenBSD executable
-#endif
-
-// Set to 1 using the makefile
-#ifndef TARGET_SOLARIS
-#define TARGET_SOLARIS  0               // target is a Solaris executable
-#endif
-
-// This is the default
-#ifndef TARGET_WINDOS
-#define TARGET_WINDOS   (!(TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS))
-#endif
 
 #if __GNUC__
 #include <time.h>
 
 #define M_UNIX 1
-//#define MEMMODELS 1
 #define _MSC_VER 0
 
 #define ERRSTREAM stderr
@@ -211,14 +169,7 @@ char *strupr(char *);
 
 #include <stddef.h>     // for size_t
 
-#if __APPLE__ && __i386__
-    /* size_t is 'unsigned long', which makes it mangle differently
-     * than D's 'uint'
-     */
-    typedef unsigned d_size_t;
-#else
-    typedef size_t d_size_t;
-#endif
+typedef size_t d_size_t;
 
 
 //
@@ -272,13 +223,13 @@ enum
 const bool HEADER_LIST          = true;
 
 // Support generating code for 16 bit memory models
-#define SIXTEENBIT              (SCPP && TARGET_WINDOS)
+#define SIXTEENBIT              SCPP
 
 /* Set for supporting the FLAT memory model.
  * This is not quite the same as !SIXTEENBIT, as one could
  * have near/far with 32 bit code.
  */
-#define TARGET_SEGMENTED     (!MARS && TARGET_WINDOS)
+#define TARGET_SEGMENTED        1
 
 
 #if __GNUC__ || __clang__
@@ -327,9 +278,6 @@ typedef long double longdouble;
 //      NT console:     H_NONE
 //      NT DLL:         H_OFFSET
 //      DOSX:           H_COMPLEX
-#if MARS
-#define H_STYLE         H_NONE                  // precompiled headers only used for C/C++ compiler
-#else
 #if MMFIO
 #if _WINDLL
 #define H_STYLE         H_OFFSET
@@ -340,7 +288,6 @@ typedef long double longdouble;
 #define H_STYLE         H_BIT0
 #else
 #define H_STYLE         H_COMPLEX
-#endif
 #endif
 
 // NT structured exception handling
@@ -421,15 +368,9 @@ typedef long double longdouble;
 #define I386 (config.target_cpu >= TARGET_80386)
 
 // If we are generating 32 bit code
-#if MARS
-#define I16     0               // no 16 bit code for D
-#define I32     (NPTRSIZE == 4)
-#define I64     (NPTRSIZE == 8) // 1 if generating 64 bit code
-#else
 #define I16     (NPTRSIZE == 2)
 #define I32     (NPTRSIZE == 4)
 #define I64     (NPTRSIZE == 8) // 1 if generating 64 bit code
-#endif
 
 /**********************************
  * Limits & machine dependent stuff.
@@ -523,7 +464,7 @@ enum
 #define REGMASK         0xFFFF
 
 // targ_llong is also used to store host pointers, so it should have at least their size
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX || MARS
+#if __LP64__
 typedef targ_llong      targ_ptrdiff_t; /* ptrdiff_t for target machine  */
 typedef targ_ullong     targ_size_t;    /* size_t for the target machine */
 #else
@@ -540,20 +481,7 @@ typedef targ_uns        targ_size_t;    /* size_t for the target machine */
 #define MFUNC           (I32) //0 && config.exe == EX_WIN32)       // member functions are TYmfunc
 #define CV3             0       // 1 means support CV3 debug format
 
-/* Object module format
- */
-#ifndef OMFOBJ
-#define OMFOBJ          TARGET_WINDOS
-#endif
-#ifndef ELFOBJ
-#define ELFOBJ          (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
-#endif
-#ifndef MACHOBJ
-#define MACHOBJ         TARGET_OSX
-#endif
-
-#define SYMDEB_CODEVIEW TARGET_WINDOS
-#define SYMDEB_DWARF    (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX)
+#define SYMDEB_CODEVIEW 1
 
 #define TOOLKIT_H
 
@@ -610,13 +538,8 @@ typedef int             SYMIDX;         // symbol table index
 Written by Walter Bright\n\
 *****BETA TEST VERSION*****"
 #else
-#if __linux__
-#define COPYRIGHT "Copyright (C) Digital Mars 2000-2017.  All Rights Reserved.\n\
-Written by Walter Bright, Linux version by Pat Nelson"
-#else
 #define COPYRIGHT "Copyright (C) Digital Mars 2000-2017.  All Rights Reserved.\n\
 Written by Walter Bright"
-#endif
 #endif
 #endif
 
@@ -877,16 +800,6 @@ const config_flags4_t CFGY4 = CFG4nowchar_t | CFG4noemptybaseopt | CFG4adl |
                               CFG4enumoverload | CFG4implicitfromvoid |
                               CFG4wchar_is_long | CFG4underscore;
 
-// Configuration flags for HTOD executable
-typedef unsigned htod_flags_t;
-enum
-{
-    HTODFinclude    = 1,      // -hi drill down into #include files
-    HTODFsysinclude = 2,      // -hs drill down into system #include files
-    HTODFtypedef    = 4,      // -ht drill down into typedefs
-    HTODFcdecl      = 8,      // -hc skip C declarations as comments
-};
-
 // This part of the configuration is saved in the precompiled header for use
 // in comparing to make sure it hasn't changed.
 
@@ -923,7 +836,6 @@ struct Config
     config_flags4_t flags4;
     config_flags5_t flags5;
 
-    htod_flags_t htodFlags;     // configuration for htod
     char ansi_c;                // strict ANSI C
                                 // 89 for ANSI C89, 99 for ANSI C99
     char asian_char;            /* 0: normal, 1: Japanese, 2: Chinese   */

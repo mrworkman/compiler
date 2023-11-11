@@ -298,7 +298,6 @@ int cpperr(unsigned errnum,...)
     return result;
 }
 
-#if TX86
 int tx86err(unsigned errnum,...)
 {
     va_list ap;
@@ -315,8 +314,7 @@ int tx86err(unsigned errnum,...)
     va_end(ap);
     return result;
 }
-#endif
-
+
 /* Translation table from warning number to message number              */
 static short war_to_msg[] =
 {       -1,

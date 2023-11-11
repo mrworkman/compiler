@@ -10,11 +10,7 @@
  */
 
 
-#if MARS
-struct OutBuffer;
-#else
 struct Outbuffer;
-#endif
 
 struct Html
 {
@@ -24,22 +20,14 @@ struct Html
     unsigned char *end;         // past end of buffer
     unsigned char *p;           // current character
     unsigned linnum;            // current line number
-#if MARS
-    OutBuffer *dbuf;            // code source buffer
-#else
     Outbuffer *dbuf;            // code source buffer
-#endif
     int inCode;                 // !=0 if in code
 
 
     Html(const char *sourcename, unsigned char *base, unsigned length);
 
     void error(const char *format, ...);
-#if MARS
-    void extractCode(OutBuffer *buf);
-#else
     void extractCode(Outbuffer *buf);
-#endif
     void skipTag();
     void skipString();
     unsigned char *skipWhite(unsigned char *q);

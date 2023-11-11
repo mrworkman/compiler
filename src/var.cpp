@@ -22,9 +22,6 @@
 #include        "go.h"
 #include        "ty.h"
 #include        "code.h"
-#if MARS
-#include        "varstats.h"
-#endif
 #if SPP || SCPP
 #include        "parser.h"
 #endif
@@ -49,7 +46,6 @@ int TYdarray = TYullong;
 
 char debuga,debugb,debugc,debugd,debuge,debugf,debugr,debugs,debugt,debugu,debugw,debugx,debugy;
 
-#if !MARS
 linkage_t linkage;
 int linkage_spec = 0;           /* using the default                    */
 
@@ -98,7 +94,6 @@ mangle_t varmangletab[LINK_MAXDIM] =
     mTYman_cpp,
     mTYman_pas,mTYman_for,mTYman_sys,mTYman_std,mTYman_d
 };
-#endif
 
 /* File variables: */
 
@@ -108,10 +103,6 @@ FILE *flst = NULL;              // list file stream pointer
 FILE *fin = NULL;               // input file
 #if SPP
 FILE *fout;
-#endif
-#if HTOD
-char *fdmodulename = NULL;
-FILE *fdmodule = NULL;
 #endif
 char     *foutdir = NULL,       // directory to place output files in
          *finname = NULL,
@@ -212,6 +203,3 @@ type *chartype;                 /* default 'char' type                  */
 
 Obj *objmod = NULL;
 
-#if MARS
-VarStatistics varStats;
-#endif

@@ -10,11 +10,11 @@
  * String compare of filenames.
  */
 
-#if MSDOS || __OS2__ || _WIN32
+#if MSDOS || _WIN32 || _WIN64
 #define filespeccmp(f1,f2)      stricmp((f1),(f2))
 #define filespecmemcmp(f1,f2,n) memicmp((f1),(f2),(n))
 #endif
-#if BSDUNIX || M_UNIX || M_XENIX
+#if M_UNIX
 #define filespeccmp(f1,f2)      strcmp((f1),(f2))
 #define filespecmemcmp(f1,f2,n) memcmp((f1),(f2),(n))
 #endif

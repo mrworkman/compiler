@@ -13,13 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if TARGET_WINDOS
-
 static char __file__[] = __FILE__;      // for tassert.h
 #include        "tassert.h"
-#else
-#include        <assert.h>
-#endif
 
 /****************************************
  * Find longest match of pattern[0..plen] in dict[0..dlen].

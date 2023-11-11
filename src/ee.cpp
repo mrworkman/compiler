@@ -27,9 +27,7 @@
 #include        "oper.h"
 #include        "el.h"
 #include        "exh.h"
-#if TX86
 #include        "cgcv.h"
-#endif
 
 #if SCPP
 #include        "parser.h"
@@ -39,10 +37,6 @@
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
-
-#if MARS
-EEcontext eecontext;
-#endif
 
 //////////////////////////////////////
 // Convert any symbols generated for the debugger expression to SCstack

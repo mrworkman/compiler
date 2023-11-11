@@ -4,7 +4,6 @@ project(
 )
 
 add_project_arguments(
-    '-DSCPP',
     language : 'cpp'
 )
 
@@ -64,15 +63,33 @@ optabgen_tgt = custom_target(
 )
 
 executable(
-    'dmc',
+    'scppn',
     sources,
-    msgsx_tgt,
+#    msgsx_tgt,
     # optabgen_tgt,
     include_directories: [
         tk_includes,
-        x11_includes
     ],
     cpp_args: [
+        '-DSCPP',
+        '-Wno-missing-braces',
+        '-Wno-sometimes-uninitialized',
+        '-Wno-unused-variable',
+        '-Wno-unused-but-set-variable',
+        '-w',
+    ],
+)
+
+executable(
+    'sppn',
+    sources,
+    #    msgsx_tgt,
+    # optabgen_tgt,
+    include_directories: [
+        tk_includes,
+    ],
+    cpp_args: [
+        '-DSCPP',
         '-Wno-missing-braces',
         '-Wno-sometimes-uninitialized',
         '-Wno-unused-variable',

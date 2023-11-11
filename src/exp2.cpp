@@ -98,7 +98,6 @@ elem *exp2_copytotemp(elem *e)
     return el_bint(OPcomma,t,eeq,el_var(stmp));
 }
 
-#if TX86
 /************************************
  * Determine function return method.
  * Input:
@@ -191,7 +190,6 @@ int exp2_retmethod(type *tfunc)
     else
         return RET_REGS;
 }
-#endif
 
 /************************************
  * Determine type of hidden argument when return type is RET_STACK.
@@ -208,12 +206,10 @@ type *exp2_hiddentype(type *tfunc)
 #ifdef DEBUG
     assert(exp2_retmethod(tfunc) & (RET_STACK | RET_PSTACK));
 #endif
-#if TX86
     if (!type_struct(tfunc->Tnext))
         thidden->Tty = TYsptr;
     else if (thidden->Tty == TYnptr)
         thidden->Tty = TYsptr;  /* always stack relative        */
-#endif
     return thidden;
 }
 
@@ -1250,13 +1246,11 @@ Lsymfound:
     }
   }
 
-#if TX86
   // Make huge pointers far. We operate on the assumption that a
   // struct does *NOT* cross segment boundaries, so we wish to avoid
   // the heavy penalty of huge arithmetic.
   if (tybasic(ethis->ET->Tty) == TYhptr)
         type_setty(&ethis->ET,(ethis->ET->Tty & ~mTYbasic) | TYfptr);
-#endif
 
   mos = el_longt(tsint,s->Smemoff);             // offset of member
   eplus = el_bint(OPadd,at,ethis,mos);          // &e1 + mos
@@ -2058,7 +2052,6 @@ elem *convertchk(elem *e)
                 /* FALL-THROUGH */
             default:
                 return e;
-#if TX86
             case TYnfunc:
             case TYnpfunc:
             case TYnsfunc:
@@ -2068,9 +2061,6 @@ elem *convertchk(elem *e)
             case TYf16func:
             case TYifunc:
             case TYjfunc:
-#else
-            case TYpsfunc:
-#endif
             case TYffunc:
             case TYfpfunc:      /* convert to pointer to func   */
             case TYarray:
@@ -2107,7 +2097,6 @@ elem *arraytoptr(elem *e)
                     e = el_unat(OPaddr,tp,e);
                 }
                 break;
-#if TX86
             case TYnfunc:
             case TYnpfunc:
             case TYnsfunc:
@@ -2117,9 +2106,6 @@ elem *arraytoptr(elem *e)
             case TYfsfunc:
             case TYifunc:
             case TYjfunc:
-#else
-            case TYpsfunc:
-#endif
             case TYffunc:
             case TYfpfunc:
                 e = exp2_addr(e);
@@ -2171,15 +2157,12 @@ void handleaccess(elem *e)
             t->Tty = (t->Tty & ~mTYbasic) | ty;
             e->E1 = cast(e->E1,t);      /* cast handle to far pointer   */
             break;
-#if TX86
         case TYf16ptr:
             ty = TYnptr;        /* convert far16 pointer to near pointer */
             goto L1;
-#endif
     }
 }
 
-#if TX86
 /**************************
  * Convert a fptr to an offset to that fptr.
  */
@@ -2190,7 +2173,6 @@ elem *lptrtooffset(elem *e)
         e = el_unat(OPoffset,tsuns,e);
     return e;
 }
-#endif
 
 /**********************
  * Take care of structure parameters.
@@ -2500,11 +2482,9 @@ elem *xfunccall(elem *efunc,elem *ethis,list_t pvirtbase,list_t arglist)
         if (retmethod & (RET_STACK | RET_PSTACK))
         {   tym_t tym = e->ET->Tty;
 
-#if TX86
             if (tym == TYsptr || (tym == TYnptr && !(config.wflags & WFssneds)))
                 e = cast(e,newpointer(t));
             else
-#endif
                 e = typechk(e,newpointer(t));
         }
         e = el_unat(OPind,t,e);
@@ -2694,11 +2674,9 @@ STATIC elem * exp2_paramchk(elem *e,type *t,int param)
            )
             cpperr(EM_bad_ref_init);    // invalid reference initialization
         flags = 0x10;
-#if TX86
         if (et->Tty & mTYfar &&
             ((ty == TYref && LARGEDATA) || ty == TYfref))
             flags |= 0x20;
-#endif
         if (typematch(tn,et,flags))
         {
         }
@@ -3009,7 +2987,6 @@ STATIC elem * exp2_paramchk(elem *e,type *t,int param)
                 }
             }
 
-#if TX86
             // Check if we really can implicitly convert a far pointer
             // to a near or ss pointer.
             // BUG: this doesn't handle all the cases that exp2_ptrconv()
@@ -3043,7 +3020,6 @@ STATIC elem * exp2_paramchk(elem *e,type *t,int param)
                         break;
                 }
             }
-#endif
           }
         }
         if (typecompat(et,t))           /* if types are compatible      */
@@ -3061,11 +3037,9 @@ STATIC elem * exp2_paramchk(elem *e,type *t,int param)
         }
         if (exp2_ptrconv(et,t))
             goto doit;
-#if TX86
         // Allow conversion of strings to CS-relative pointers
         if (ty == TYcptr && ety == TYnptr && e->Eoper == OPstring)
             goto doit;
-#endif
         if (CPP && cpp_cast(&e,t,1))    // look for user-defined conversion
                 return e;
   }
@@ -3538,11 +3512,7 @@ STATIC int c1isbaseofc2x(elem **pethis,symbol *c1,symbol *c2,Classsym **psvirtua
         if (value)
         {
             value += 0x100;                     /* bump derivation level */
-#if TX86
             value |= b->BCflags & (BCFvirtual | BCFprivate);
-#else                                           /* #6113 new error message */
-            value |= b->BCflags & BCFvirtual;
-#endif
             if (b->BCflags & BCFvirtual && !svirtual)
                 svirtual = sbase;
 
@@ -3765,12 +3735,10 @@ STATIC int typerelax(type *t1,type *t2)
                 case TYenum:
                 case TYref:
                     continue;
-#if TX86
                 case TYnptr:
                     if (!LARGEDATA)
                         continue;
                     goto L2;
-#endif
                 case TYfptr:
                     if (LARGEDATA)
                         continue;
@@ -3900,10 +3868,8 @@ elem *minscale(elem *e)
     }
 
     tdiff = tsptrdiff;
-#if TX86
     if (tybasic(t1->Tty) == TYhptr)
         tdiff = tslong;
-#endif
 
     /* Both leaves of e are pointers                            */
     /* Bring the result of the subtraction to be a ptrdiff_t    */
@@ -3916,7 +3882,6 @@ elem *minscale(elem *e)
 
     eb = el_typesize(t1->Tnext);
 
-#if TX86
     /* Try to bring pointers to a common type   */
     if (tybasic(t1->Tty) == tybasic(t2->Tty))
         ;
@@ -3931,7 +3896,6 @@ elem *minscale(elem *e)
     {   e->E1 = lptrtooffset(e->E1);
         e->E2 = lptrtooffset(e->E2);
     }
-#endif
 
     el_settype(eb,tdiff);               /* so we get a signed divide    */
     e = el_bint(OPdiv,tdiff,e,eb);
@@ -3988,7 +3952,6 @@ void scale(elem *eop)
         return;
   }
     esize = el_typesize(e1->ET->Tnext);
-#if TX86
     if (ty1 == TYhptr)
     {   esize = cast(esize,tslong);
         t = tslong;
@@ -3999,7 +3962,6 @@ void scale(elem *eop)
         }
     }
     else
-#endif
     {   t = tsint;
         if (ty2 != TYint && ty2 != TYuint)      /* make sure it's an int        */
         {       e2 = tyuns(ty2)
@@ -4057,15 +4019,12 @@ void impcnv(elem *e)
             switch (t1)
             {   case TYfptr:
                 case TYvptr:
-#if TX86
                 case TYhptr:
                     if (t2 == TYsptr || t2 == TYnptr ||
                         t2 == TYcptr || t2 == TYf16ptr)
                     {   newt2 = type_allocn(TYfptr | (t2 & ~mTYbasic),newt2->Tnext);
                     }
-#endif
                     break;
-#if TX86
                 case TYsptr:
                 case TYnptr:
                 case TYcptr:
@@ -4075,7 +4034,6 @@ void impcnv(elem *e)
                         newt1 = type_allocn(TYfptr | (t1 & ~mTYbasic),newt1->Tnext);
                     }
                     break;
-#endif
             }
         }
         /* Do the usual arithmetic conversions  */
@@ -4430,7 +4388,6 @@ int exp2_ptrconv(type *tfrom,type *tto)
     if (!typtr(tfm) || !typtr(ttm))
         goto ret;                               /* no match             */
 
-#if TX86
     /* First, see if pointer types themselves are compatible    */
 #   define hash(from,to)        ((from << 8) | to)
     switch (hash(tfm,ttm))
@@ -4466,7 +4423,6 @@ int exp2_ptrconv(type *tfrom,type *tto)
 
         /* Allow other conversions      */
     }
-#endif
 
     /* Allow conversions to/from void*  */
     tfromn = tfrom->Tnext;
@@ -5016,7 +4972,6 @@ L1:
             goto doaction;
 
         case VOID:
-#if TX86
             if (config.exe & EX_flat &&
                 OTcall(e->Eoper) &&
                 tyfloating(e->ET->Tty)
@@ -5026,7 +4981,6 @@ L1:
                 goto doaction;
             }
             else
-#endif
                 goto paint;
 
         case ZERO:

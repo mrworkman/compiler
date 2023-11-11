@@ -22,9 +22,7 @@
 #include        "global.h"
 #include        "type.h"
 #include        "scope.h"
-#if TX86
 #include        "cgcv.h"
-#endif
 #include        "cpp.h"
 #include        "el.h"
 #include        "oper.h"
@@ -54,11 +52,7 @@ type * enumspec()
     stoken();                           /* skip over "enum"             */
     if (tok.TKval == TKident)           /* if we found an identifier    */
     {
-#if TX86
         enum_tag = parc_strdup(tok.TKid);       // save tag name
-#else
-        enum_tag = MEM_PARC_STRDUP(tok.TKid);   // save tag name
-#endif
         stoken();
     }
     else if (tok.TKval != TKlcur)
@@ -67,7 +61,7 @@ type * enumspec()
     }
     else
     {
-        if (CPP || HTOD)
+        if (CPP)
             enum_tag = n2_genident();   // generate our own tag name
         else
         {   enumdcllst(NULL);
@@ -138,13 +132,8 @@ type * enumspec()
             {   synerr(EM_ident_exp);                   // identifier expected
                 break;
             }
-    #if TX86
             parc_free(enum_tag);
             enum_tag = parc_strdup(tok.TKid);
-    #else
-            MEM_PARC_FREE(enum_tag);
-            enum_tag = MEM_PARC_STRDUP(tok.TKid);
-    #endif
             s = cpp_findmember((Classsym *)s,enum_tag,FALSE);
             if (s && s->Scover)
                 s = s->Scover;
@@ -182,9 +171,6 @@ type * enumspec()
         }
         enumdcllst(s);
         s->Senum->SEflags &= ~SENforward;
-#if HTOD
-        htod_decl(s);
-#endif
     }
     else
     {
@@ -209,9 +195,6 @@ type * enumspec()
             if (!s)                     // if tag doesn't exist
             {                           // create it
                 s = n2_defineenum(enum_tag,flags);
-#if HTOD
-                htod_decl(s);
-#endif
             }
     }
 
@@ -222,17 +205,9 @@ Ldone:
     else
     {
         tenum = s->Stype->Tnext;
-#if HTOD
-        tenum = type_copy(tenum);
-        tenum->Ttypedef = s;
-#endif
     }
 Lret:
-#if TX86
     parc_free(enum_tag);
-#else
-    MEM_PARC_FREE(enum_tag);
-#endif
     return tenum;
 }
 
@@ -296,10 +271,6 @@ STATIC void enumdcllst(symbol *se)
             s = scope_define(tok.TKid,SCTglobal | SCTlocal,SCconst);
             s->Stype = tmember;
             tmember->Tcount++;
-#if HTOD
-            if (se)
-                list_append(&se->Senumlist,s);  // add to member list of enum
-#endif
         }
         s->Sflags |= SFLvalue;
     L1:
@@ -411,12 +382,6 @@ STATIC void enumdcllst(symbol *se)
             enumval++;
         }
         s->Svalue = el_longt(s->Stype,enumval);
-#if HTOD
-        if (!CPP && !se)
-        {
-            htod_decl(s);       // anonymous enum members are const declarations
-        }
-#endif
         if (tok.TKval == TKcomma)
         {       stoken();
                 continue;

@@ -389,7 +389,6 @@ STATIC elem *cond_exp()
             else
                 typerr(EM_illegal_op_types, t1, t2);
         }
-#if TX86
         // If types are arithmetic and the same
         else if (CPP && tyarithmetic(ty1) && typematch(t1,t2,0))
             ;
@@ -404,19 +403,6 @@ STATIC elem *cond_exp()
                     e2->E2 = cast(e2->E2, e2->ET);
             }
         }
-#else
-        else {
-                // If C++, then do not promote the operands if they are of the
-                // same arithmetic type ARM p.78 section 5.16 and ARM
-                // p.24 section 3.6.1 JTM: 8/18/93
-            if (CPP && ((ty1 == TYenum && ty2 == TYenum && t1->Ttag == t2->Ttag) ||
-                (ty1 != TYenum && tyarithmetic(ty1) && (ty1 == ty2))))
-                ;
-            else
-                exp2_ptrtocomtype(e2);
-
-        }
-#endif
         el_settype(e2,e2->E2->ET);
         if (CPP)
         {
@@ -878,11 +864,9 @@ STATIC elem *rel_exp()
                     /* Bring pointers to a common type. */
                     exp2_ptrtocomtype(e);
 
-#if TX86
                     /* Only the offsets need to be compared     */
                     e->E1 = lptrtooffset(e->E1);
                     e->E2 = lptrtooffset(e->E2);
-#endif
 
                     /*  For integral types, convert oddball relationals
                         into their integer equivalents.
@@ -1455,10 +1439,8 @@ STATIC elem *una_exp()
             goto done;
 #endif
         case TKsizeof:
-#if TX86
         case TK_typeinfo:
         case TK_typemask:
-#endif
             if (ANSI && preprocessor)
                 synerr(EM_prep_exp);    // sizeof illegal in preprocessor exp
             e = exp_sizeof(tok.TKval);
@@ -2373,7 +2355,6 @@ if (!bColcol)
             stoken();
             break;
 
-#if TX86
         case TK_inf:
             tok.TKutok.Vdouble = INFINITY;
             goto L4;
@@ -2384,17 +2365,6 @@ if (!bColcol)
             // Avoid converting NANS to NAN
             memcpy(&tok.TKutok.Vdouble,&NANS,DOUBLESIZE);
             goto L4;
-#else
-        case TK_inf:
-            tok.TKutok.Vdouble = INFINITY;
-            goto L4;
-        case TK_nan:
-            tok.TKutok.Vdouble = NAN;
-            goto L4;
-        case TK_nans:
-            tok.TKutok.Vdouble = NANS;
-            goto L4;
-#endif
         case TK_i:
             tok.TKutok.Vfloat = 1.0f;
             t = tsifloat;
@@ -2439,7 +2409,6 @@ if (!bColcol)
 
         case TKasm:
             stoken();
-#if TX86
             if (tok.TKval == TKlpar)    // support anachronistic ASM style
                 goto Lemit;             // which is replaced by __emit__
             else
@@ -2449,7 +2418,6 @@ if (!bColcol)
         case TK__emit__:
             stoken();
         Lemit:
-#endif
             chktok(TKlpar,EM_lpar);
             {
             typedef char emit_t;
@@ -2637,8 +2605,6 @@ STATIC elem *prim_post(elem *e)
 #define TRAITS_POD              0x800   // is POD (C++98 9-4)
 #define TRAITS_EMPTY            0x1000  // is an empty union or struct
 
-#if TX86
-
 STATIC unsigned exp_typeinfo(type *t)
 {   unsigned typeinfo;
 
@@ -2787,8 +2753,6 @@ STATIC unsigned exp_typeinfo(type *t)
     return typeinfo;
 }
 
-#endif
-
 /****************************
  * Parse and return elem tree for: sizeof expressions.
  *      sizeof
@@ -2851,11 +2815,9 @@ elem *exp_sizeof(int tk)
             chktok(TKrpar,EM_rpar);     // closing ')'
 
     sizexp:
-#if TX86
             if (CPP && tk == TK_typeinfo)
                 typeinfo = exp_typeinfo(e1->ET);
             typemask = tybasic(e1->ET->Tty);
-#endif
             if (tk == TKtypeid)
                 e = rtti_typeid(NULL,e1);
             else
@@ -2881,7 +2843,6 @@ elem *exp_sizeof(int tk)
                 el_free(e1);
             }
         }
-#if TX86
         if (tk == TK_typeinfo)
         {   el_free(e);
             e = el_longt(tsint,typeinfo);
@@ -2890,11 +2851,9 @@ elem *exp_sizeof(int tk)
         {   el_free(e);
             e = el_longt(tsulong,typemask);
         }
-#endif
         pstate.STinarglist = inarglistsave;
         return e;
 }
-
 
 /*****************************
  * Parse and return new expression.
@@ -2925,7 +2884,6 @@ STATIC elem *exp_new(int global)
     placelist = NULL;
     enelems = NULL;
 
-#if TX86
     switch (stoken())
     {
         case TK_far:
@@ -2937,9 +2895,6 @@ STATIC elem *exp_new(int global)
                 stoken();
             break;
     }
-#else
-    stoken();
-#endif
 
     //printf("exp_new(global = %d)\n", global);
     if (tok.TKval == TKlpar)
@@ -3034,11 +2989,9 @@ STATIC elem *exp_new(int global)
                 pt = &(ta->Tnext);
 
                 enelems = enelems ? el_bint(OPmul,e->ET,enelems,e) : e;
-#if TX86
                 enelems = poptelem(enelems);
                 if (cnst(enelems) && !(t->Tflags & TFsizeunknown))
                     type_chksize(el_tolong(enelems) * type_size(t));
-#endif
             } while (tok.TKval == TKlbra);
 
             for (ta = tret->Tnext; 1; ta = ta->Tnext)
@@ -3149,10 +3102,8 @@ STATIC elem *exp_new(int global)
                         n2_creatector(t);
                     sctor = t->Ttag->Sstruct->Sctor;
                     edelete = cpp_delete(global | array,sctor,el_var(p),el_copytree(esize));
-#if TX86
                     // Only do it if ambient memory model
                     if (tyfarfunc(edelete->E1->ET->Tty) ? LARGECODE : !LARGECODE)
-#endif
                     {
                         //sdelete = scope_search(cpp_name_delete,SCTglobal);
                         if (edelete->E1->Eoper == OPvar)

@@ -23,9 +23,7 @@
 #include        "type.h"
 #include        "scope.h"
 #include        "filespec.h"
-#if TX86
 #include        "cgcv.h"
-#endif
 #include        "cpp.h"
 #include        "el.h"
 #include        "oper.h"
@@ -121,12 +119,10 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
     if (bl && bl->BLtyp == BLrtext)
         structflags |= STRpredef;               // a predefined struct
 
-#if TARGET_WINDOS
   if (CPP)
   {
     switch (tok.TKval)
     {
-#if TX86
         /* Look for __near/__far classes        */
         case TK_near:
                         ptrtype = TYnptr;
@@ -147,7 +143,6 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
                             structflags |= STRimport;
                         goto L5;
                     }
-#endif
         L5:     stoken();
                 break;
 
@@ -156,7 +151,6 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
                 goto L5;
     }
   }
-#endif
 
   if (tok.TKval == TKident)             /* if we found an identifier    */
   {     struct_tag = alloca_strdup(tok.TKid);   // tag name
@@ -293,11 +287,7 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
         //warerr(WM_notagname);
         p = n2_genident();
         struct_tag = alloca_strdup(p);
-#if TX86
         parc_free(p);
-#else
-        MEM_PARF_FREE(p);
-#endif
         structflags |= STRnotagname;
         s = NULL;
   }
@@ -346,10 +336,8 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
                         {   synerr(EM_multiple_def,s->Sident);
                             goto Ldef;
                         }
-#if TX86
                         // Retain previous setting of STRclass
                         s->Sstruct->Sflags |= structflags & (STRexport | STRimport);
-#endif
                     }
                     // Set alignment to what is currently in effect
                     s->Sstruct->Sstructalign = structalign;
@@ -399,9 +387,6 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
             if (config.fulltypes == CV4 && !eecontext.EEcompile)
                 cv4_struct((Classsym *)s,1);
 #endif
-#if HTOD
-            htod_decl(s);
-#endif
 
             /* Put out static member data defs (after class is done, so */
             /* debug records don't point to fwd ref'd class)            */
@@ -436,9 +421,6 @@ type *stunspec(enum_TK tk, Symbol *s, Symbol *stempsym, param_t *template_argume
 #if SYMDEB_CODEVIEW
             if (config.fulltypes == CV4 && !eecontext.EEcompile)
                 cv4_struct((Classsym *)s,1);
-#endif
-#if HTOD
-            htod_decl(s);
 #endif
           }
          }
@@ -1747,7 +1729,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
 
     n2_lookforcopyctor(stag);
 
-#if TX86
     if ((config.fulltypes == CV4 || st->Sflags & STRexport) &&
         !(st->Sflags & STRunion))
     {
@@ -1755,7 +1736,6 @@ STATIC type * strdcllst(Classsym *stag,int flags)
         n2_createopeq(stag,2);
         n2_createcopyctor(stag,0);
     }
-#endif
 
     if (CPP)
         n2_createsurrogatecall(stag);
@@ -1819,12 +1799,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
 
             symbol_debug(sdefered);
             list_pop(&pstate.STclasslist);      // protect against nesting
-#if TX86
             n2_parsememberfuncs(sdefered,1);
-#else
-            if (!(sdefered->Sstruct->Sflags & STRgen))
-                n2_parsememberfuncs(sdefered);
-#endif
         }
     }
     level = levelsave;
@@ -1853,9 +1828,7 @@ STATIC type * strdcllst(Classsym *stag,int flags)
             case TKstatic:
             case TKinline:
             case TKthread_local:
-#if TX86
             case TK_declspec:
-#endif
                 cpperr(EM_semi_rbra,prettyident(stag)); // ';' expected
                 token_unget();
                 tok.TKval = TKsemi;             // insert ; into token stream
@@ -2010,10 +1983,8 @@ Classsym * n2_definestruct(
     s = scope_define(struct_tag, SCTglobaltag | SCTtag,SCstruct);
   }
 
-#if TX86 && TARGET_WINDOS
     if (config.wflags & WFexport && LARGEDATA)
         flags |= STRexport;
-#endif
 
     s->Sstruct = struct_calloc();
     s->Sstruct->Sflags |= flags;
@@ -2955,7 +2926,6 @@ STATIC void chkmemtyp(symbol *s)
         {
             case TYffunc:
             case TYfpfunc:
-        #if TX86
             case TYnfunc:
             case TYnpfunc:
             case TYnsfunc:
@@ -2965,7 +2935,6 @@ STATIC void chkmemtyp(symbol *s)
             case TYf16func:
             case TYmfunc:
             case TYifunc:
-        #endif
                 if (CPP)
                 {
                     if (s->Sclass == SCfield)
@@ -3022,14 +2991,12 @@ STATIC void n2_createvptr(Classsym *stag,targ_size_t *poffset)
         t = newpointer(t);
 #else
         cpp_getpredefined();            /* define s_mptr                */
-#if TX86
         if (config.fulltypes == CV4)
         {   // vtshape *_vptr
             t = type_alloc(TYvtshape);
             t->Ttag = stag;
         }
         else
-#endif
             t = s_mptr->Stype;          // __mptr *_vptr
         t = type_allocn(st->ptrtype,t);
 #endif
@@ -3104,7 +3071,6 @@ STATIC int n2_funccmp(symbol *s1,symbol *s2)
 
 STATIC void struct_sortvtbl(Classsym *stag)
 {
-#if TX86
     /*  The sorting order is in declaration order, except that overloaded
         functions are all grouped together, appearing where the first of the
         overloaded functions was declared, and the ordering of the overloaded
@@ -3152,7 +3118,6 @@ STATIC void struct_sortvtbl(Classsym *stag)
             }
         }
     }
-#endif
 }
 
 /**************************************
@@ -3255,10 +3220,8 @@ L1:
         }
     }
 L2:
-#if TX86
     if (!result && sfunc->Sfunc->Fflags & Fvirtual)
         sfunc->Sfunc->Fflags |= Fintro; // an 'introducing' function
-#endif
     return result;
 }
 
@@ -3869,11 +3832,6 @@ void n2_addmember(Classsym *stag,symbol *smember)
     // We keep the symbol twice, once in a list so that we can sequentially
     // access all members, and once in a tree for fast lookup.
     list_append(&stag->Sstruct->Sfldlst,smember);
-#if !TX86
-    if (CPP && scope_end->sctype & SCTclass && stag == scope_end->root)
-        scope_add( smember, SCTclass );
-    else
-#endif
     symbol_addtotree(&stag->Sstruct->Sroot,smember);
 }
 
@@ -3990,7 +3948,6 @@ STATIC void n2_static(Classsym *stag,symbol *s)
 {   type *ts;
 
     symbol_debug(stag);
-#if TX86 && TARGET_WINDOS
     if (stag->Sstruct->Sflags & STRexport)
     {   tym_t ty;
 
@@ -4001,7 +3958,6 @@ STATIC void n2_static(Classsym *stag,symbol *s)
     }
     if (stag->Sstruct->Sflags & STRimport)
         type_setty(&s->Stype,s->Stype->Tty | mTYimport);
-#endif
     ts = s->Stype;
     if (gdeclar.class_sym || tyfunc(ts->Tty))
         synerr(EM_storage_class,"static");      /* bad storage class for member */
@@ -4386,7 +4342,6 @@ STATIC type * n2_vtbltype(Classsym *stag,int nitems)
     t = type_allocn(TYarray,s_mptr->Stype);
     t->Tmangle = mTYman_sys;
     type_setty(&t->Tnext,t->Tnext->Tty | mTYconst);
-#if TX86 && TARGET_WINDOS
     if (stag->Sstruct->ptrtype == TYfptr)
     {
         // Put table in code segment for large data models
@@ -4399,7 +4354,6 @@ STATIC type * n2_vtbltype(Classsym *stag,int nitems)
         if (stag->Sstruct->Sflags & STRimport)
             t->Tty |= mTYimport;
     }
-#endif
     t->Tdim = 1 + nitems + 1;
     return t;
 }
@@ -4539,7 +4493,6 @@ STATIC type * n2_vbtbltype(baseclass_t *b,int flags)
     t = type_allocn(TYarray,tsint);
     t->Tmangle = mTYman_sys;
     type_setty(&t->Tnext,tsint->Tty | mTYconst);
-#if TX86 && TARGET_WINDOS
     if (b->BCbase->Sstruct->ptrtype == TYfptr)
     {
         // Put table in code segment for large data models
@@ -4553,7 +4506,6 @@ STATIC type * n2_vbtbltype(baseclass_t *b,int flags)
         if (flags & STRimport)
             t->Tty |= mTYimport;
     }
-#endif
     t->Tdim = 1 + baseclass_nitems(b);
     return t;
 }
@@ -4696,7 +4648,6 @@ STATIC type * n2_typector(Classsym *stag,type *tret)
     tym_t tym;
 
     type_debug(tret);
-#if TX86
     if (LARGECODE)
         tym = TYfpfunc;
     else if (MFUNC)
@@ -4710,9 +4661,6 @@ STATIC type * n2_typector(Classsym *stag,type *tret)
         tym |= mTYimport;
     if (config.wflags & WFloadds)
         tym |= mTYloadds;
-#else
-    tym = TYfpfunc;
-#endif
     t = type_alloc(tym);
     t->Tmangle = mTYman_cpp;
     t->Tnext = tret;
@@ -6008,16 +5956,8 @@ char *n2_genident()
      */
 
     fn = file_unique();
-#if TX86
     p = (char *) parc_malloc(7 + strlen(fn));
-#else
-    p = (char *) MEM_PARF_MALLOC(7 + strlen(fn));
-#endif
-#if HTOD
-    sprintf(p,"_N%d",++num);            // p is free'd right after call to n2_genident
-#else
     sprintf(p,"_N%d%s",++num,fn);       // p is free'd right after call to n2_genident
-#endif
     if (strlen(p) > IDMAX)
         p[IDMAX] = 0;
     return p;

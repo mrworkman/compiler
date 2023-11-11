@@ -22,7 +22,7 @@
 #include        "global.h"
 #include        "mem.h"
 #include        "token.h"
-#if SCPP || MARS
+#if SCPP
 #include        "el.h"
 #endif
 
@@ -107,8 +107,6 @@ static void __cdecl controlc_handler(void)
  * Trap control C interrupts.
  */
 
-#if !MARS
-
 void _STI_controlc()
 {
     //printf("_STI_controlc()\n");
@@ -121,8 +119,6 @@ void _STD_controlc()
     //printf("_STD_controlc()\n");
     controlc_close();
 }
-
-#endif
 
 /***********************************
  * Send progress report.
@@ -163,62 +159,6 @@ void util_progress(int linnum)
  *      else -1
  */
 
-#if TX86 && __DMC__ && !_DEBUG_TRACE
-
-int binary(const char *p, const char **table,int high)
-{
-#define len high        // reuse parameter storage
-    _asm
-    {
-
-;First find the length of the identifier.
-        xor     EAX,EAX         ;Scan for a 0.
-        mov     EDI,p
-        mov     ECX,EAX
-        dec     ECX             ;Longest possible string.
-        repne   scasb
-        mov     EDX,high        ;EDX = high
-        not     ECX             ;length of the id including '/0', stays in ECX
-        dec     EDX             ;high--
-        js      short Lnotfound
-        dec     EAX             ;EAX = -1, so that eventually EBX = low (0)
-        mov     len,ECX
-
-        even
-L4D:    mov     EBX,EAX         ;EBX (low) = mid
-        inc     EBX             ;low = mid + 1
-        cmp     EBX,EDX
-        jg      Lnotfound
-
-        even
-L15:    lea     EAX,[EBX + EDX] ;EAX = EBX + EDX
-
-;Do the string compare.
-
-        mov     EDI,table
-        sar     EAX,1           ;mid = (low + high) >> 1;
-        mov     ESI,p
-        mov     EDI,DS:[4*EAX+EDI] ;Load table[mid]
-        mov     ECX,len         ;length of id
-        repe    cmpsb
-
-        je      short L63       ;return mid if equal
-        jns     short L4D       ;if (cond < 0)
-        lea     EDX,-1[EAX]     ;high = mid - 1
-        cmp     EBX,EDX
-        jle     L15
-
-Lnotfound:
-        mov     EAX,-1          ;Return -1.
-
-        even
-L63:
-    }
-#undef len
-}
-
-#else
-
 int binary(const char *p, const char ** table, int high)
 {
     int low = 0;
@@ -242,8 +182,6 @@ int binary(const char *p, const char ** table, int high)
     }
     return -1;
 }
-
-#endif
 
 // search table[0 .. high] for p[0 .. len] (where p.length not necessairily equal to len)
 int binary(const char *p, size_t len, const char ** table, int high)

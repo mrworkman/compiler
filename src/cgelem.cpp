@@ -656,52 +656,6 @@ STATIC elem * elmemxxx(elem *e, goal_t goal)
                     // lvalue OPmemset (nbytes param value)
                     elem *enbytes = e->E2->E1;
                     elem *evalue = e->E2->E2;
-
-#if MARS
-                    if (enbytes->Eoper == OPconst && evalue->Eoper == OPconst)
-                    {   tym_t tym;
-                        tym_t ety;
-                        int nbytes = el_tolong(enbytes);
-                        targ_llong value = el_tolong(evalue);
-                        elem *e1 = e->E1;
-                        elem *tmp;
-
-                        if (e1->Eoper == OPcomma || OTassign(e1->Eoper))
-                            return cgel_lvalue(e);    // replace (e,v)op=e2 with e,(v op= e2)
-
-                        switch (nbytes)
-                        {
-                            case CHARSIZE:      tym = TYchar;   goto L1;
-                            case SHORTSIZE:     tym = TYshort;  goto L1;
-                            case LONGSIZE:      tym = TYlong;   goto L1;
-                            case LLONGSIZE:     if (intsize == 2)
-                                                    goto Ldefault;
-                                                tym = TYllong;  goto L1;
-                            L1:
-                                ety = e->Ety;
-                                memset(&value, value & 0xFF, sizeof(value));
-                                evalue->EV.Vullong = value;
-                                evalue->Ety = tym;
-                                e->Eoper = OPeq;
-                                e->Ety = (e->Ety & ~mTYbasic) | tym;
-                                if (tybasic(e1->Ety) == TYstruct)
-                                    e1->Ety = tym;
-                                else
-                                    e->E1 = el_una(OPind, tym, e1);
-                                tmp = el_same(&e->E1);
-                                tmp = el_una(OPaddr, ety, tmp);
-                                e->E2->Ety = tym;
-                                e->E2 = el_selecte2(e->E2);
-                                e = el_combine(e, tmp);
-                                e = optelem(e,GOALvalue);
-                                break;
-
-                            default:
-                            Ldefault:
-                                break;
-                        }
-                    }
-#endif
                 }
                 break;
 
@@ -2244,7 +2198,7 @@ Lret:
 
 STATIC elem * elremquo(elem *e, goal_t goal)
 {
-#if 0 && MARS
+#if 0
     if (cnst(e->E2) && !boolres(e->E2))
         error(e->Esrcpos.Sfilename, e->Esrcpos.Slinnum, e->Esrcpos.Scharnum, "divide by zero\n");
 #endif
@@ -2279,7 +2233,7 @@ STATIC elem * eldiv(elem *e, goal_t goal)
     int uns = tyuns(tym) | tyuns(e2->Ety);
     if (cnst(e2))
     {
-#if 0 && MARS
+#if 0
       if (!boolres(e2))
         error(e->Esrcpos.Sfilename, e->Esrcpos.Slinnum, e->Esrcpos.Scharnum, "divide by zero\n");
 #endif
@@ -3643,10 +3597,6 @@ STATIC elem * eleq(elem *e, goal_t goal)
 
    if (e1->Eoper == OPcomma)
         return cgel_lvalue(e);
-#if MARS
-    // No bit fields to deal with
-    return e;
-#else
   if (e1->Eoper != OPbit)
         return e;
   if (e1->E1->Eoper == OPcomma || OTassign(e1->E1->Eoper))
@@ -3703,7 +3653,6 @@ STATIC elem * eleq(elem *e, goal_t goal)
   e1->E1 = e->E2 = NULL;
   el_free(e);
   return optelem(eres,GOALvalue);
-#endif
 }
 
 /**********************************
@@ -4967,8 +4916,6 @@ STATIC elem * elvalist(elem *e, goal_t goal)
         return e;
     }
 
-#if TARGET_WINDOS
-
     assert(config.exe == EX_WIN64); // va_start is not an intrinsic on 32-bit
 
     // (OPva_start &va)
@@ -4995,8 +4942,6 @@ STATIC elem * elvalist(elem *e, goal_t goal)
     else
         e->E2 = el_long(TYnptr, 0);
     //elem_print(e);
-
-#endif
 
 #if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
 
@@ -5344,22 +5289,7 @@ beg:
         {
               /* see if we should swap the leaves       */
               if (
-#if MARS
                 cost(e2) > cost(e1)
-                /* Swap only if order of evaluation can be proved
-                 * to not matter, as we must evaluate Left-to-Right
-                 */
-                && (e1->Eoper == OPconst ||
-                    e1->Eoper == OPrelconst ||
-                    /* Local variables that are not aliased
-                     * and are not assigned to in e2
-                     */
-                    (e1->Eoper == OPvar && e1->EV.sp.Vsym->Sflags & SFLunambig && !el_appears(e2,e1->EV.sp.Vsym)) ||
-                    !(el_sideeffect(e1) || el_sideeffect(e2))
-                   )
-#else
-                cost(e2) > cost(e1)
-#endif
                  )
               {
                     e->E1 = e2;
@@ -5374,10 +5304,6 @@ beg:
                       e1->E2->Eoper == OPconst &&
                       e->Ety == e1->Ety &&
                       tysize(e1->E2->Ety) == tysize(e2->Ety)
-#if MARS
-                      // Reordering floating point can change the semantics
-                      && !tyfloating(e1->Ety)
-#endif
                      )
                   {
                         // look for ((e op c1) op c2),
@@ -5539,31 +5465,13 @@ void postoptelem(elem *e)
         {
             /* This is necessary as the optimizer tends to lose this information
              */
-#if MARS
-            if (e->Esrcpos.Slinnum > pos.Slinnum)
-                pos = e->Esrcpos;
-#endif
             if (e->Eoper == OPind)
             {
-#if MARS
-                if (e->E1->Eoper == OPconst &&
-                    el_tolong(e->E1) >= 0 && el_tolong(e->E1) < 4096)
-                {
-                    error(pos.Sfilename, pos.Slinnum, pos.Scharnum, "null dereference in function %s", funcsym_p->Sident);
-                    e->E1->EV.Vlong = 4096;     // suppress redundant messages
-                }
-#endif
             }
             e = e->E1;
         }
         else if (OTbinary(e->Eoper))
         {
-#if MARS
-            /* This is necessary as the optimizer tends to lose this information
-             */
-            if (e->Esrcpos.Slinnum > pos.Slinnum)
-                pos = e->Esrcpos;
-#endif
             if (e->Eoper == OPparam)
             {
                 if (!I64)

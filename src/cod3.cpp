@@ -362,11 +362,8 @@ void cod3_set64()
     inssize[0xA3] = T|5;                // MOV mem,RAX
     BPRM = 5;                           // [RBP] addressing mode
 
-#if TARGET_WINDOS
     fregsaved = mBP | mBX | mDI | mSI | mR12 | mR13 | mR14 | mR15 | mES | mXMM6 | mXMM7; // also XMM8..15;
-#else
-    fregsaved = mBP | mBX | mR12 | mR13 | mR14 | mR15 | mES;      // saved across function calls
-#endif
+
     FLOATREGS = FLOATREGS_64;
     FLOATREGS2 = FLOATREGS2_64;
     DOUBLEREGS = DOUBLEREGS_64;
@@ -444,7 +441,6 @@ void cod3_align_bytes(int seg, size_t nbytes)
 void cod3_align(int seg)
 {
     unsigned nbytes;
-#if TARGET_WINDOS
     if (config.flags4 & CFG4speed)      // if optimized for speed
     {
         // Pick alignment based on CPU target
@@ -458,10 +454,6 @@ void cod3_align(int seg)
                 cod3_align_bytes(seg, nbytes);
         }
     }
-#else
-    nbytes = -Offset(seg) & 7;
-    cod3_align_bytes(seg, nbytes);
-#endif
 }
 
 
@@ -830,24 +822,6 @@ void outblkexitcode(CodeBuilder& cdb, block *bl, int& anyspill, const char* sfls
             doswitch(cdb,bl);               // hide messy details
             break;
         }
-#if MARS
-        case BCjcatch:
-            // Mark all registers as destroyed. This will prevent
-            // register assignments to variables used in catch blocks.
-            getregs(cdb,lpadregs());
-
-            if (config.ehmethod == EH_DWARF)
-            {
-                /* Each block must have ESP set to the same value it was at the end
-                 * of the prolog. But the unwinder calls catch blocks with ESP set
-                 * at the value it was when the throwing function was called, which
-                 * may have arguments pushed on the stack.
-                 * This instruction will reset ESP to the correct offset from EBP.
-                 */
-                cdb.gen1(ESCAPE | ESCfixesp);
-            }
-            goto case_goto;
-#endif
 #if SCPP
         case BCcatch:
             // Mark all registers as destroyed. This will prevent
@@ -863,8 +837,7 @@ void outblkexitcode(CodeBuilder& cdb, block *bl, int& anyspill, const char* sfls
 #endif
         case BCgoto:
             nextb = bl->nthSucc(0);
-            if ((MARS ||
-                 funcsym_p->Sfunc->Fflags3 & Fnteh) &&
+            if (funcsym_p->Sfunc->Fflags3 & Fnteh &&
                 config.ehmethod != EH_DWARF &&
                 bl->Btry != nextb->Btry &&
                 nextb->BC != BC_finally)
@@ -874,54 +847,10 @@ void outblkexitcode(CodeBuilder& cdb, block *bl, int& anyspill, const char* sfls
                 int toindex = nextb->Btry ? nextb->Btry->Bscope_index : -1;
                 assert(bl->Btry);
                 int fromindex = bl->Btry->Bscope_index;
-#if MARS
-                if (toindex + 1 == fromindex)
-                {   // Simply call __finally
-                    if (bl->Btry &&
-                        bl->Btry->nthSucc(1)->BC == BCjcatch)
-                    {
-                        goto L5;        // it's a try-catch, not a try-finally
-                    }
-                }
-#endif
                 if (config.exe == EX_WIN32)
                 {
                     nteh_unwind(cdb,0,toindex);
                 }
-#if MARS
-                else if (
-#if TARGET_WINDOS
-                         config.exe == EX_WIN64 &&
-#endif
-                         toindex + 1 <= fromindex)
-                {
-                    //c = cat(c, linux_unwind(0, toindex));
-                    block *bt;
-
-                    //printf("B%d: fromindex = %d, toindex = %d\n", bl->Bdfoidx, fromindex, toindex);
-                    bt = bl;
-                    while ((bt = bt->Btry) != NULL && bt->Bscope_index != toindex)
-                    {   block *bf;
-
-                        //printf("\tbt->Bscope_index = %d, bt->Blast_index = %d\n", bt->Bscope_index, bt->Blast_index);
-                        bf = bt->nthSucc(1);
-                        // Only look at try-finally blocks
-                        if (bf->BC == BCjcatch)
-                            continue;
-
-                        if (bf == nextb)
-                            continue;
-                        //printf("\tbf = B%d, nextb = B%d\n", bf->Bdfoidx, nextb->Bdfoidx);
-                        if (nextb->BC == BCgoto &&
-                            !nextb->Belem &&
-                            bf == nextb->nthSucc(0))
-                            continue;
-
-                        // call __finally
-                        cdb.append(callFinallyBlock(bf->nthSucc(0), retregs));
-                    }
-                }
-#endif
                 goto L5;
             }
         case_goto:
@@ -1093,19 +1022,12 @@ void outblkexitcode(CodeBuilder& cdb, block *bl, int& anyspill, const char* sfls
                 if (config.flags4 & CFG4optimized)
                     mfuncreg = mfuncregsave;
             }
-            else if (MARS || usednteh & NTEH_try)
+            else if (usednteh & NTEH_try)
             {
                 block *bt = bl;
                 while ((bt = bt->Btry) != NULL)
                 {
                     block *bf = bt->nthSucc(1);
-#if MARS
-                    // Only look at try-finally blocks
-                    if (bf->BC == BCjcatch)
-                    {
-                        continue;
-                    }
-#endif
                     if (config.exe == EX_WIN32)
                     {
                         if (bt->Bscope_index == 0)
@@ -1136,7 +1058,7 @@ void outblkexitcode(CodeBuilder& cdb, block *bl, int& anyspill, const char* sfls
             }
             break;
 
-#if SCPP || MARS
+#if SCPP
         case BCasm:
         {
             assert(!e);
@@ -1779,42 +1701,6 @@ void outjmptab(block *b)
                         break;
                 }
         }
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (I64)
-        {
-            if (config.flags3 & CFG3pic)
-            {
-                objmod->reftodatseg(jmpseg,*poffset,targ + (u - vmin) * 4,funcsym_p->Sseg,CFswitch);
-                *poffset += 4;
-            }
-            else
-            {
-                objmod->reftodatseg(jmpseg,*poffset,targ,funcsym_p->Sxtrnnum,CFoffset64 | CFswitch);
-                *poffset += 8;
-            }
-        }
-        else
-        {
-            if (config.flags3 & CFG3pic)
-            {
-                assert(config.flags & CFGromable);
-                // Want a GOTPC fixup to _GLOBAL_OFFSET_TABLE_
-                if (!gotsym)
-                    gotsym = Obj::getGOTsym();
-                objmod->reftoident(jmpseg,*poffset,gotsym,*poffset - targ,CFswitch);
-            }
-            else
-                objmod->reftocodeseg(jmpseg,*poffset,targ);
-            *poffset += 4;
-        }
-#elif TARGET_OSX
-        targ_size_t val;
-        if (I64)
-            val = targ - b->Btableoffset;
-        else
-            val = targ - b->Btablebase;
-        objmod->write_bytes(SegData[jmpseg],4,&val);
-#elif TARGET_WINDOS
         if (I64)
         {
             targ_size_t val = targ - b->Btableoffset;
@@ -1825,9 +1711,6 @@ void outjmptab(block *b)
             objmod->reftocodeseg(jmpseg,*poffset,targ);
             *poffset += tysize(TYnptr);
         }
-#else
-        assert(0);
-#endif
         if (u == vmax)                  // for case that (vmax == ~0)
             break;
     }
@@ -2530,7 +2413,7 @@ code *genmulimm(code *c,unsigned r1,unsigned r2,targ_int imm)
 
 code *genshift(code *c)
 {
-#if SCPP && TX86
+#if SCPP
     code *c1;
 
     // Set up ahshift to trick ourselves into giving the right fixup,
@@ -3052,9 +2935,7 @@ void prolog_frameadj(CodeBuilder& cdb, tym_t tyf, unsigned xlocalsize, bool ente
     unsigned pushallocreg = (tyf == TYmfunc) ? CX : AX;
 #if !TARGET_LINUX               // seems that Linux doesn't need to fault in stack pages
     if ((config.flags & CFGstack && !(I32 && xlocalsize < 0x1000)) // if stack overflow check
-#if TARGET_WINDOS
         || (xlocalsize >= 0x1000 && config.exe & EX_flat)
-#endif
        )
     {
         if (I16)
@@ -3726,10 +3607,6 @@ void prolog_loadparams(CodeBuilder& cdb, tym_t tyf, bool pushalloc, regm_t* name
         if ((s->Sclass == SCregpar || s->Sclass == SCparameter) &&
             s->Sfl == FLreg &&
             (refparam
-#if MARS
-                // This variable has been reference by a nested function
-                || s->Stype->Tty & mTYvolatile
-#endif
                 ))
         {
             // MOV reg,param[BP]
@@ -3844,7 +3721,7 @@ void epilog(block *b)
         useregs((ALLREGS | mBP | mES) & ~s->Sregsaved);
     }
 
-    if (usednteh & ~NTEHjmonitor && (config.exe == EX_WIN32 || MARS))
+    if (usednteh & ~NTEHjmonitor && config.exe == EX_WIN32)
     {
         nteh_epilog(cdbx);
     }
@@ -3861,17 +3738,6 @@ void epilog(block *b)
      */
     topop = fregsaved & ~mfuncreg;
     epilog_restoreregs(cdbx, topop);
-
-#if MARS
-    if (usednteh & NTEHjmonitor)
-    {
-        regm_t retregs = 0;
-        if (b->BC == BCretexp)
-            retregs = regmask(b->Belem->Ety, tym);
-        nteh_monitor_epilog(cdbx,retregs);
-        xlocalsize += 8;
-    }
-#endif
 
     if (config.wflags & WFwindows && farfunc)
     {
@@ -4290,13 +4156,8 @@ void cod3_thunk(Symbol *sthunk,Symbol *sfunc,unsigned p,tym_t thisty,
     sthunk->Soffset = thunkoffset;
     sthunk->Ssize = Offset(seg) - thunkoffset; // size of thunk
     sthunk->Sseg = seg;
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    objmod->pubdef(seg,sthunk,sthunk->Soffset);
-#endif
-#if TARGET_WINDOS
     if (config.objfmt == OBJ_MSCOFF)
         objmod->pubdef(seg,sthunk,sthunk->Soffset);
-#endif
     searchfixlist(sthunk);              // resolve forward refs
 }
 
@@ -4512,64 +4373,6 @@ L3:
   return bytesaved;
 }
 
-/************************************************
- * Adjust all Soffset's of stack variables so they
- * are all relative to the frame pointer.
- */
-
-#if MARS
-
-void cod3_adjSymOffsets()
-{   SYMIDX si;
-
-    //printf("cod3_adjSymOffsets()\n");
-    for (si = 0; si < globsym.top; si++)
-    {   //printf("\tglobsym.tab[%d] = %p\n",si,globsym.tab[si]);
-        symbol *s = globsym.tab[si];
-
-        switch (s->Sclass)
-        {
-            case SCparameter:
-            case SCregpar:
-            case SCshadowreg:
-//printf("s = '%s', Soffset = x%x, Para.size = x%x, EBPtoESP = x%x\n", s->Sident, s->Soffset, Para.size, EBPtoESP);
-                s->Soffset += Para.size;
-if (0 && !(funcsym_p->Sfunc->Fflags3 & Fmember))
-{
-    if (!hasframe)
-        s->Soffset += EBPtoESP;
-    if (funcsym_p->Sfunc->Fflags3 & Fnested)
-        s->Soffset += REGSIZE;
-}
-                break;
-            case SCfastpar:
-//printf("\tfastpar %s %p Soffset %x Fast.size %x BPoff %x\n", s->Sident, s, (int)s->Soffset, (int)Fast.size, (int)BPoff);
-                s->Soffset += Fast.size + BPoff;
-                break;
-            case SCauto:
-            case SCregister:
-            case_auto:
-                if (s->Sfl == FLfast)
-                    s->Soffset += Fast.size + BPoff;
-                else
-//printf("s = '%s', Soffset = x%x, Auto.size = x%x, BPoff = x%x EBPtoESP = x%x\n", s->Sident, (int)s->Soffset, (int)Auto.size, (int)BPoff, (int)EBPtoESP);
-//              if (!(funcsym_p->Sfunc->Fflags3 & Fnested))
-                    s->Soffset += Auto.size + BPoff;
-                break;
-            case SCbprel:
-                break;
-            default:
-                continue;
-        }
-#if 0
-        if (!hasframe)
-            s->Soffset += EBPtoESP;
-#endif
-    }
-}
-
-#endif
-
 /*******************************
  * Take symbol info in union ev and replace it with a real address
  * in Vpointer.
@@ -4689,11 +4492,7 @@ void assignaddrc(code *c)
             case FLdata:
                 if (config.objfmt == OBJ_OMF && s->Sclass != SCcomdat)
                 {
-#if MARS
-                    c->IEVseg1 = s->Sseg;
-#else
                     c->IEVseg1 = DATA;
-#endif
                     c->IEVpointer1 += s->Soffset;
                     c->IFL1 = FLdatseg;
                 }
@@ -4704,11 +4503,7 @@ void assignaddrc(code *c)
             case FLudata:
                 if (config.objfmt == OBJ_OMF)
                 {
-#if MARS
-                    c->IEVseg1 = s->Sseg;
-#else
                     c->IEVseg1 = UDATA;
-#endif
                     c->IEVpointer1 += s->Soffset;
                     c->IFL1 = FLdatseg;
                 }
@@ -4825,9 +4620,6 @@ void assignaddrc(code *c)
                 c->Iflags |= CFunambig;
                 goto L2;
             case FLndp:
-#if MARS
-                assert(c->IEV1.Vuns < NDP::savetop);
-#endif
                 c->IEVpointer1 = c->IEV1.Vuns * tysize(TYldouble) + NDPoff + BPoff;
                 c->Iflags |= CFunambig;
                 goto L2;
@@ -4859,7 +4651,7 @@ void assignaddrc(code *c)
                     {   c->IFL2 = FLextern;
                         goto do2;
                     }
-                    c->IEVseg2 = MARS ? s->Sseg : DATA;
+                    c->IEVseg2 = DATA;
                     c->IEVpointer2 += s->Soffset;
                     c->IFL2 = FLdatseg;
                     goto done;
@@ -4873,7 +4665,7 @@ void assignaddrc(code *c)
                 }
                 else
                 {
-                    c->IEVseg2 = MARS ? s->Sseg : UDATA;
+                    c->IEVseg2 = UDATA;
                     c->IEVpointer2 += s->Soffset;
                     c->IFL2 = FLdatseg;
                     goto done;
@@ -6307,12 +6099,10 @@ unsigned codout(int seg, code *c)
                                     else
                                         val = -8;
                                 }
-#if TARGET_OSX || TARGET_WINDOS
                                 /* Mach-O and Win64 fixups already take the 4 byte size
                                  * into account, so bias by 4
         `                        */
                                 val += 4;
-#endif
                             }
                         }
                         do32bit(&ggen, (enum FL)c->IFL1,&c->IEV1,flags,val);
@@ -6601,15 +6391,6 @@ static void do32bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev,int flags, int 
         ad = uev->Vswitch->Btableoffset;
         if (config.flags & CFGromable)
         {
-#if TARGET_OSX
-            // These are magic values based on the exact code generated for the switch jump
-            if (I64)
-                uev->Vswitch->Btablebase = pbuf->getOffset() + 4;
-            else
-                uev->Vswitch->Btablebase = pbuf->getOffset() + 4 - 8;
-            ad -= uev->Vswitch->Btablebase;
-            goto L1;
-#elif TARGET_WINDOS
             if (I64)
             {
                 uev->Vswitch->Btablebase = pbuf->getOffset() + 4;
@@ -6618,9 +6399,6 @@ static void do32bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev,int flags, int 
             }
             else
                 objmod->reftocodeseg(pbuf->seg,pbuf->offset,ad);
-#else
-            objmod->reftocodeseg(pbuf->seg,pbuf->offset,ad);
-#endif
         }
         else
                 objmod->reftodatseg(pbuf->seg,pbuf->offset,ad,objmod->jmpTableSegment(funcsym_p),CFoff);
@@ -6641,13 +6419,8 @@ static void do32bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev,int flags, int 
         // un-named external with is the start of .rodata or .data
     case FLextern:                      /* external data symbol         */
     case FLtlsdata:
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    case FLgot:
-    case FLgotoff:
-#endif
         pbuf->flush();
         s = uev->sp.Vsym;               /* symbol pointer               */
-#if TARGET_WINDOS
         if (I64 && (flags & CFpc32))
         {
             /* This is for those funky fixups where the location to be fixed up
@@ -6659,16 +6432,8 @@ static void do32bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev,int flags, int 
             objmod->reftoident(pbuf->seg,pbuf->offset,s,uev->sp.Voffset,flags);
         }
         else
-#endif
             objmod->reftoident(pbuf->seg,pbuf->offset,s,uev->sp.Voffset + val,flags);
         break;
-
-#if TARGET_OSX
-    case FLgot:
-        funcsym_p->Slocalgotoffset = pbuf->getOffset();
-        ad = 0;
-        goto L1;
-#endif
 
     case FLfunc:                        /* function call                */
         s = uev->sp.Vsym;               /* symbol pointer               */
@@ -6804,10 +6569,6 @@ static void do8bit(MiniCodeBuf *pbuf, enum FL fl,union evc *uev)
         delta = uev->Vblock->Boffset - pbuf->getOffset() - 1;
         if ((signed char)delta != delta)
         {
-#if MARS
-            if (uev->Vblock->Bsrcpos.Slinnum)
-                fprintf(stderr, "%s(%d): ", uev->Vblock->Bsrcpos.Sfilename, uev->Vblock->Bsrcpos.Slinnum);
-#endif
             fprintf(stderr, "block displacement of %lld exceeds the maximum offset of -128 to 127.\n", (long long)delta);
             err_exit();
         }

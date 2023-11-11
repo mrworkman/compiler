@@ -29,13 +29,9 @@
 #include        "allocast.h"
 #include        "scope.h"
 #include        "dt.h"
-#if TX86
 #include        "cgcv.h"
-#endif
 
-#if TX86
 #include        "iasm.h"
-#endif
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
@@ -252,16 +248,8 @@ void func_body(symbol *s)
   scope_push(NULL,(scope_fp)findsy,SCTlabel);   // create symbol table for labels
   createlocalsymtab();                  // create parameter symbol table
 
-#if TX86
   if (configv.addlinenumbers)
         f->Fstartline = token_linnum();
-#else
-#if CPP
-  f->Fstartline = TkStrtSrcpos;
-#else
-  save_offset = TkStrtSrcpos;           /* Output function header       */
-#endif
-#endif
 
   assert(CPP || globsym.top == 0 || errcnt);    // no local symbols yet
   level = 1;                            /* function param level         */
@@ -292,12 +280,10 @@ void func_body(symbol *s)
 
   tfunc = s->Stype;
   assert(tyfunc(tfunc->Tty));
-#if TX86
     if (tybasic(tfunc->Tty) == TYf16func)
         synerr(EM_far16_extern);        // _far16 functions can only be extern
     if (tfunc->Tty & mTYimport && !SymInline(funcsym_p))
         tx86err(EM_bad_dllimport);      // definition for dllimport not allowed
-#endif
 
   plist = NULL;
   svirtbase = NULL;
@@ -636,7 +622,6 @@ void paramtypadj(type **pt)
         /* The following won't work if pointertype == TYnptr and SS != DS */
         t = newpointer(t->Tnext);
         break;
-#if TX86
     case TYsptr:
         /* Near pointers point into DS, so if SS != DS we cannot        */
         /* implicitly convert stack pointers to near pointers.          */
@@ -651,7 +636,6 @@ void paramtypadj(type **pt)
         if (pointertype == TYfptr)
             t = newpointer(t->Tnext);
         break;
-#endif
     case TYnullptr:
         t = tspvoid;
         break;
@@ -2235,11 +2219,9 @@ STATIC void return_state()
             && (block_last && block_last->BC != BCasm)
            )
         {
-#if TX86
             // Interrupt functions return values in other ways than using
             // the 'return' statement.
             if (tybasic(tf->Tty) != TYifunc)
-#endif
                 synerr(EM_no_ret_value,cpp_prettyident(funcsym_p));     // return value expected
         }
         curblock->Bsrcpos = token_linnum();
@@ -2265,11 +2247,9 @@ void func_noreturnvalue()
 {   static symbol *lastf;
 
     if (lastf != funcsym_p)
-#if TX86
     // Interrupt functions return values in other ways than using
     // the 'return' statement.
     if (tybasic(funcsym_p->Stype->Tty) != TYifunc)
-#endif
     {   char *p = cpp_prettyident(funcsym_p);
 
         if (ANSI)

@@ -51,13 +51,7 @@ static list_t file_list;
 #endif
 
 // File name extensions
-#if __linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun
-char ext_obj[] = ".o";
-#endif
-
-#if _WIN32 || _WIN64
 char ext_obj[] = ".obj";
-#endif
 
 char ext_i[]   = ".i";
 char ext_dep[] = ".dep";
@@ -281,9 +275,6 @@ void afopen(char *p,blklst *bl,int flag)
 {
     //printf("afopen(%p,'%s',flag=x%x)\n",p,p,flag);
     assert(bl->BLtyp == BLfile);
-#if HTOD
-    htod_include(p, flag);
-#endif
     if (flag & FQqual)
         p = mem_strdup(p);
     else if (!file_qualify(&p, flag, pathlist, &bl->BLsearchpath))
@@ -418,9 +409,6 @@ void file_iofiles()
     getcmd_filename(&fdepname,ext_dep);
     getcmd_filename(&flstname,ext_lst);
     getcmd_filename(&fsymname,ext_sym);
-#if HTOD
-    getcmd_filename(&fdmodulename,ext_dmodule);
-#endif
 
     if (!ftdbname || !ftdbname[0])
         ftdbname = (char*)"symc.tdb";
@@ -432,9 +420,6 @@ void file_iofiles()
 #endif
 
     // Now open the files
-#if HTOD
-    fdmodule = file_openwrite(fdmodulename,"w");
-#else
     objfile_open(foutname);
     fdep = file_openwrite(fdepname,"w");
     flst = file_openwrite(flstname,"w");
@@ -443,7 +428,6 @@ void file_iofiles()
     {   // Build entire makefile line
         fprintf(fdep, "%s : ", foutname);
     }
-#endif
 #endif
 }
 
@@ -603,85 +587,7 @@ int readln()
     assert(bl);
     b->BLsrcpos.Slinnum++;              // line counter
 
-#if TX86 && !(__linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun)
-        __asm
-        {
-                mov     ESI,b
-                xor     DL,DL
-                mov     EDI,[ESI].BLbuf
-                mov     ECX,0x0D0A      ;CH = CR, CL = LF
-                inc     EDI
-                mov     [ESI].BLtext,EDI
-                mov     btextp,EDI
-                mov     ESI,[ESI].BLbufp
-        L1:
-                mov     AL,[ESI]
-                cmp     AL,0x1A
-                jnz     L4
-        }
-                includenest--;
-                if (configv.verbose)
-                    NetSpawnFile(blklst_filename(b),kCloseLevel);
-#if HTOD
-                htod_include_pop();
-#endif
-                return FALSE;
-        __asm
-        {
-        L3:     mov     3[EDI],DL
-                mov     AL,4[ESI]
-                add     ESI,4
-                add     EDI,4
 
-        L4:     cmp     AL,CL
-                jz      L10
-                mov     DL,1[ESI]
-                mov     [EDI],AL
-
-                cmp     DL,CL
-                jz      L11
-                mov     AL,2[ESI]
-                mov     1[EDI],DL
-
-                cmp     AL,CL
-                jz      L12
-                mov     DL,3[ESI]
-                mov     2[EDI],AL
-
-                cmp     DL,CL
-                jnz     L3
-
-                cmp     AL,CH
-                jnz     L13
-                dec     EDI
-        L13:    add     ESI,4
-                add     EDI,3
-                jmp     Lx
-
-        L12:    cmp     DL,CH
-                jnz     L14
-                dec     EDI
-        L14:    add     ESI,3
-                add     EDI,2
-                jmp     Lx
-
-        L11:    cmp     AL,CH
-                jnz     L15
-                dec     EDI
-        L15:    add     ESI,2
-                inc     EDI
-                jmp     Lx
-
-        L10:    cmp     DL,CH
-                jnz     L16
-                dec     EDI
-        L16:    inc     ESI
-
-        Lx:     mov     p,EDI
-                mov     ps,ESI
-
-        }
-#else
         b->BLtext = b->BLbuf + 1;               // +1 so we can bl->BLtext[-1]
         btextp = b->BLtext;             // set to start of line
         p = btextp;
@@ -693,9 +599,6 @@ int readln()
             includenest--;
             if (configv.verbose)
                 NetSpawnFile(blklst_filename(b),kCloseLevel);
-#if HTOD
-            htod_include_pop();
-#endif
             return FALSE;
         }
         while (c != LF)
@@ -703,7 +606,6 @@ int readln()
                 *p++ = c;               // store char in input buffer
             c = *ps++;
         }
-#endif
         {
                 if (TRIGRAPHS)
                 {   // Do trigraph translation
@@ -755,15 +657,6 @@ int readln()
                     }
                     p--;
                     b->BLsrcpos.Slinnum++;
-#if TX86 && __DMC__
-                    _asm
-                    {
-                        mov     EDI,p
-                        mov     ESI,ps
-                        xor     DL,DL
-                        mov     ECX,0x0D0A      ;CH = CR, CL = LF
-                    }
-#endif
                     goto L1;
                 }
                 else

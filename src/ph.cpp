@@ -58,11 +58,9 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 
 //#define err_nomem() (dbg_printf("err_nomem: %d\n",__LINE__),err_nomem())
 
-#if TX86
 char *ph_directory;             /* directory to read PH files from      */
 
 static char ph_hxfilename[] = "scph.sym";
-#endif
 
 #if MEMORYHX
 
@@ -627,7 +625,7 @@ STATIC void ph_setadjust(Root *r)
 
 #if H_STYLE & H_COMPLEX
 
-#if TX86 && !defined(_MSC_VER)
+#if !defined(_MSC_VER)
 __declspec(naked) void *ph_dehydrate(void *pp)
 {
     _asm
@@ -726,7 +724,7 @@ void *ph_dehydrate(void *pp)
  *      *pp
  */
 
-#if TX86 && !defined(_MSC_VER)
+#if !defined(_MSC_VER)
 __declspec(naked) void *ph_hydrate(void *pp)
 {
     _asm

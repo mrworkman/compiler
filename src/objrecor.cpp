@@ -21,7 +21,7 @@
 #include        "global.h"
 #include        "parser.h"
 
-#if (SCPP || MARS) && !HTOD
+#if SCPP
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"

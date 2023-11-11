@@ -120,19 +120,6 @@ void block_term()
  * Finish up this block and start the next one.
  */
 
-#if MARS
-void block_next(Blockx *bctx,int bc,block *bn)
-{
-    bctx->curblock->BC = bc;
-    block_last = bctx->curblock;
-    if (!bn)
-        bn = block_calloc_i();
-    bctx->curblock->Bnext = bn;                 // next block
-    bctx->curblock = bctx->curblock->Bnext;     // new current block
-    bctx->curblock->Btry = bctx->tryblock;
-    bctx->curblock->Bflags |= bctx->flags;
-}
-#else
 void block_next(enum BC bc,block *bn)
 {
     curblock->BC = bc;
@@ -150,24 +137,6 @@ void block_next()
 {
     block_next((enum BC)curblock->BC,NULL);
 }
-#endif
-
-/**************************
- * Finish up this block and start the next one.
- */
-
-#if MARS
-
-block *block_goto(Blockx *bx,int bc,block *bn)
-{   block *b;
-
-    b = bx->curblock;
-    block_next(bx,bc,bn);
-    b->appendSucc(bx->curblock);
-    return bx->curblock;
-}
-
-#endif
 
 /****************************
  * Goto a block named gotolbl.
@@ -336,20 +305,11 @@ void block_free(block *b)
     {   case BCswitch:
         case BCifthen:
         case BCjmptab:
-#if MARS
-            free(b->BS.Bswitch);
-#else
             MEM_PH_FREE(b->BS.Bswitch);
-#endif
             break;
 #if SCPP
         case BCcatch:
             type_free(b->Bcatchtype);
-            break;
-#endif
-#if MARS
-        case BCjcatch:
-            free(b->BS.BIJCATCH.actionTable);
             break;
 #endif
         case BCasm:
@@ -472,7 +432,7 @@ void block_appendexp(block *b,elem *e)
 {   elem *ec;
     elem **pe;
 
-    assert(MARS || PARSER);
+    assert(PARSER);
     if (e)
     {
         assert(b);
@@ -486,21 +446,6 @@ void block_appendexp(block *b,elem *e)
             if (t)
                 type_debug(t);
             elem_debug(e);
-#if MARS
-            tym_t ty = e->Ety;
-
-            elem_debug(e);
-            /* Build tree such that (a,b) => (a,(b,e))  */
-            while (ec->Eoper == OPcomma)
-            {
-                ec->Ety = ty;
-                ec->ET = t;
-                pe = &(ec->E2);
-                ec = *pe;
-            }
-            e = el_bin(OPcomma,ty,ec,e);
-            e->ET = t;
-#else
             /* Build tree such that (a,b) => (a,(b,e))  */
             while (ec->Eoper == OPcomma)
             {
@@ -509,7 +454,6 @@ void block_appendexp(block *b,elem *e)
                 ec = *pe;
             }
             e = el_bint(OPcomma,t,ec,e);
-#endif
         }
         *pe = e;
     }
@@ -1068,11 +1012,7 @@ void compdfo()
   assert(maxblks && maxblks >= numblks);
   debug_assert(!PARSER);
   if (!dfo)
-#if TX86
         dfo = (block **) util_calloc(sizeof(block *),maxblks);
-#else
-        dfo = (block **) MEM_PARF_CALLOC(sizeof(block *) * maxblks);
-#endif
   dfotop = numblks;                     /* assign numbers backwards     */
   search(startblock);
   assert(dfotop <= numblks);
@@ -2039,66 +1979,7 @@ static int funcsideeffect_walk(elem *e);
 
 void funcsideeffects()
 {
-#if MARS
-    block *b;
-
-    //printf("funcsideeffects('%s')\n",funcsym_p->Sident);
-    for (b = startblock; b; b = b->Bnext)
-    {
-        if (b->Belem && funcsideeffect_walk(b->Belem))
-            goto Lside;
-    }
-
-Lnoside:
-    funcsym_p->Sfunc->Fflags3 |= Fnosideeff;
-    //printf("  function '%s' has no side effects\n",funcsym_p->Sident);
-    //return;
-
-Lside:
-    //printf("  function '%s' has side effects\n",funcsym_p->Sident);
-    ;
-#endif
 }
-
-#if MARS
-
-STATIC int funcsideeffect_walk(elem *e)
-{   int op;
-    Symbol *s;
-
-    assert(e);
-    elem_debug(e);
-    if (typemask(e) & mTYvolatile)
-        goto Lside;
-    op = e->Eoper;
-    switch (op)
-    {
-        case OPcall:
-        case OPucall:
-            if (e->E1->Eoper == OPvar &&
-                tyfunc((s = e->E1->EV.sp.Vsym)->Stype->Tty) &&
-                ((s->Sfunc && s->Sfunc->Fflags3 & Fnosideeff) || s == funcsym_p)
-               )
-                break;
-            goto Lside;
-
-        // Note: we should allow assignments to local variables as
-        // not being a 'side effect'.
-
-        default:
-            assert(op < OPMAX);
-            return OTsideff(op) ||
-                (OTunary(op) && funcsideeffect_walk(e->E1)) ||
-                (OTbinary(op) && (funcsideeffect_walk(e->E1) ||
-                                  funcsideeffect_walk(e->E2)));
-    }
-    return 0;
-
-  Lside:
-    return 1;
-}
-
-#endif
 
 /*******************************
  * Determine if there are any OPframeptr's in the tree.

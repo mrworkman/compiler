@@ -405,7 +405,6 @@ L7:
             switch (s->Sclass)
             {
                 case SCtypedef:
-#if TX86
                     // If we are past the header, and referencing typedefs,
                     // then output the typedef into the debug info.
                     if (config.fulltypes == CV4 &&
@@ -414,7 +413,6 @@ L7:
                         !s->Sxtrnnum
                        )
                        cv_outsym(s);
-#endif
                     if (!(flag & 4) && tybasic(s->Stype->Tty) == TYstruct)
                     {
                         s = s->Stype->Ttag;
@@ -570,7 +568,6 @@ L7:
         switch (s->Sclass)
         {
             case SCtypedef:
-#if TX86
                 // If we are past the header, and referencing typedefs,
                 // then output the typedef into the debug info.
                 if (config.fulltypes == CV4 &&
@@ -579,7 +576,6 @@ L7:
                     !s->Sxtrnnum
                    )
                    cv_outsym(s);
-#endif
                 if (tybasic(s->Stype->Tty) == TYstruct)
                 {
                     s = s->Stype->Ttag;

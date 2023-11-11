@@ -82,11 +82,7 @@ symbol *scope_addx(symbol *s,Scope *sc);
 void scope_pushclass(Classsym *stag);
 void scope_push_symbol(symbol *s);
 void scope_push(void *root,scope_fp fpsearch,int sctype);
-#if TX86
 void *scope_pop();
-#else
-symbol *scope_pop();
-#endif
 void scope_using(Nspacesym *sn,scope_fp fpsearch,int sctype,Scope *sce);
 list_t scope_getList(symbol *s);
 int scope_pushEnclosing(symbol *s);

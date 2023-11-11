@@ -195,7 +195,6 @@ void dbg_optprint(char *title)
 
 void optfunc()
 {
-#if !HTOD
     block *b;
     int iter;           // iteration count
     clock_t starttime;
@@ -243,11 +242,7 @@ void optfunc()
         {   assert(iter < iterationLimit);      // infinite loop check
             break;
         }
-#if MARS
-        util_progress();
-#else
         file_progress();
-#endif
 
         //printf("optelem\n");
         /* canonicalize the trees        */
@@ -364,7 +359,6 @@ void optfunc()
     {
         block_optimizer_free(b);
     }
-#endif
 }
 
 #endif // !SPP

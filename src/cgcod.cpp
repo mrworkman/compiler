@@ -171,15 +171,10 @@ tryagain:
     cgstate.funcargtos = ~0;
 
     regsave.reset();
-#if TX86
+
     memset(_8087elems,0,sizeof(_8087elems));
-#endif
 
     usednteh = 0;
-#if (MARS) && TARGET_WINDOS
-    if (sfunc->Sfunc->Fflags3 & Fjmonitor)
-        usednteh |= NTEHjmonitor;
-#else
     if (CPP)
     {
         if (config.exe == EX_WIN32 &&
@@ -187,15 +182,12 @@ tryagain:
             usednteh |= NTEHexcspec;
         except_reset();
     }
-#endif
 
     // Set on a trial basis, turning it off if anything might throw
     sfunc->Sfunc->Fflags3 |= Fnothrow;
 
     floatreg = FALSE;
-#if TX86
     assert(stackused == 0);             /* nobody in 8087 stack         */
-#endif
     cstop = 0;                          /* no entries in table yet      */
     memset(&regcon,0,sizeof(regcon));
     regcon.cse.mval = regcon.cse.mops = 0;      // no common subs yet
@@ -387,14 +379,6 @@ tryagain:
     debugw && printf("code jump optimization complete\n");
 #endif
 
-#if MARS
-    if (usednteh & NTEH_try)
-    {
-        // Do this before code is emitted because we patch some instructions
-        nteh_filltables();
-    }
-#endif
-
     // Compute starting offset for switch tables
     targ_size_t swoffset;
     int jmpseg = -1;
@@ -475,11 +459,9 @@ tryagain:
     }
     sfunc->Ssize = Offset(sfunc->Sseg) - funcoffset;    // size of function
 
-#if NTEXCEPTIONS || MARS
+#if NTEXCEPTIONS
 #if (SCPP && NTEXCEPTIONS)
     if (usednteh & NTEHcpp)
-#elif MARS
-        if (usednteh & NTEH_try)
 #endif
     {   assert(!(config.flags & CFGromable));
         //printf("framehandleroffset = x%x, coffset = x%x\n",framehandleroffset,coffset);
@@ -505,14 +487,6 @@ tryagain:
             case BCretexp:
                 /* Compute offset to return code from start of function */
                 retoffset = b->Boffset + b->Bsize - retsize - funcoffset;
-#if MARS
-                /* Add 3 bytes to retoffset in case we have an exception
-                 * handler. THIS PROBABLY NEEDS TO BE IN ANOTHER SPOT BUT
-                 * IT FIXES THE PROBLEM HERE AS WELL.
-                 */
-                if (usednteh & NTEH_try)
-                    retoffset += 3;
-#endif
                 flag = TRUE;
                 break;
 
@@ -528,30 +502,6 @@ tryagain:
          */
         /* Instead, try offset to cleanup code  */
         objmod->linnum(sfunc->Sfunc->Fendline,sfunc->Sseg,funcoffset + retoffset);
-
-#if TARGET_WINDOS && MARS
-    if (config.exe == EX_WIN64)
-        win64_pdata(sfunc);
-#endif
-
-#if MARS
-    if (usednteh & NTEH_try)
-    {
-        // Do this before code is emitted because we patch some instructions
-        nteh_gentables(sfunc);
-    }
-    if (usednteh & EHtry &&             // saw BCtry or BC_try (test EHcleanup too?)
-        config.ehmethod == EH_DM)
-    {
-        except_gentables();
-    }
-    if (config.ehmethod == EH_DWARF)
-    {
-        sfunc->Sfunc->Fstartblock = startblock;
-        dwarf_except_gentables(sfunc, startoffset, retoffset);
-        sfunc->Sfunc->Fstartblock = NULL;
-    }
-#endif
 
 #if SCPP
 #if NTEXCEPTIONS
@@ -587,7 +537,6 @@ tryagain:
 
     util_free(csextab);
     csextab = NULL;
-#if TX86
 #ifdef DEBUG
     if (stackused != 0)
           printf("stackused = %d\n",stackused);
@@ -599,7 +548,6 @@ tryagain:
     NDP::save = NULL;
     NDP::savetop = 0;
     NDP::savemax = 0;
-#endif
 }
 
 /*********************************************
@@ -735,12 +683,6 @@ Lagain:
     Fast.size = 0;
 #if NTEXCEPTIONS == 2
     Fast.size -= nteh_contextsym_size();
-#if MARS
-#if TARGET_WINDOS
-    if (funcsym_p->Sfunc->Fflags3 & Ffakeeh && nteh_contextsym_size() == 0)
-        Fast.size -= 5 * 4;
-#endif
-#endif
 #endif
 
     /* Despite what the comment above says, aligning Fast section to size greater
@@ -985,22 +927,6 @@ Lagain:
         useregs((ALLREGS | mBP | mES) & ~regsaved);
     }
 #endif
-
-#if MARS
-    if (usednteh & NTEHjmonitor)
-    {   Symbol *sthis;
-
-        for (SYMIDX si = 0; 1; si++)
-        {   assert(si < globsym.top);
-            sthis = globsym.tab[si];
-            if (strcmp(sthis->Sident,"this") == 0)
-                break;
-        }
-        nteh_monitor_prolog(cdbx,sthis);
-        EBPtoESP += 3 * 4;
-    }
-#endif
-
     cdb.append(cdbx);
     prolog_saveregs(cdb, topush, cfa_offset);
 
@@ -1777,15 +1703,6 @@ int isregvar(elem *e,regm_t *pregm,unsigned *preg)
                 goto Lreg;
 
             case FLpseudo:
-#if MARS
-                u = s->Sreglsw;
-                m = mask[u];
-                if (m & ALLREGS && (u & ~3) != 4) // if not BP,SP,EBP,ESP,or ?H
-                {   reg = u & 7;
-                    regm = m;
-                    goto Lreg;
-                }
-#else
                 u = s->Sreglsw;
                 m = pseudomask[u];
                 if (m & ALLREGS && (u & ~3) != 4) // if not BP,SP,EBP,ESP,or ?H
@@ -1793,7 +1710,6 @@ int isregvar(elem *e,regm_t *pregm,unsigned *preg)
                     regm = m;
                     goto Lreg;
                 }
-#endif
                 break;
         }
     }
@@ -1833,7 +1749,6 @@ void allocreg(CodeBuilder& cdb,regm_t *pretregs,unsigned *preg,tym_t tym
 #define allocreg(a,b,c,d) allocreg((a),(b),(c),(d),__LINE__,__FILE__)
 #endif
 {
-#if TX86
         unsigned reg;
 
 #if 0
@@ -1999,9 +1914,6 @@ L3:
         last2retregs = lastretregs;
         lastretregs = retregs;
         getregs(cdb, retregs);
-#else
-#warning cpu specific code
-#endif
 }
 
 /******************************

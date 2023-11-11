@@ -11,7 +11,7 @@
  */
 
 
-#if (SCPP || MARS) && !HTOD
+#if SCPP
 
 #include        <stdio.h>
 #include        <string.h>
@@ -24,9 +24,6 @@
 #include        "cgcv.h"
 #include        "cv4.h"
 #include        "global.h"
-#if MARS
-#include        "varstats.h"
-#endif
 #if SCPP
 #include        "parser.h"
 #include        "cpp.h"
@@ -71,11 +68,7 @@ static Outbuffer *reset_symbuf; // Keep pointers to reset symbols
 #define LCFD32pointer           (LOCATsegrel | 0x2C00)
 #define LCFD16pointer           (LOCATsegrel | 0x0C00)
 
-#if MARS
-extern Cgcv cgcv; // already declared in cgcv.d
-#else
 Cgcv cgcv;
-#endif
 
 STATIC void cv3_symdes ( unsigned char *p , unsigned next );
 STATIC unsigned cv3_paramlist ( type *t , unsigned nparam );
@@ -836,7 +829,7 @@ idx_t cv4_struct(Classsym *s,int flags)
 
     // Determine if we should do a reference or a definition
     refonly = 1;                        // assume reference only
-    if (MARS || t->Tflags & TFsizeunknown || st->Sflags & STRoutdef)
+    if (t->Tflags & TFsizeunknown || st->Sflags & STRoutdef)
     {
         //printf("ref only\n");
     }
@@ -881,7 +874,7 @@ idx_t cv4_struct(Classsym *s,int flags)
         }
     }
 
-    if (MARS || refonly)
+    if (refonly)
     {
         if (s->Stypidx)                 // if reference already generated
         {   //assert(s->Stypidx - cgcv.deb_offset < debtyptop);
@@ -1045,11 +1038,7 @@ printf("fwd struct ref\n");
         return s->Stypidx;
     }
 
-#if MARS
-    util_progress();
-#else
     file_progress();
-#endif
 
     // Compute the number of fields, and the length of the fieldlist record
     nfields = 0;
@@ -1656,15 +1645,6 @@ unsigned char cv4_callconv(type *t)
  * Return type index for the type of a symbol.
  */
 
-#if MARS
-
-STATIC unsigned cv4_symtypidx(symbol *s)
-{
-    return cv4_typidx(s->Stype);
-}
-
-#endif
-
 #if SCPP
 
 STATIC unsigned cv4_symtypidx(symbol *s)
@@ -1812,10 +1792,6 @@ L1:
             break;
 
         case TYnptr:
-#if MARS
-            if (t->Tkey)
-                goto Laarray;
-#endif
         case TYsptr:
         case TYcptr:
         Lptr:
@@ -1886,13 +1862,6 @@ L1:
         Ldarray:
             switch (config.fulltypes)
             {
-#if MARS
-                case CV8:
-                {
-                    typidx = cv8_darray(t, next);
-                    break;
-                }
-#endif
                 case CV4:
 #if 1
                     d = debtyp_alloc(12);
@@ -1918,45 +1887,11 @@ L1:
             break;
 
         Laarray:
-#if MARS
-            key = cv4_typidx(t->Tkey);
-            switch (config.fulltypes)
-            {
-                case CV8:
-                    typidx = cv8_daarray(t, key, next);
-                    break;
-
-                case CV4:
-#if 1
-                    d = debtyp_alloc(12);
-                    TOWORD(d->data, LF_OEM);
-                    TOWORD(d->data + 2, OEM);
-                    TOWORD(d->data + 4, 2);     // 2 = associative array
-                    TOWORD(d->data + 6, 2);     // count of type indices to follow
-                    TOWORD(d->data + 8, key);   // key type
-                    TOWORD(d->data + 10, next); // element type
-#else
-                    d = debtyp_alloc(6);
-                    TOWORD(d->data,LF_ASSOC_ARRAY);
-                    TOWORD(d->data + 2, key);   // key type
-                    TOWORD(d->data + 4, next);  // element type
-#endif
-                    typidx = cv_debtyp(d);
-                    break;
-                default:
-                    assert(0);
-            }
-#endif
             break;
 
         Ldelegate:
             switch (config.fulltypes)
             {
-#if MARS
-                case CV8:
-                    typidx = cv8_ddelegate(t, next);
-                    break;
-#endif
                 case CV4:
                     tv = type_fake(TYnptr);
                     tv->Tcount++;
@@ -2101,11 +2036,6 @@ L1:
 
         case TYstruct:
         {
-#if MARS
-            if (config.fulltypes == CV8)
-                typidx = cv8_fwdref(t->Ttag);
-            else
-#endif
             {
                 int foo = t->Ttag->Stypidx;
                 typidx = cv4_struct(t->Ttag,0);
@@ -2147,13 +2077,6 @@ L1:
             attribute |= 0x20;          // indicate reference pointer
         case TYmemptr:
             tym = tybasic(tym_conv(t)); // convert to C data type
-            goto L1;                    // and try again
-#endif
-#if MARS
-        case TYref:
-        case TYnref:
-            attribute |= 0x20;          // indicate reference pointer
-            tym = TYnptr;               // convert to C data type
             goto L1;                    // and try again
 #endif
         case TYnullptr:
@@ -2256,10 +2179,6 @@ STATIC void cv4_outsym(symbol *s)
 
     //dbg_printf("cv4_outsym(%s)\n",s->Sident);
     symbol_debug(s);
-#if MARS
-    if (s->Sflags & SFLnodebug)
-        return;
-#endif
     t = s->Stype;
     type_debug(t);
     tym = tybasic(t->Tty);
@@ -2357,13 +2276,8 @@ STATIC void cv4_outsym(symbol *s)
         unsigned long value;
         unsigned fixoff;
         idx_t typidx;
-
         typidx = cv4_typidx(t);
-#if MARS
-        id = s->prettyIdent ? s->prettyIdent : prettyident(s);
-#else
         id = prettyident(s);
-#endif
         len = strlen(id);
         debsym = (39 + IDOHD + len <= sizeof(buf)) ? buf : (unsigned char *) malloc(39 + IDOHD + len);
         assert(debsym);
@@ -2569,56 +2483,6 @@ STATIC void cv4_func(Funcsym *s)
     int endarg;
 
     cv4_outsym(s);              // put out function symbol
-#if MARS
-    static Funcsym* sfunc;
-    static int cntOpenBlocks;
-    sfunc = s;
-    cntOpenBlocks = 0;
-
-    struct cv4
-    {
-        // record for CV record S_BLOCK32
-        struct block32_data
-        {
-            unsigned short len;
-            unsigned short id;
-            unsigned int pParent;
-            unsigned int pEnd;
-            unsigned int length;
-            unsigned int offset;
-            unsigned short seg;
-            unsigned char name[2];
-        };
-
-        static void endArgs()
-        {
-            static unsigned short endargs[] = { 2, S_ENDARG };
-            objmod->write_bytes(SegData[DEBSYM],sizeof(endargs),endargs);
-        }
-        static void beginBlock(int offset, int length)
-        {
-            if (++cntOpenBlocks >= 255)
-                return; // optlink does not like more than 255 scope blocks
-
-            unsigned soffset = Offset(DEBSYM);
-            // parent and end to be filled by linker
-            block32_data block32 = { sizeof(block32_data) - 2, S_BLOCK32, 0, 0, length, 0, 0, { 0, '\0' } };
-            objmod->write_bytes(SegData[DEBSYM], sizeof(block32), &block32);
-            size_t offOffset = (char*)&block32.offset - (char*)&block32;
-            objmod->reftoident(DEBSYM, soffset + offOffset, sfunc, offset + sfunc->Soffset, CFseg | CFoff);
-        }
-        static void endBlock()
-        {
-            if (cntOpenBlocks-- >= 255)
-                return; // optlink does not like more than 255 scope blocks
-
-            static unsigned short endargs[] = { 2, S_END };
-            objmod->write_bytes(SegData[DEBSYM],sizeof(endargs),endargs);
-        }
-    };
-
-    varStats.writeSymbolTable(&globsym, &cv4_outsym, &cv4::endArgs, &cv4::beginBlock, &cv4::endBlock);
-#else
     symtab_t* symtab = &globsym;
 
     // Put out local symbols
@@ -2628,7 +2492,6 @@ STATIC void cv4_func(Funcsym *s)
         symbol *sa = symtab->tab[si];
         cv4_outsym(sa);
     }
-#endif
 
     // Put out function return record
     if (1)
@@ -2828,14 +2691,14 @@ void cv_term()
                 {   debtyp_t *d = debtyp[u];
 
                     objmod->write_bytes(SegData[typeseg],2 + d->length,(char *)d + sizeof(unsigned));
-#if TERMCODE || _WIN32 || MARS
+#if TERMCODE || _WIN32
                     debtyp_free(d);
 #endif
                 }
             }
             else if (debtyptop)
             {
-#if TERMCODE || _WIN32 || MARS
+#if TERMCODE || _WIN32
                 debtyp_free(debtyp[0]);
 #endif
             }
@@ -2883,7 +2746,7 @@ void cv_term()
         default:
             assert(0);
     }
-#if TERMCODE || _WIN32 || MARS
+#if TERMCODE || _WIN32
     util_free(debtyp);
     debtyp = NULL;
     vec_free(debtypvec);
@@ -2895,7 +2758,6 @@ void cv_term()
  * Write out symbol table for current function.
  */
 
-#if TARGET_WINDOS
 void cv_func(Funcsym *s)
 {
 #if SCPP
@@ -2904,13 +2766,8 @@ void cv_func(Funcsym *s)
 #endif
 
     //dbg_printf("cv_func('%s')\n",s->Sident);
-#if MARS
-    if (s->Sflags & SFLnodebug)
-        return;
-#else
     if (CPP && s->Sfunc->Fflags & Fnodebug)     // if don't generate debug info
         return;
-#endif
     switch (config.fulltypes)
     {
         case CV4:
@@ -2922,21 +2779,15 @@ void cv_func(Funcsym *s)
             assert(0);
     }
 }
-#endif
 
 /******************************************
  * Write out symbol table for current function.
  */
 
-#if TARGET_WINDOS
 void cv_outsym(symbol *s)
 {
     //printf("cv_outsym('%s')\n",s->Sident);
     symbol_debug(s);
-#if MARS
-    if (s->Sflags & SFLnodebug)
-        return;
-#endif
     switch (config.fulltypes)
     {
         case CV4:
@@ -2944,16 +2795,10 @@ void cv_outsym(symbol *s)
         case CVTDB:
             cv4_outsym(s);
             break;
-#if MARS
-        case CV8:
-            cv8_outsym(s);
-            break;
-#endif
         default:
             assert(0);
     }
 }
-#endif
 
 /******************************************
  * Return cv type index for a type.

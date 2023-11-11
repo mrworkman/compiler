@@ -105,7 +105,6 @@ code *modEA(code *c)
     return cdb.finish();
 }
 
-#if TARGET_WINDOS
 // This code is for CPUs that do not support the 8087
 
 /****************************
@@ -311,7 +310,6 @@ STATIC code * opnegassdbl(elem *e,regm_t *pretregs)
     fixresult(cdb,e,retregs,pretregs);
     return cdb.finish();
 }
-#endif
 
 
 
@@ -1853,7 +1851,6 @@ void cdcmp(CodeBuilder& cdb,elem *e,regm_t *pretregs)
         }
         else
         {
-#if TARGET_WINDOS
             int clib;
 
             retregs = 0;                /* skip result for now          */
@@ -1880,9 +1877,6 @@ void cdcmp(CodeBuilder& cdb,elem *e,regm_t *pretregs)
                     clib += CLIBdcmpexc - CLIBdcmp;
                 opdouble(cdb,e,&retregs,clib);
             }
-#else
-            assert(0);
-#endif
         }
         goto L3;
   }
@@ -2071,13 +2065,11 @@ void cdcmp(CodeBuilder& cdb,elem *e,regm_t *pretregs)
                     goto oplt;
                 case OPgt:
                     cdb.gen2(0xF7,grex | modregrmx(3,3,reg));         // NEG reg
-#if TARGET_WINDOS
                     // What does the Windows platform do?
                     //  lower INT_MIN by 1?   See test exe9.c
                     // BUG: fix later
                     code_orflag(cdb.last(), CFpsw);
                     cdb.genc2(0x81,grex | modregrmx(3,3,reg),0);  // SBB reg,0
-#endif
                     goto oplt;
                 case OPlt:
                 oplt:
@@ -2622,9 +2614,7 @@ void cdcnvt(CodeBuilder& cdb,elem *e, regm_t *pretregs)
         OPd_u16,        CLIBdbluns,
         OPu16_d,        CLIBunsdbl,
         OPd_u32,        CLIBdblulng,
-#if TARGET_WINDOS
         OPu32_d,        CLIBulngdbl,
-#endif
         OPd_s64,        CLIBdblllng,
         OPs64_d,        CLIBllngdbl,
         OPd_u64,        CLIBdblullng,

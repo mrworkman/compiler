@@ -28,12 +28,10 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#if TX86
-#define macro_textfree(m)       mem_ffree((m)->Mtext)
-#elif DEBUG
+#if DEBUG
 #define macro_textfree(m)       if ((m)->Mtext) MEM_PH_FREE((m)->Mtext)
 #else
-#define macro_textfree(m)
+#define macro_textfree(m)       mem_ffree((m)->Mtext)
 #endif
 
 // Other primes: 547,739,1009,2003,3001,4001,5003,6007,7001,8009
@@ -136,11 +134,7 @@ void textbuf_init()
     {   bufmax = 80;
 
         // allocate text buffer
-#if TX86
         abuf = (char *) parc_malloc(1 + bufmax);
-#else
-        abuf = (char *) MEM_PARC_MALLOC(1 + bufmax);
-#endif
         abuf[0] = 0;                    // so we can index buf[-1]
         buf = abuf + 1;
     }
@@ -148,11 +142,7 @@ void textbuf_init()
 
 void textbuf_term()
 {
-#if TX86
     parc_free(abuf);                    // macro text buffer
-#else
-    MEM_PARC_FREE(abuf);                // macro text buffer
-#endif
 }
 
 inline char *textbuf_reserve(char *pbuf, int n)
@@ -182,11 +172,7 @@ inline char *textbuf_reserve(char *pbuf, int n)
 #endif
 
         bufmax = newmax;
-#if TX86
         abuf = (char *) parc_realloc(abuf,1 + bufmax);
-#else
-        abuf = (char *) MEM_PARC_REALLOC(abuf,1 + bufmax);
-#endif
         buf = abuf + 1;
         pbuf = buf + buflen;
     }
@@ -275,7 +261,7 @@ static void (*pragfptab[PRMAX])() =
 
 int pragma_search(const char *id)
 {
-#if TX86 && !__GNUC__
+#if !__GNUC__
     // Assume id[] is big enough to do this
     if (((int *)id)[0] == 'ifed' &&
         ((((char*)id)[7] = 0),(((int *)id)[1] == 'en'))
@@ -306,7 +292,7 @@ int pragma_search(const char *id)
 
 void pragma_process()
 {
-#if !SPP && TX86
+#if !SPP
         if (config.flags2 & (CFG2phauto | CFG2phautoy) &&
             (tok.TKutok.pragma == PRdefine ||
              tok.TKutok.pragma == PRundef  ||
@@ -383,7 +369,7 @@ macro_t * macfind()
   char c;
   int len;
 
-#if 0 && TX86 && !defined(_MSC_VER) && !M_UNIX
+#if 0 && !defined(_MSC_VER) && !M_UNIX
     m = mactabroot[hashtoidx(idhash)]; /* root of macro table   */
     if (!m)
         return (macro_t *) NULL;
@@ -989,9 +975,7 @@ void pragma_term()
         MEM_PARC_FREE(ifn);
     }
 #endif
-#if TX86
     free(mac_array);
-#endif
 }
 
 /******************************
@@ -1002,12 +986,7 @@ STATIC macro_t * macro_calloc(const char *p)
 {   size_t len = strlen(p);
     macro_t *m;
     static macro_t mzero;
-
-#if TX86
     m = (macro_t *) mem_fmalloc(sizeof(macro_t) + len);
-#else
-    m = (macro_t *) MEM_PH_MALLOC(sizeof(macro_t) + len);
-#endif
     *m = mzero;
 #ifdef DEBUG
     m->id = IDmacro;
@@ -1032,11 +1011,7 @@ void macro_freelist(macro_t *m)
         assert(!(m->Mflags & Minuse));
         macro_textfree(m);
         m->Marglist.free(MEM_PH_FREEP);
-#if TX86
         mem_ffree(m);
-#else
-        MEM_PH_FREE(m);
-#endif
     }
 }
 
@@ -1052,15 +1027,7 @@ macro_t *defmac(const char *name,const char *text)
     char *p;
 
     //dbg_printf("defmac(%s,%s)\n",name,text);
-#if TX86
     p = mem_fstrdup(text);
-#else
-    p = NULL;
-    if (text)
-    {   p = (char *) MEM_PH_CALLOC(3 + strlen(text));
-        sprintf(p," %s ",text);
-    }
-#endif
     pm = macfindparent(name,comphash(name));
     m = *pm;
     if (m)
@@ -1246,9 +1213,6 @@ STATIC void prdefine()
     m->Mtext = text;
     m->Mflags |= Mdefined;              // the macro is now defined
 
-#if HTOD
-    htod_define(m);
-#endif
     //printf("define %s '%s'\n", m->Mid, m->Mtext);
 
     // Thread definition onto list of #define's for this file
@@ -1373,9 +1337,7 @@ STATIC char * macrotext(macro_t *m)
     // It turns out that this can only happen when reading from
     // file. We can use this and the knowledge that an LF will be
     // found before the end of the buffer...
-#if TARGET_WINDOS       // for linux nwc_predefine add a define string
     assert(bl->BLtyp == BLfile);        // make sure our assumption is correct
-#endif
 
 #define egchar3()       ((xc = *btextp++), \
                          (config.flags2 & CFG2expand && (explist(xc),1)), \
@@ -1682,11 +1644,7 @@ done:
         pbuf--;
     *pbuf = 0;
     //printf("len = %d\n",strlen(buf));
-#if TX86
     pbuf = mem_fstrdup(buf);
-#else
-    pbuf = (char *) MEM_PH_STRDUP(buf);
-#endif
     exp_ppon();
     egchar();
     //dbg_printf("macrotext() = "); macrotext_print(pbuf); printf("\n");
@@ -1919,7 +1877,6 @@ void pragma_include(char *filename,int flag)
 
     if (HEADER_LIST)
     {
-#if TX86
         int pl;
         if (file_qualify(&filename,flag,pathlist,&pl) == 0)      // if file not found
         {
@@ -2024,7 +1981,6 @@ void pragma_include(char *filename,int flag)
         //dbg_printf("\tReading file %s\n",filename);
         insblk((unsigned char *) filename,BLfile,(list_t) NULL,flag | FQqual,NULL);
         cstate.CSfilblk->BLsearchpath = pl;
-#endif
     }
 
 #endif
@@ -2095,9 +2051,7 @@ STATIC void prstring(int flag)
   p = combinestrings(&len);
   switch (flag)
   {     case 1:                         // message
-#if TARGET_WINDOS
             dbg_printf("%s\n",p);
-#endif
             break;
         case 2:                         // setlocale
             token_setlocale(p);
@@ -2105,9 +2059,7 @@ STATIC void prstring(int flag)
         default:
             assert(0);
   }
-#if TX86
   mem_free(p);
-#endif
   if (paren)
   {
         if (tok.TKval != TKrpar)
@@ -2722,14 +2674,12 @@ STATIC void prpragma()
                             break;
                         case PRLfar16:
                             mangle = mTYman_c;
-#if TARGET_WINDOS
                             if (I16)
                                 tym = mTYfar;
                             else if (config.exe & EX_flat)
                                 tym = 8 /*mTY_far16*/ | mTYfar16;
                             else
                                 preerr(EM_far16_model); // only in flat memory model
-#endif
                             if (tok.TKval != TKident)
                                 break;
                             i = (enum PRL) binary(tok.TKid,linktable,arraysize(linktable));
@@ -2779,7 +2729,7 @@ STATIC void prpragma()
                 break;
 
             case PRXhdrstop:
-#if !SPP && TX86
+#if !SPP
                 if (config.flags2 & (CFG2phauto | CFG2phautoy))
                     ph_testautowrite();
 #endif

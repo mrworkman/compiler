@@ -12,9 +12,7 @@
 
 /* Routines to handle elems.                            */
 
-#if __DMC__
 #pragma once
-#endif
 
 #ifndef EL_H
 #define EL_H    1
@@ -127,7 +125,7 @@ struct elem
 };
 
 //inline tym_t typemask(elem *e) { return (!MARS && PARSER) ? (e)->ET->Tty : (e)->Ety; }
-#define typemask(e)    ((!MARS && PARSER) ? (e)->ET->Tty : (e)->Ety )
+#define typemask(e)    ((PARSER) ? (e)->ET->Tty : (e)->Ety )
 
 inline enum FL el_fl(elem *e) { return (enum FL)e->EV.sp.Vsym->Sfl; }
 

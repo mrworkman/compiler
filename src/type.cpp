@@ -103,11 +103,6 @@ targ_size_t type_size(type *t)
                 unsigned long u = t->Tdim * (unsigned long) s;
 #if SCPP
                 type_chksize(u);
-#elif MARS
-                if (t->Tdim && ((u / t->Tdim) != s || (long)u < 0))
-                    assert(0);          // overflow should have been detected in front end
-#else
-                assert(0);
 #endif
                 s = u;
                 break;
@@ -135,17 +130,13 @@ targ_size_t type_size(type *t)
                 break;
 #endif
             case TYvoid:
-#if SCPP && TARGET_WINDOS               // GNUC allows it, so we will, too
+#if SCPP               // GNUC allows it, so we will, too
                 synerr(EM_void_novalue);        // voids have no value
 #endif
                 s = 1;
                 break;
 
             case TYref:
-#if MARS
-                s = tysize(TYnptr);
-                break;
-#endif
 #if SCPP
             case TYmemptr:
             case TYvtshape:
@@ -307,10 +298,6 @@ type *type_alloc_template(symbol *s)
 
 type *type_fake(tym_t ty)
 {   type *t;
-
-#if MARS
-    assert(ty != TYstruct);
-#endif
     t = type_alloc(ty);
     if (typtr(ty) || tyfunc(ty))
     {   t->Tnext = type_alloc(TYvoid);  /* fake with pointer to void    */
@@ -542,10 +529,6 @@ void type_free(type *t)
 #if SCPP
         else if (t->Talternate && typtr(ty))
             type_free(t->Talternate);
-#endif
-#if MARS
-        else if (t->Tkey && typtr(ty))
-            type_free(t->Tkey);
 #endif
 #ifdef DEBUG
         type_num--;
@@ -780,10 +763,6 @@ type *type_copy(type *t)
 #if SCPP
                 else if (tn->Talternate && typtr(tn->Tty))
                     tn->Talternate->Tcount++;
-#endif
-#if MARS
-                else if (tn->Tkey && typtr(tn->Tty))
-                    tn->Tkey->Tcount++;
 #endif
                 break;
     }
@@ -1313,9 +1292,6 @@ void param_free_l(param_t *p)
 void param_free(param_t **pparamlst)
 {   param_t *p,*pn;
 
-#if !TX86
-    debug_assert(PARSER);
-#endif
     for (p = *pparamlst; p; p = pn)
     {   param_debug(p);
         pn = p->Pnext;
@@ -1527,64 +1503,6 @@ void param_dehydrate(param_t **pp)
         pp = &p->Pnext;
     }
 }
-#endif
-
-#if MARS
-
-int typematch(type *t1, type *t2, int relax);
-
-// Return TRUE if type lists match.
-static int paramlstmatch(param_t *p1,param_t *p2)
-{
-        return p1 == p2 ||
-            p1 && p2 && typematch(p1->Ptype,p2->Ptype,0) &&
-            paramlstmatch(p1->Pnext,p2->Pnext)
-            ;
-}
-
-/*************************************************
- * A cheap version of exp2.typematch() and exp2.paramlstmatch(),
- * so that we can get cpp_mangle() to work for MARS.
- * It's less complex because it doesn't do templates and
- * can rely on strict typechecking.
- * Returns:
- *      !=0 if types match.
- */
-
-int typematch(type *t1,type *t2,int relax)
-{ tym_t t1ty, t2ty;
-  tym_t tym;
-
-  tym = ~(mTYimport | mTYnaked);
-
-  return t1 == t2 ||
-            t1 && t2 &&
-
-            (
-                /* ignore name mangling */
-                (t1ty = (t1->Tty & tym)) == (t2ty = (t2->Tty & tym))
-            )
-                 &&
-
-            (tybasic(t1ty) != TYarray || t1->Tdim == t2->Tdim ||
-             t1->Tflags & TFsizeunknown || t2->Tflags & TFsizeunknown)
-                 &&
-
-            (tybasic(t1ty) != TYstruct
-                && tybasic(t1ty) != TYenum
-                && tybasic(t1ty) != TYmemptr
-             || t1->Ttag == t2->Ttag)
-                 &&
-
-            typematch(t1->Tnext,t2->Tnext, 0)
-                 &&
-
-            (!tyfunc(t1ty) ||
-             ((t1->Tflags & TFfixed) == (t2->Tflags & TFfixed) &&
-                 paramlstmatch(t1->Tparamtypes,t2->Tparamtypes) ))
-         ;
-}
-
 #endif
 
 #endif /* !SPP */

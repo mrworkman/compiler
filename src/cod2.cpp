@@ -114,8 +114,6 @@ regm_t idxregm(code *c)
     return idxm;
 }
 
-
-#if TARGET_WINDOS
 /***************************
  * Gen code for call to floating point routine.
  */
@@ -155,7 +153,6 @@ void opdouble(CodeBuilder& cdb, elem *e,regm_t *pretregs,unsigned clib)
         cgstate.stackclean--;
     callclib(cdb, e, clib, pretregs, 0);
 }
-#endif
 
 /*****************************
  * Handle operators which are more or less orthogonal
@@ -194,13 +191,9 @@ void cdorth(CodeBuilder& cdb,elem *e,regm_t *pretregs)
             orth87(cdb,e,pretregs);
             return;
         }
-#if TARGET_WINDOS
         opdouble(cdb,e,pretregs,(e->Eoper == OPadd) ? CLIBdadd
                                                     : CLIBdsub);
         return;
-#else
-        assert(0);
-#endif
     }
     if (tyxmmreg(ty1))
     {
@@ -4143,108 +4136,6 @@ void getoffset(CodeBuilder& cdb,elem *e,unsigned reg)
         goto L4;
 
     case FLtlsdata:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    {
-      L5:
-        if (config.flags3 & CFG3pic)
-        {
-            if (I64)
-            {
-                /* Generate:
-                 *   LEA DI,s@TLSGD[RIP]
-                 */
-                assert(reg == DI);
-                code css;
-                css.Irex = REX | REX_W;
-                css.Iop = LEA;
-                css.Irm = modregrm(0,DI,5);
-                css.Iflags = CFopsize;
-                css.IFL1 = fl;
-                css.IEVsym1 = e->EV.sp.Vsym;
-                css.IEVoffset1 = e->EV.sp.Voffset;
-                cdb.gen(&css);
-            }
-            else
-            {
-                /* Generate:
-                 *   LEA EAX,s@TLSGD[1*EBX+0]
-                 */
-                assert(reg == AX);
-                cdb.append(load_localgot());
-                code css;
-                css.Iop = LEA;             // LEA
-                css.Irm = modregrm(0,AX,4);
-                css.Isib = modregrm(0,BX,5);
-                css.IFL1 = fl;
-                css.IEVsym1 = e->EV.sp.Vsym;
-                css.IEVoffset1 = e->EV.sp.Voffset;
-                cdb.gen(&css);
-            }
-            return;
-        }
-        /* Generate:
-         *      MOV reg,GS:[00000000]
-         *      ADD reg, offset s@TLS_LE
-         * for locals, and for globals:
-         *      MOV reg,GS:[00000000]
-         *      ADD reg, s@TLS_IE
-         * note different fixup
-         */
-        int stack = 0;
-        if (reg == STACK)
-        {   regm_t retregs = ALLREGS;
-
-            allocreg(cdb,&retregs,&reg,TYoffset);
-            reg = findreg(retregs);
-            stack = 1;
-        }
-
-        code css;
-        css.Irex = rex;
-        css.Iop = 0x8B;
-        css.Irm = modregrm(0, 0, BPRM);
-        code_newreg(&css, reg);
-        css.Iflags = CFgs;
-        css.IFL1 = FLconst;
-        css.IEV1.Vuns = 0;
-        cdb.gen(&css);               // MOV reg,GS:[00000000]
-
-        if (e->EV.sp.Vsym->Sclass == SCstatic || e->EV.sp.Vsym->Sclass == SClocstat)
-        {   // ADD reg, offset s
-            cs.Irex = rex;
-            cs.Iop = 0x81;
-            cs.Irm = modregrm(3,0,reg & 7);
-            if (reg & 8)
-                cs.Irex |= REX_B;
-            cs.Iflags = CFoff;
-            cs.IFL2 = fl;
-            cs.IEVsym2 = e->EV.sp.Vsym;
-            cs.IEVoffset2 = e->EV.sp.Voffset;
-        }
-        else
-        {   // ADD reg, s
-            cs.Irex = rex;
-            cs.Iop = 0x03;
-            cs.Irm = modregrm(0,0,BPRM);
-            code_newreg(&cs, reg);
-            cs.Iflags = CFoff;
-            cs.IFL1 = fl;
-            cs.IEVsym1 = e->EV.sp.Vsym;
-            cs.IEVoffset1 = e->EV.sp.Voffset;
-        }
-        cdb.gen(&cs);                // ADD reg, xxxx
-
-        if (stack)
-        {
-            cdb.gen1(0x50 + (reg & 7));      // PUSH reg
-            if (reg & 8)
-                code_orrex(cdb.last(), REX_B);
-            cdb.append(genadjesp(CNIL,REGSIZE));
-            stackchanged = 1;
-        }
-        break;
-    }
-#elif TARGET_WINDOS
         if (I64)
         {
         L5:
@@ -4260,23 +4151,14 @@ void getoffset(CodeBuilder& cdb,elem *e,unsigned reg)
             break;
         }
         goto L4;
-#else
-        goto L4;
-#endif
 
     case FLfunc:
         fl = FLextern;                  /* don't want PC relative addresses */
         goto L4;
 
     case FLextern:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        if (e->EV.sp.Vsym->ty() & mTYthread)
-            goto L5;
-#endif
-#if TARGET_WINDOS
         if (I64 && e->EV.sp.Vsym->ty() & mTYthread)
             goto L5;
-#endif
     case FLdata:
     case FLudata:
     case FLgot:
@@ -4593,7 +4475,6 @@ void cdpost(CodeBuilder& cdb,elem *e,regm_t *pretregs)
             post87(cdb,e,pretregs);
             return;
         }
-#if TARGET_WINDOS
         assert(sz <= 8);
         getlvalue(cdb,&cs,e->E1,DOUBLEREGS);
         freenode(e->E1);
@@ -4687,7 +4568,6 @@ void cdpost(CodeBuilder& cdb,elem *e,regm_t *pretregs)
         cdb.append(genadjesp(CNIL,stackpush - stackpushsave));
         fixresult(cdb,e,retregs,pretregs);
         return;
-#endif
   }
   if (tyxmmreg(tyml))
   {
@@ -4973,13 +4853,6 @@ void cdinfo(CodeBuilder& cdb,elem *e,regm_t *pretregs)
 
     switch (e->E1->Eoper)
     {
-#if MARS
-        case OPdctor:
-            codelem(cdb,e->E2,pretregs,FALSE);
-            retregs = 0;
-            codelem(cdb,e->E1,&retregs,FALSE);
-            break;
-#endif
 #if SCPP
         case OPdtor:
             cdcomma(cdb,e,pretregs);

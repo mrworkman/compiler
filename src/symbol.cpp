@@ -21,9 +21,7 @@
 #include        "global.h"
 #include        "type.h"
 #include        "dt.h"
-#if TX86
 #include        "cgcv.h"
-#endif
 
 #include        "el.h"
 #include        "oper.h"                /* for OPMAX            */
@@ -133,7 +131,7 @@ void symbol_print(symbol *s)
 #endif
     dbg_printf(" Sl      = %p",s->Sl);
     dbg_printf(" Sr      = %p\n",s->Sr);
-#if SCPP || MARS
+#if SCPP
     if (s->Sscope)
         dbg_printf(" Sscope = '%s'\n",s->Sscope->Sident);
 #endif
@@ -219,10 +217,6 @@ bool Symbol::Sisdead(bool anyiasm)
             * during address assignment.
             */
            (!anyiasm && !(Sflags & SFLread) && Sflags & SFLunambig &&
-#if MARS
-            // mTYvolatile means this variable has been reference by a nested function
-            !(Stype->Tty & mTYvolatile) &&
-#endif
             (config.flags4 & CFG4optimized || !config.fulltypes));
 }
 
@@ -344,9 +338,6 @@ symbol * symbol_generate(int sclass,type *t)
     sprintf(name,"_TMP%d",tmpnum++);
     symbol *s = symbol_name(name,sclass,t);
     //symbol_print(s);
-#if MARS
-    s->Sflags |= SFLnodebug | SFLartifical;
-#endif
     return s;
 }
 
@@ -607,77 +598,6 @@ symbol * lookupsym(const char *p)
 
 symbol *findsy(const char *p,symbol *rover)
 {
-#if TX86 && __DMC__
-    volatile int len;
-    __asm
-    {
-#if !_WIN32
-        push    DS
-        pop     ES
-#endif
-        mov     EDI,p
-        xor     AL,AL
-
-        mov     BL,[EDI]
-        mov     ECX,-1
-
-        repne   scasb
-
-        not     ECX
-        mov     EDX,p
-
-        dec     ECX
-        inc     EDX
-
-        mov     len,ECX
-        mov     AL,BL
-
-        mov     EBX,rover
-        mov     ESI,EDX
-
-        test    EBX,EBX
-        je      L6
-
-        cmp     AL,symbol.Sident[EBX]
-        js      L2
-
-        lea     EDI,symbol.Sident+1[EBX]
-        je      L5
-
-        mov     EBX,symbol.Sr[EBX]
-        jmp     L3
-
-L1:             mov     ECX,len
-L2:             mov     EBX,symbol.Sl[EBX]
-
-L3:             test    EBX,EBX
-                je      L6
-
-L4:             cmp     AL,symbol.Sident[EBX]
-                js      L2
-
-                lea     EDI,symbol.Sident+1[EBX]
-                je      L5
-
-                mov     EBX,symbol.Sr[EBX]
-                jmp     L3
-
-L5:             rep     cmpsb
-
-                mov     ESI,EDX
-                js      L1
-
-                je      L6
-
-                mov     EBX,symbol.Sr[EBX]
-                mov     ECX,len
-
-                test    EBX,EBX
-                jne     L4
-
-L6:     mov     EAX,EBX
-    }
-#else
     size_t len;
     signed char cmp;                    /* set to value of strcmp       */
     char c = *p;
@@ -694,7 +614,6 @@ L6:     mov     EAX,EBX
         rover = (cmp < 0) ? rover->Sl : rover->Sr;
     }
     return rover;                       // failed to find it
-#endif
 }
 
 #endif
@@ -1466,11 +1385,6 @@ void symbol_dehydrate(symbol **ps)
                 symbol_dehydrate(&f->Ftempl);
             else
                 thunk_dehydrate(&f->Fthunk);
-#if !TX86 && DEBUG_XSYMGEN
-            if (xsym_gen && s->Sclass == SCfunctempl)
-                ph_dehydrate(&f->Farglist);
-            else
-#endif
             param_dehydrate(&f->Farglist);
             param_dehydrate(&f->Fptal);
             list_dehydrate(&f->Ffwdrefinstances,(list_free_fp)symbol_dehydrate);

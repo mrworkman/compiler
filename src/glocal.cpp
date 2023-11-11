@@ -37,10 +37,8 @@ typedef struct loc_t
 #       define LFsymdef         0x10    // definition of symbol s
 #       define LFunambigref     0x20    // references unambiguous data other than s
 #       define LFunambigdef     0x40    // defines unambiguous data other than s
-#if TX86
 #       define LFinp            0x80    // input from I/O port
 #       define LFoutp           0x100   // output to I/O port
-#endif
 #       define LFfloat          0x200   // sets float flags and/or depends on
                                         // floating point settings
 } loc_t;
@@ -480,11 +478,7 @@ STATIC void local_ins(elem *e)
         {   int flags;
 
             flags = local_getflags(e->E2,NULL);
-#if TX86
             if (!(flags & (LFvolatile | LFinp | LFoutp)) &&
-#else
-            if (!(flags & LFvolatile) &&
-#endif
                 !(e->E1->Ety & mTYvolatile))
             {
                 // Add e to the candidate array
@@ -607,8 +601,6 @@ STATIC int local_getflags(elem *e,symbol *s)
             case OPbt:
                 flags |= LFambigref;
                 break;
-
-#if TX86
             case OPinp:
                 flags |= LFinp;
                 break;
@@ -616,7 +608,6 @@ STATIC int local_getflags(elem *e,symbol *s)
             case OPoutp:
                 flags |= LFoutp;
                 break;
-#endif
         }
         if (EUNA(e))
         {

@@ -48,13 +48,11 @@ STATIC list_t   cpp_pvirtbase(Classsym *stag , Classsym *sbase);
 STATIC int      fixctorwalk(elem *e , elem *ec , symbol *s_this);
 STATIC Match    cpp_builtinoperator(elem *e);
 
-#if TX86
 /* List of elems which are the constructor and destructor calls to make */
 list_t constructor_list = NULL;         /* for _STIxxxx                 */
 list_t destructor_list = NULL;          /* for _STDxxxx                 */
 
 list_t cpp_stidtors;            /* auto destructors that go in _STIxxxx */
-#endif
 
 /* Special predefined functions */
 static symbol *s_vec_new,*s_vec_ctor,*s_vec_cpct,*s_vec_delete;
@@ -424,18 +422,16 @@ void cpp_getpredefined()
         s_vec_invariant = lookupsym(vecinvariant);
     symbol_debug(s_vec_invariant);
 
-#if TARGET_WINDOS
     if (s_fatexit == NULL)
         s_fatexit = lookupsym("_fatexit");
     symbol_debug(s_fatexit);
     //if (intsize == 2)
     //  s_fatexit->Stype->Tty = TYffunc;        // always far function
     //s_fatexit->Stype->Tflags &= ~TFfixed;
-#endif
 
 #undef lookupsym
 }
-
+
 /************************************
  * Call operator new(size_t size,...)
  * Input:
@@ -587,12 +583,8 @@ int cpp_typecmp(type *t1,type *t2,int flags, param_t *p1, param_t *p2)
         (LARGEDATA && (typtr(t1ty) || typtr(t2ty)) ||
          t1ty == pointertype || t2ty == pointertype)
                 ||
-#if TX86
         (exp2_ptrconv(t1,t2) == 1 && (LARGEDATA || _tysize[t1ty] == _tysize[t2ty]) &&
          t1ty != TYhptr && t2ty != TYhptr)
-#else
-        (exp2_ptrconv(t1,t2) == 1 && _tysize[t1ty] == _tysize[t2ty])
-#endif
     )
         &&
     /* Array dimensions must match or be unknown        */
@@ -708,12 +700,8 @@ int cpp_typecmp(type *t1,type *t2,int flags, param_t *p1, param_t *p2)
                     goto Lnext;
                 }
                 else if (!(
-#if TX86
                         (exp2_ptrconv(t1,t2) == 1 && (LARGEDATA || _tysize[t1ty] == _tysize[t2ty]) &&
                          t1ty != TYhptr && t2ty != TYhptr)
-#else
-                        (exp2_ptrconv(t1,t2) == 1 && _tysize[t1ty] == _tysize[t2ty])
-#endif
                         ))
                     goto Lnomatch;
             }
@@ -4267,10 +4255,8 @@ elem *cpp_destructor(type *tclass,elem *eptr,elem *enelems,int dtorflag)
     {   Classsym *sftag;
         symbol *sd;
 
-#if TX86
         if (tyfarfunc(sdtor->Stype->Tty) ? !LARGECODE : LARGECODE)
             noeh = 1;                   // not ambient memory model
-#endif
 
         // Determine access of function funcsym_p to member function sdtor
         if (!(dtorflag & DTORnoaccess))

@@ -86,7 +86,6 @@ sources = files(
     'errmsgs2.cpp',
     'outbuf.cpp',
     'bcomplex.cpp',
-    'htod.cpp',
     'speller.cpp',
     'utf.cpp',
     'divcoeff.cpp',

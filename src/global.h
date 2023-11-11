@@ -90,7 +90,7 @@ extern Symbol *tls_get_addr_sym;
 Symbol *asm_define_label(const char *id);
 
 // cpp.c
-#if SCPP || MARS
+#if SCPP
 char *cpp_mangle(Symbol *s);
 #else
 #define cpp_mangle(s)   ((s)->Sident)
@@ -203,10 +203,8 @@ void err_fatal(unsigned,...);
 #endif
 
 int cpperr(unsigned,...);
-#if TX86
 int tx86err(unsigned,...);
 extern int errmsgs_tx86idx;
-#endif
 void warerr(unsigned,...);
 void err_warning_enable(unsigned warnum, int on);
 void lexerr(unsigned,...);
@@ -452,7 +450,6 @@ int go_flag(char *cp);
 void optfunc();
 
 /* filename.c */
-#if !MARS
 extern Srcfiles srcfiles;
 Sfile **filename_indirect(Sfile *sf);
 Sfile *filename_search(const char *name);
@@ -466,7 +463,6 @@ void filename_free();
 int filename_cmp(const char *f1,const char *f2);
 void srcpos_hydrate(Srcpos *);
 void srcpos_dehydrate(Srcpos *);
-#endif
 
 // tdb.c
 unsigned long tdb_gettimestamp();

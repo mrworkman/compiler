@@ -56,9 +56,7 @@ char *type_tostring(Outbuffer *buf,type *t)
     const char *s;
     type *tn;
     Outbuffer buf2;
-#if TX86
     mangle_t mangle;
-#endif
 
     //printf("type_tostring()\n");
     //type_print(t);
@@ -66,9 +64,7 @@ char *type_tostring(Outbuffer *buf,type *t)
     for (; t; t = t->Tnext)
     {
         type_debug(t);
-#if TX86
         mangle = type_mangle(t);
-#endif
         ty = t->Tty;
         if (!tyfunc(ty) && !tymptr(ty) &&
             !tyref(ty) &&
@@ -89,15 +85,10 @@ char *type_tostring(Outbuffer *buf,type *t)
                 buf->write("__export ");
         if (ty & mTYimport)
                 buf->write("__import ");
-#if TX86
         if (mangle == mTYman_pas)
                 buf->write("__pascal ");
         if (mangle == mTYman_sys)
                 buf->write("__syscall ");
-#else
-        if ((ty & mTYMAN) == mTYman_pas)
-                buf->write("__pascal ");
-#endif
 
         ty = tybasic(ty);
         assert(ty < TYMAX);
@@ -171,11 +162,7 @@ char *type_tostring(Outbuffer *buf,type *t)
                     s = "";
                 }
                 else
-#if TX86
                     s = t->Ttag->Sstruct->Sflags & STRunion ? "union " : "struct ";
-#else
-                    s = t->Ttag->Sclass == SCunion ? "union " : "struct ";
-#endif
                 goto L1;
 
             case TYenum:
@@ -191,12 +178,10 @@ char *type_tostring(Outbuffer *buf,type *t)
                 buf->write("::*");
                 goto Laddcv;
 
-#if TX86
             case TYnptr:
             case TYsptr:
             case TYcptr:
             case TYhptr:
-#endif
             case TYfptr:
             case TYvptr:
             case TYref:

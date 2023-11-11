@@ -128,14 +128,6 @@ STATIC void cpp_string ( char *s, size_t len );
  */
 
 struct OPTABLE
-#if MARS
-{
-    unsigned char tokn;
-    unsigned char oper;
-    char *string;
-    char *pretty;
-}
-#endif
  oparray[] = {
     {   TKnew, OPnew,           cpp_name_new,   "new" },
     {   TKdelete, OPdelete,     cpp_name_delete,"del" },
@@ -1006,9 +998,7 @@ STATIC void cpp_basic_data_type(type *t)
         case TYfptr:
         case TYhptr:
         case TYvptr:
-#if !MARS
         case TYmemptr:
-#endif
         case TYnptr:
             c = 'P' + cpp_cvidx(t->Tty);
             CHAR(c);
@@ -1029,7 +1019,6 @@ STATIC void cpp_basic_data_type(type *t)
         case TYvoid:
             c = 'X';
             goto dochar;
-#if !MARS
         case TYident:
             if (pstate.STintemplate)
             {
@@ -1054,7 +1043,6 @@ STATIC void cpp_basic_data_type(type *t)
             else
                 goto Ldefault;
             break;
-#endif
 
         default:
         Ldefault:
@@ -1077,7 +1065,6 @@ STATIC void cpp_function_indirect_type(type *t)
 {   int farfunc;
 
     farfunc = tyfarfunc(t->Tnext->Tty) != 0;
-#if !MARS
     if (tybasic(t->Tty) == TYmemptr)
     {
         CHAR('8' + farfunc);
@@ -1086,13 +1073,11 @@ STATIC void cpp_function_indirect_type(type *t)
         //cpp_this_type(t->Tnext,t->Ttag);      // MSC doesn't do this
     }
     else
-#endif
         CHAR('6' + farfunc);
 }
 
 STATIC void cpp_data_indirect_type(type *t)
 {   int i;
-#if !MARS
     if (tybasic(t->Tty) == TYmemptr)    // if pointer to member
     {
         i = cpp_cvidx(t->Tty);
@@ -1103,7 +1088,6 @@ STATIC void cpp_data_indirect_type(type *t)
         CHAR('@');
     }
     else
-#endif
         cpp_ecsu_data_indirect_type(t);
 }
 
@@ -1287,18 +1271,14 @@ STATIC void cpp_vcall_model_type()
 {
 }
 
-#if SCPP || MARS
+#if SCPP
 
 STATIC void cpp_this_type(type *tfunc,Classsym *stag)
 {   type *t;
 
     type_debug(tfunc);
     symbol_debug(stag);
-#if MARS
-    t = type_pointer(stag->Stype);
-#else
     t = cpp_thistype(tfunc,stag);
-#endif
     //cpp_data_indirect_type(t);
     cpp_ecsu_data_indirect_type(t);
     type_free(t);
@@ -1348,7 +1328,7 @@ STATIC void cpp_ecsu_name(symbol *s)
 {
     //printf("cpp_ecsu_name(%s)\n", symbol_ident(s));
     cpp_zname(symbol_ident(s));
-#if SCPP || MARS
+#if SCPP
     if (s->Sscope)
         cpp_scope(s->Sscope);
 #endif
@@ -1408,7 +1388,7 @@ STATIC void cpp_static_member_function_type(symbol *s)
     cpp_function_type(s->Stype);
 }
 
-#if SCPP || MARS
+#if SCPP
 STATIC void cpp_member_function_type(symbol *s)
 {
     assert(tyfunc(s->Stype->Tty));
@@ -1445,7 +1425,7 @@ STATIC void cpp_type_encoding(symbol *s)
     {   int farfunc;
 
         farfunc = tyfarfunc(s->Stype->Tty) != 0;
-#if SCPP || MARS
+#if SCPP
         if (isclassmember(s))
         {   // Member function
             int protection;
@@ -1478,7 +1458,7 @@ STATIC void cpp_type_encoding(symbol *s)
     }
     else
     {
-#if SCPP || MARS
+#if SCPP
         if (isclassmember(s))
         {
             {   // Static data member
@@ -1490,7 +1470,7 @@ STATIC void cpp_type_encoding(symbol *s)
 #endif
         {
             if (s->Sclass == SCstatic
-#if SCPP || MARS
+#if SCPP
                 || (s->Sscope &&
                  s->Sscope->Sclass != SCstruct &&
                  s->Sscope->Sclass != SCnamespace)
@@ -1534,7 +1514,7 @@ STATIC void cpp_scope(symbol *s)
                 cpp_decorated_name(s);
                 break;
         }
-#if SCPP || MARS
+#if SCPP
         s = s->Sscope;
 #else
         break;
@@ -1548,16 +1528,6 @@ STATIC void cpp_zname(const char *p)
     if (*p != '?' ||                            // if not operator_name
         (NEWTEMPMANGLE && p[1] == '$'))         // ?$ is a template name
     {
-#if MARS
-        /* Scan forward past any dots
-         */
-        for (const char *q = p; *q; q++)
-        {
-            if (*q == '.')
-                p = q + 1;
-        }
-#endif
-
         for (int i = 0; i < mangle.znamei; i++)
         {
             if (strcmp(p,mangle.zname[i]) == 0)
@@ -1606,7 +1576,7 @@ STATIC void cpp_symbol_name(symbol *s)
         }
     }
 #endif
-#if MARS && 0
+#if 0
     //It mangles correctly, but the ABI doesn't match,
     // leading to copious segfaults. At least with the
     // wrong mangling you get link errors.
@@ -1632,7 +1602,7 @@ STATIC void cpp_decorated_name(symbol *s)
 
     CHAR('?');
     cpp_symbol_name(s);
-#if SCPP || MARS
+#if SCPP
     if (s->Sscope)
         cpp_scope(s->Sscope);
 #endif

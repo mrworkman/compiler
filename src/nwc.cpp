@@ -33,7 +33,6 @@
 #include        "scope.h"
 #include        "outbuf.h"
 #include        "dt.h"
-#include        "tk.h"
 #include        "ty.h"
 
 static char __file__[] = __FILE__;      /* for tassert.h                */
@@ -56,7 +55,6 @@ static int msbug;               // used to emulate MS C++ bug
 
 int readini(char *argv0,char *ini);
 
-#if TX86
 /*******************************
  * Main program.
  */
@@ -126,9 +124,6 @@ int main(int argc,char *argv[])
   pstate.STgclass = SCglobal;
   except_init();                        // exception handling code
   Outbuffer *objbuf = new Outbuffer();
-#if HTOD
-  htod_init(fdmodulename);
-#else
 #if _WIN32
   char *p = (config.exe & EX_dos) ? file_8dot3name(finname) : NULL;
   if (!p || !*p)
@@ -139,7 +134,6 @@ int main(int argc,char *argv[])
 #else
   objmod = Obj::init(objbuf, finname, configv.csegname);
   Obj::initfile(finname,configv.csegname, NULL);
-#endif
 #endif
   PARSER = 1;
   el_init();
@@ -158,7 +152,6 @@ int main(int argc,char *argv[])
   nwc_predefine();                      // any initial declarations
   stoken();
   ext_def(0);                           // do external_definitions
-#if !HTOD
   if (pstate.STflags & PFLhxgen)
       ph_autowrite();
   template_instantiate();
@@ -188,17 +181,10 @@ int main(int argc,char *argv[])
         }
         ph_write(fsymname,2);           // write precompiled header
   }
-#endif
   pragma_term();
   file_term();
-#if HTOD
-  htod_term();
-  if (fdmodule)
-        fclose(fdmodule);
-#else
   if (flst)
         fclose(flst);
-#endif
 
 #if TERMCODE                            /* dump this to speed up compile */
   assert(pstate.STinparamlist == 0);
@@ -287,71 +273,9 @@ int main(int argc,char *argv[])
     return EXIT_SUCCESS;
 }
 
-#else
-
-void _cdecl main_parser(int argc,char **argv)
-{
-#if SPP
-  list_init();
-  pragma_init();
-  getcmd(argc,argv);                    /* process command line         */
-  file_iofiles();
-  insblk((unsigned char *)finname,BLfile,NULL,FQtop,NULL);      // install top level block
-  if (headers)
-  {     insblk(list_ptr(headers),BLfile,NULL,FQcwd | FQpath,NULL);
-        list_pop(&headers);
-  }
-
-  while (stoken() != TKeof)
-        ;
-
-  pragma_term();
-
-#else
-
-  ph_init();                            /* assume precompiled header memory */
-  list_init();
-  vec_init();
-#if DEMO
-  dbg_printf("Digital Mars C/C++ Demo Compiler\n");
-#endif
-  pragma_init();
-  pstate.STgclass = SCglobal;
-  getcmd(argc,argv);                    /* process command line         */
-  file_iofiles();
-  el_init();
-  PARSER = 1;
-  type_init();
-  insblk((unsigned char *)finname,BLfile,NULL,FQtop,NULL);      // install top level block
-
-  cstate.CSpsymtab = &globsym;
-  createglobalsymtab();                 /* create top level symbol table */
-#if TX86
-  if (config.flags2 & (CFG2phauto | CFG2phautoy))       // if automatic precompiled headers
-        ph_auto();
-#endif
-  if (headers)
-  {     pragma_include((char *)list_ptr(headers),FQcwd | FQpath);
-        list_pop(&headers);
-  }
-  nwc_predefine();                      /* any initial declarations     */
-  stoken();
-  ext_def(0);                           /* do external_definitions      */
-  if (pstate.STflags & PFLhxgen)
-      ph_autowrite();
-  template_instantiate();
-  cpp_build_STI_STD();                  // do static ctors/dtors
-  output_func();                        /* write out any more functions */
-#endif /* SPP */
-  if (errcnt)                           /* if any errors occurred       */
-        err_exit();
-}
-#endif
-
 
 #if !SPP
 
-#if TX86
 /***********************************
  * 'Predefine' a number of symbols.
  */
@@ -416,8 +340,6 @@ __mptr __cdecl __genthunk(unsigned,unsigned,__mptr);\
     }
 }
 
-#endif
-
 /***************************
  * Evaluate external_definitions.
  * This is called once for C, and recursively for C++ (to implement
@@ -497,12 +419,8 @@ L1:
                 {
                     static char *linkagetab[] =
                     {
-    #if TX86
                           "C","C++","Pascal","FORTRAN","syscall","stdcall",
                           "D"
-    #else
-                          TARGET_LINKAGETAB
-    #endif
                     };
                     linkage_t i;
                     targ_size_t len;
@@ -520,7 +438,6 @@ L1:
                             break;
                     }
                     mem_free(p);
-    #if TX86
                     // If -P switch used, then extern "C" is treated
                     // as if it was extern "Pascal"
                     if (i == LINK_C)
@@ -529,7 +446,6 @@ L1:
                         if (config.flags4 & CFG4stdcall)
                             i = LINK_STDCALL;
                     }
-    #endif
                     if (tok.TKval == TKlcur)    /* if start of scope            */
                     {   linkage_t save;
 
@@ -651,9 +567,7 @@ symbol *nwc_genthunk(symbol *s,targ_size_t d,int i,targ_size_t d2)
     t->i = i;
     t->d2 = d2;
     sthunk->Sfunc->Fthunk = t;
-#if TX86
     list_append(&s->Sfunc->Fthunks,sthunk);
-#endif
     return sthunk;
 }
 
@@ -744,10 +658,6 @@ void nwc_mustwrite(symbol *sfunc)
     //dbg_printf("nwc_mustwrite('%s')\n",sfunc->Sident);
     //symbol_print(sfunc);
     assert(tyfunc(sfunc->Stype->Tty));
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-        if (sfunc->Sfunc->Fflags3 & Fnowrite)
-            return;
-#endif
     if (sfunc->Sflags & SFLimplem)              /* if body already read in */
     {
         queue_func(sfunc);                      /* send it out          */
@@ -974,19 +884,12 @@ L2:
         case TKvolatile:    modifiersx = mTYvolatile;   goto L3;
         case TKrestrict:    modifiersx = mTYrestrict;   goto L3;
         case TKthread_local:    modifiersx = mTYthread; goto L3;
-#if TX86
         case TK_declspec:   modifiersx = nwc_declspec(); goto L3;
-#endif
         L3:
             if (modifiers & modifiersx)
-#if TX86
                 synerr(EM_illegal_type_combo);          // illegal combination of types
             else
                 modifiers |= modifiersx;
-#else
-                goto error;             /* illegal combination of types */
-            modifiers |= modifiersx;
-#endif
             stoken();
             goto L2;
 
@@ -1163,7 +1066,6 @@ L2:
                             else
                                 token_unget();
                         }
-#if TX86
                         // If we are past the header, and referencing typedefs,
                         // then output the typedef into the debug info.
                         if (config.fulltypes == CV4 &&
@@ -1172,7 +1074,6 @@ L2:
                             !s->Sxtrnnum
                            )
                            cv_outsym(s);
-#endif
                         if (CPP && tybasic(s->Stype->Tty) == TYstruct)
                         {
                             modifiers2 |= s->Stype->Tty & (mTYconst | mTYvolatile);
@@ -1182,10 +1083,6 @@ L2:
                         msbug = 1;
                         t = s->Stype;     /* use pre-defined type        */
                         type_debug(t);
-#if HTOD
-                        t = type_copy(t);
-                        t->Ttypedef = s;
-#endif
                         tkwx = TKWident;
                         goto L6;
 
@@ -1774,9 +1671,6 @@ elem *declaration(int flag)
                 synerr(EM_datadef,s->Sident);           // expected data def
             if (funcdecl(s,sc_specifier,1,&gdeclar))
             {   /* Function body was present    */
-#if HTOD
-                htod_decl(s);
-#endif
                 goto ret;
             }
         }
@@ -1901,7 +1795,6 @@ elem *declaration(int flag)
                         break;
 
                     Lthreshold:
-#if TX86
                         if (t->Tty & mTYimport)
                         {
                             if (tok.TKval == TKeq)
@@ -1926,7 +1819,6 @@ elem *declaration(int flag)
                         {
                             s->Stype = type_setty(&t,t->Tty | mTYfar);
                         }
-#endif
                         break;
                 }
 
@@ -1959,20 +1851,11 @@ elem *declaration(int flag)
                 }
                 if (flag & 4)           // if declaration in conditional
                 {
-#if HTOD
-                    if (level == 0)
-                        htod_decl(s);
-#endif
                     goto ret;           // only 1 allowed
                 }
             }
         }
     L1:
-#if HTOD
-        if (level == 0)
-            htod_decl(s);
-#endif
-
         switch (tok.TKval)
         {
             case TKident:
@@ -2105,9 +1988,7 @@ type *declar(type *t,char *vident,int flag)
     tym_t ty;
     tym_t tyx;
     unsigned mangle;
-#if TX86
     static int inprototype = 0;
-#endif
     type *tconv = NULL;
     int op = OPunde;
     bool constructor = FALSE;
@@ -2130,10 +2011,8 @@ type *declar(type *t,char *vident,int flag)
     if (vident)
         vident[0] = 0;
 
-#if TX86
     // Irrational MS syntax can have __declspec anywhere
     initial = t->Tty & (mTYthread | mTYnaked | mTYimport | mTYexport);
-#endif
 
     // See if need to set up enclosing scopes
     if (CPP && tok.TKval == TKsymbol)
@@ -2165,7 +2044,6 @@ type *declar(type *t,char *vident,int flag)
             case TKsymbol:
             case TKoperator:
             case TK_invariant:
-#if TX86
             case TKrpar:
             Lcase_id:
                 {   tym_t tyx;
@@ -2183,7 +2061,6 @@ type *declar(type *t,char *vident,int flag)
                     if (tok.TKval == TKrpar)
                         goto Ldefault;
                 }
-#endif
               if (CPP)
               {
                 if (tok.TKval == TKident || tok.TKval == TKsymbol)
@@ -2391,7 +2268,6 @@ type *declar(type *t,char *vident,int flag)
                     }
                     else
                         strcpy(vident,dident);  // squirrel away identifier
-#if TX86
                     // Determine if linkage was specified with #pragma linkage()
                     if (cstate.CSlinkage && vident)
                     {   symbol *s;
@@ -2402,7 +2278,6 @@ type *declar(type *t,char *vident,int flag)
                             mangle = s->Smangle;
                         }
                     }
-#endif
                 }
                 else if (tok.TKval == TKoperator)
                 {   char *p;
@@ -2453,7 +2328,6 @@ type *declar(type *t,char *vident,int flag)
                 else
                     synerr(EM_ident_abstract, tok.TKid);        // bad abstract declarator
                 stoken();
-#if TX86
                 // Determine if linkage was specified with #pragma linkage()
                 if (cstate.CSlinkage && vident)
                 {   symbol *s;
@@ -2464,19 +2338,14 @@ type *declar(type *t,char *vident,int flag)
                         mangle = s->Smangle;
                     }
                 }
-#endif
               }
                 tstart = t;                     // start of type list
                 tstart->Tcount++;
                 goto ret;
 
             case TKlpar:
-#if TX86
                 if (tym && CPP)
                     if (flag == 1 || flag == 2)
-#else
-                if (tym)
-#endif
                 {   synerr(EM_illegal_type_combo);      // illegal combination of types
                     tym = 0;
                 }
@@ -2484,7 +2353,6 @@ type *declar(type *t,char *vident,int flag)
                     goto Lnd;
                 if (flag == 2)          // if ptr-operator
                     goto Ldefault;
-#if TX86
                 // This is a hack to support the Borland syntax:
                 //      void __interrupt (__far * _dos_getvect(unsigned intr))()
                 // which should have been written:
@@ -2496,7 +2364,6 @@ type *declar(type *t,char *vident,int flag)
                     tok.TKval = TK_interrupt;
                 }
                 else
-#endif
 #endif
                     stoken();
                 if (CPP && s)
@@ -2520,14 +2387,8 @@ type *declar(type *t,char *vident,int flag)
                     case TKchar32_t:
                     case TKconst:
                     case TKvolatile:
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-                    case TK_attribute:
-                    case TK_extension:
-#endif
-#if TX86
                         if (tym)
                             synerr(EM_illegal_type_combo);      // illegal combination of types
-#endif
                         // It's type <function returning><t> without the identifer
                         tstart = t;
                         tstart->Tcount++;
@@ -2617,10 +2478,8 @@ type *declar(type *t,char *vident,int flag)
                             tla.term();
                             token_unget();
                             tok.TKval = TKlpar;
-#if TX86
                             if (tym)
                                 synerr(EM_illegal_type_combo);  // illegal combination of types
-#endif
                             // It's type <function returning><t> without the identifer
                             tstart = t;
                             tstart->Tcount++;
@@ -2667,7 +2526,6 @@ type *declar(type *t,char *vident,int flag)
                 t = type_allocn(TYptr,t);
                 switch ((tym_t)(tym & ~(mTYTFF | mTYMOD)))
                 {
-#if TX86
                     case mTYnear:       ty = (TYnptr | tym) & ~mTYnear;
                                         break;
                     case mTYfar:        ty = (TYfptr | tym) & ~mTYfar;
@@ -2682,7 +2540,6 @@ type *declar(type *t,char *vident,int flag)
                     L5:
                         if (!(tym & (mTYTFF | mTYMOD)))
                             break;
-#endif
                     default:
                         synerr(EM_illegal_type_combo);  /* illegal combination of types */
                         tym = 0;
@@ -2712,14 +2569,12 @@ type *declar(type *t,char *vident,int flag)
                                 synerr(EM_illegal_type_combo);  /* illegal combination of types */
                             t->Tty |= tyx;
                             break;
-#if TX86
                         case TK_Seg16:
                             /* *_Seg16 is equivalent to _far16* */
                             if (tyref(ty))
                                 synerr(EM_illegal_type_combo);  /* illegal combination of types */
                             ty = TYf16ptr;
                             goto L5;
-#endif
                         default:
                             goto L6;
                     }
@@ -2735,7 +2590,6 @@ type *declar(type *t,char *vident,int flag)
                 // "&" [cv-qualifier-seq] is not allowed in a new-declarator
                 msbug = 0;
                 t = newref(t);
-#if TX86
                 switch (tym)
                 {   case mTYfar:
                         if (LARGEDATA)
@@ -2758,7 +2612,6 @@ type *declar(type *t,char *vident,int flag)
                     case 0:
                         break;
                 }
-#endif
                 goto L2;
 
             case TKcolcol:
@@ -2769,7 +2622,6 @@ type *declar(type *t,char *vident,int flag)
                 global = 1;             // lookup in global table
                 continue;
 
-#if TX86
             /* Parse extended prefixes  */
             case TK_near:       tym |= mTYnear;
                                 goto L3;
@@ -2845,7 +2697,6 @@ type *declar(type *t,char *vident,int flag)
                                     mangle = mTYman_d;
                                 tym |= mTYjava;
                                 goto L3;
-#endif
             case TK_cdecl:
                                 if (linkage != LINK_CPP)
                                     mangle = mTYman_c;
@@ -2885,37 +2736,6 @@ type *declar(type *t,char *vident,int flag)
                 t->Tcount--;
                 stoken();
                 continue;
-
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-            case TK_attribute:
-                {
-                int attrtype;
-                int mod = getattributes(NULL,FALSE,&attrtype);
-                if (attrtype & ATTR_LINKMOD)
-                {
-                    if (mod & mTYvolatile)
-                    {
-                        t->Tcount++;
-                        type_setty(&t,t->Tty | mTYvolatile);
-                        t->Tcount--;
-                    }
-                    if (mod & mTYconst)
-                    {
-                        t->Tcount++;
-                        type_setty(&t,t->Tty | mTYconst);
-                        t->Tcount--;
-                    }
-                    if (mod & (mTYstdcall|mTYcdecl))
-                        tym |= (mod & (mTYstdcall|mTYcdecl));
-                    mod &= ~(mTYvolatile|mTYconst|mTYstdcall|mTYcdecl);
-                    attrtype &= ~ATTR_LINKMOD;
-                }
-#if DEBUG
-                assert(ATTR_CAN_IGNORE(attrtype));
-#endif
-                continue;
-                }
-#endif
             default:
             Ldefault2:
                 if (tym)
@@ -3074,33 +2894,7 @@ ret:
     if (mangle)
         type_setmangle(&tstart,mangle);
 
-#if TX86
     tym |= initial;
-#endif
-
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-    if (tok.TKval == TK_attribute)
-    {
-        int attrtype;
-        int mod = getattributes(NULL,FALSE,&attrtype);
-        if (attrtype & ATTR_TYPEMOD)
-        {
-            tym &= ~mTYbasic;
-            tym |= (mod & mTYbasic);
-            mod &= ~mTYbasic;
-            attrtype &= ~ATTR_TYPEMOD;
-        }
-        if (attrtype & ATTR_TRANSU)
-        {
-            tym |= mTYtransu;
-            attrtype &= ~ATTR_TRANSU;
-        }
-#if DEBUG
-        assert(mod == 0);
-        assert(ATTR_CAN_IGNORE(attrtype));
-#endif
-    }
-#endif
 
     if (tym)
     {
@@ -3468,10 +3262,8 @@ ret:
                 tfunc->Tty = (tfunc->Tty & ~mTYbasic) | TYffunc;
                 break;
 
-#if TX86
             case TYf16func:             /* no variable arg list in pascal */
             case TYjfunc:
-#endif
                 synerr(EM_param_context);       // FIX - better error message
                 tfunc->Tty = (tfunc->Tty & ~mTYbasic) | TYffunc;
                 break;                  /* ??? needed for C->pascal interface ??? */
@@ -3480,43 +3272,6 @@ ret:
 
     chktok(TKrpar,EM_param_rpar);       // closing parenthesis
 ret2:
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-    if (tok.TKval == TK_attribute)
-    {
-
-        int attrtype;
-        int mod = getattributes(NULL,FALSE,&attrtype);
-        if (attrtype & ATTR_FUNCINFO)
-        {
-            tfunc->Tty |= mTYnoret;
-            attrtype &= ~ATTR_FUNCINFO;
-            mod &= ~mTYnoret;
-        }
-        if (attrtype & ATTR_LINKMOD)
-        {
-            if(mod & mTYstdcall)
-                tfunc->Tty = (tfunc->Tty & ~mTYbasic) | TYnsfunc;
-            if(mod & mTYcdecl)
-                tfunc->Tty = (tfunc->Tty & ~mTYbasic) | TYnfunc;
-            if(mod & mTYconst)
-                tfunc->Tty |= mTYconst;
-            if(mod & mTYvolatile)
-                tfunc->Tty |= mTYvolatile;
-        }
-#if DEBUG
-        attrtype &= ~(ATTR_FUNCINFO|ATTR_LINKMOD);
-        mod &= ~(mTYstdcall|mTYcdecl|mTYvolatile|mTYconst);
-        assert(mod == 0);
-        assert(ATTR_CAN_IGNORE(attrtype));
-#endif
-    }
-    else if (tok.TKval == TK_asm)
-    {
-        // if a prototype is trailed by __asm__("name")
-        // the new name is used for the function name
-        lnx_redirect_funcname(fident);
-    }
-#endif
     return tfunc;
 }
 
@@ -3923,7 +3678,6 @@ void fixdeclar(type *t)
                     return;
                 }
                 break;
-#if TX86
             case TYptr:
             {   type *t2;
 
@@ -3969,8 +3723,6 @@ void fixdeclar(type *t)
                 else if (tyref(tn->Tty))
                     synerr(EM_ptr_to_ref);      // illegal pointer to reference
                 break;
-#endif
-
             case TYmemptr:
                 if (tyfunc(tn->Tty))
                 {
@@ -4003,13 +3755,6 @@ void fixdeclar(type *t)
                 }
                 break;
             }
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-            case TYstruct:
-                if (tym & mTYtransu)
-                {                               // linux transparent union
-                    newtym |= mTYtransu;
-                }
-#endif
         }
         t->Tty = newtym |
             (tym & (mTYLINK | mTYconst | mTYvolatile | mTYMOD));
@@ -4629,7 +4374,6 @@ int funcdecl(symbol *s,enum SC sc_specifier,int pflags,Declar *decl)
             }
             break;
 
-#if TARGET_WINDOS
         case 'w':
             if (config.exe == EX_WIN32)
             {
@@ -4674,7 +4418,6 @@ int funcdecl(symbol *s,enum SC sc_specifier,int pflags,Declar *decl)
             li = (int) LINK_PASCAL;
             type_setty(&s->Stype, (s->Stype->Tty & mTYloadds) | FUNC_TYPE(li,I16 ? Lmodel : Smodel));
             goto case_com;
-#endif
         default:
         case_def:
             if (CPP && !(f->Fflags & Flinkage))
@@ -4690,12 +4433,10 @@ int funcdecl(symbol *s,enum SC sc_specifier,int pflags,Declar *decl)
 
       if (sclass)                               // if member function
       {
-#if TX86
         if (sclass->Sstruct->Sflags & STRexport)
             type_setty(&s->Stype,s->Stype->Tty | mTYexport); // add in _export
         if (sclass->Sstruct->Sflags & STRimport)
             type_setty(&s->Stype,s->Stype->Tty | mTYimport);
-#endif
         f->Fflags |= Foverload;         /* it can always be overloaded  */
 
         // I don't know what this was from
@@ -5312,14 +5053,9 @@ Lagain:
         case TKtrue:
         case TKfalse:
         case TKnullptr:
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-        case TK_bltin_const:
-#endif
         case TKasm:
-#if TX86
         case TK_asm:
         case TK__emit__:
-#endif
 #ifdef DEBUG
             tla.term();                 // skip for speed reasons
 #endif
@@ -5342,10 +5078,6 @@ Lagain:
         case TKbool:
         case TKwchar_t:
         case TKchar32_t:
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-        case TK_attribute:
-        case TK_extension:
-#endif
             s = NULL;
             break;
 
@@ -5618,7 +5350,6 @@ L3:
                 break;
             case TKstar:
             case TKand:
-#if TX86
             /* Parse extended prefixes  */
             case TK_near:
             case TK_far:
@@ -5637,7 +5368,6 @@ L3:
             case TK_syscall:
             case TK_System:
             case TK_Seg16:
-#endif
             case TK_cdecl:
             case TK_fortran:
             case TK_pascal:
@@ -5664,10 +5394,6 @@ L3:
             case TKbool:
             case TKwchar_t:
             case TKchar32_t:
-#if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-            case TK_attribute:
-            case TK_extension:
-#endif
                 if (parens == 1)
                     goto isdecl;
             default:
@@ -5869,7 +5595,6 @@ type *parse_decltype()
     return t;
 }
 
-#if TX86
 /************************************
  * We recognize some special cases of based pointers.
  *      __based(__segname("_DATA"))  => __near
@@ -5965,7 +5690,5 @@ err:
     tx86err(EM_bad_declspec);                   // unsupported __declspec type
     return 0;
 }
-
-#endif
 
 #endif

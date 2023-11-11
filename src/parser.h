@@ -26,7 +26,6 @@
 #include        "type.h"
 #endif
 
-#if !MARS
 extern linkage_t linkage;       /* current linkage that is in effect    */
 extern int linkage_spec;        /* !=0 if active linkage specification  */
 
@@ -40,7 +39,6 @@ extern tym_t functypetab[LINK_MAXDIM][MEMMODELS];
 
 extern mangle_t funcmangletab[LINK_MAXDIM];
 extern mangle_t varmangletab[LINK_MAXDIM];
-#endif
 
 #ifndef EL_H
 #include        "el.h"
@@ -134,9 +132,6 @@ struct phstring_t
 /***************************
  * Macros.
  */
-#if !TX86
-#pragma ZTC align 1
-#endif
 
 struct MACRO
 {
@@ -151,10 +146,8 @@ struct MACRO
     char *Mtext;                // replacement text
     phstring_t Marglist;        // list of arguments (as char*'s)
     macro_t *ML,*MR;
-#if TX86
     macro_t *Mnext;             // next macro in threaded list (all macros
                                 // are on one list or another)
-#endif
     unsigned char Mflags;
 #define Mdefined        1       // if macro is defined
 #define Mfixeddef       2       // if can't be re/un defined
@@ -165,16 +158,8 @@ struct MACRO
 #define Mconcat         0x40    // if macro uses concat operator
 #define Mnotexp         0x80    // if macro should be expanded
     unsigned char Mval;         // if Mkeyword, this is the TKval
-#if TX86
     char Mid[1];                // macro identifier
-#else
-    str4 Mid[];                 /* macro identifier as a 4 byte string */
-#endif
 };
-
-#if !TX86
-#pragma ZTC align
-#endif
 
 /**********************
  * Flags for #include files.
@@ -183,10 +168,8 @@ struct MACRO
 #define FQcwd           1       // search current working directory
 #define FQpath          2       // search INCLUDE path
 #define FQsystem        4       // this is a system include
-#if TX86
 #define FQtop           8       // top level file, already open
 #define FQqual          0x10    // filename is already qualified
-#endif
 #define FQnext          0x20    // search starts after directory
                                 // of last included file (for #include_next)
 
@@ -245,10 +228,8 @@ struct BlklstSave
 extern int TokenCnt;
 #endif
 
-#if TX86
 /* Get filename for BLfile block        */
 #define blklst_filename(b)      (srcpos_name((b)->BLsrcpos))
-#endif
 
 /* Different types of special values that can occur in the character stream */
 #define PRE_ARG 0xFF    // the next char following is a parameter number
@@ -393,10 +374,6 @@ extern char ext_c[];
 extern char ext_cpp[];
 extern char ext_sym[];
 extern char ext_tdb[];
-#if HTOD
-extern char ext_dmodule[];
-extern int includenest;
-#endif
 
 int file_qualify(char **pfilename,int flag,phstring_t pathlist, int *next_path);
 void afopen(char *,blklst *,int);
@@ -526,11 +503,7 @@ int type_covariant(type *t1, type *t2);
 
 /* ph.c */
 extern char *ph_directory;              /* directory to read PH files from      */
-#if MARS
-void ph_init();
-#else
 void ph_init(void *, unsigned reservesize);
-#endif
 void ph_term(void);
 void ph_comdef(symbol *);
 void ph_testautowrite(void);
@@ -542,11 +515,7 @@ int ph_autoread(char *filename);
 void *ph_malloc(size_t nbytes);
 void *ph_calloc(size_t nbytes);
 void ph_free(void *p);
-#if TX86
 void *ph_realloc(void *p , size_t nbytes);
-#else
-void *ph_realloc(void *p , size_t nbytes,unsigned short uFlag);
-#endif
 void ph_add_global_symdef(symbol *s, unsigned sctype);
 
 #if H_STYLE & H_OFFSET
@@ -686,17 +655,6 @@ extern symbol **template_class_list_p;
 extern short template_expansion;
 #endif
 
-// from htod.c
-#if HTOD
-void htod_init(const char *name);
-void htod_term();
-void htod_include(const char *p, int flag);
-void htod_include_pop();
-void htod_writeline();
-void htod_define(macro_t *m);
-void htod_decl(symbol *s);
-#endif
-
 // from token.c
 extern char *Arg;
 
@@ -720,10 +678,6 @@ extern char *fdepname;
 extern FILE *fdep;
 extern char *flstname,*fsymname,*fphreadname,*ftdbname;
 extern FILE *flst;
-#if HTOD
-extern char *fdmodulename;
-extern FILE *fdmodule;
-#endif
 #if SPP
 extern FILE *fout;
 #endif
@@ -737,9 +691,6 @@ extern int level;               // declaration level
                                 // 1: function parameter declarations
                                 // 2: function local declarations
                                 // 3+: compound statement decls
-#if !TX86
-extern symbol *symlinkage;              /* symbol linkage table                 */
-#endif
 extern param_t *paramlst;               /* function parameter list              */
 
 struct RawString

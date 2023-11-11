@@ -29,9 +29,7 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#if TX86
 Scope *scope_end;                       // pointer to innermost scope
-#endif
 
 /**********************************
  */
@@ -430,15 +428,9 @@ symbol *scope_addx(symbol *s,Scope *sc)
     //printf("scope_addx('%s', sct = x%x\n",s->Sident, sc->sctype);
     scope_debug(sc);
     sctype = sc->sctype;
-#if TX86
     if (CPP && sctype & SCTnspace)
         nspace_add(sc->root,s);
     else
-#else
-    if (CPP && sctype & (SCTclass | SCTmfunc))
-        symbol_addtotree(&((symbol *)sc->root)->Sstruct->Sroot, s);
-    else
-#endif
     {
         symbol_addtotree((symbol **)&sc->root,s);
 
@@ -471,50 +463,10 @@ symbol *scope_addx(symbol *s,Scope *sc)
             }
         }
     }
-#if TX86
     if (sctype & (SCTglobal | SCTglobaltag))
     {
         ph_add_global_symdef(s, sctype);
     }
-#else
-//
-// If a nested variable hides an outer scope struct tag, then
-// s->Scover needs to get set to point to the outer scope struct tag.
-//
-    if (CPP && !s->Scover) {
-        symbol *sCover;
-        switch (s->Sclass) {
-        case SCstruct:
-        case SCenum:
-            break;
-        default:
-            for (sc = sc->next; sc; sc = sc->next) {
-                if (sc->root)
-                {
-                    pstate.STno_ambig = 1;
-                    sCover = (*sc->fpsearch)((char *)s->Sident,(symbol *)sc->root);
-                    pstate.STno_ambig = 0;
-
-                    if (sCover) {
-                        if (sCover->Scover)
-                            s->Scover = sCover->Scover;
-                        else {
-                            switch (sCover->Sclass) {
-                            case SCstruct:
-                            case SCenum:
-                                //symbol_keep(sCover);
-                                s->Scover = sCover;
-                                break;
-
-                            }
-                        }
-                    }
-                }
-            }
-           break;
-        }
-    }
-#endif
     return s;
 }
 
@@ -547,7 +499,6 @@ static Scope *scope_freelist;
 STATIC Scope * scope_calloc()
 {   Scope *sc;
 
-#if TX86
     if (scope_freelist)
     {
         sc = scope_freelist;
@@ -559,9 +510,6 @@ STATIC Scope * scope_calloc()
         sc = (Scope *) calloc(1,sizeof(Scope));
         //printf("scope_calloc(%d) = %p\n", sizeof(Scope), sc);
     }
-#else
-    sc = (Scope *) MEM_PH_CALLOC(sizeof(Scope));
-#endif
 #if DEBUG
     sc->id = IDscope;
 #endif
@@ -578,27 +526,15 @@ __inline void scope_free(Scope *sc)
 #if DEBUG
             sc->id = 0;
 #endif
-#if TX86
             sc->next = scope_freelist;
             scope_freelist = sc;
             sc = sc->using_scope;
-#else
-            Scope *scn;
-
-            scn = sc->using_scope;
-            MEM_PH_FREE(sc);
-            sc = scn;
-#endif
         }
     }
     else
     {
-#if TX86
         sc->next = scope_freelist;
         scope_freelist = sc;
-#else
-        MEM_PH_FREE(sc);
-#endif
     }
 }
 
@@ -624,11 +560,7 @@ void scope_push(void *root,scope_fp fpsearch,int sctype)
 //////////////////////////////
 // Pop scope off of stack of scopes.
 
-#if TX86
 void *scope_pop()
-#else
-symbol *scope_pop()
-#endif
 {
     Scope *sc;
     symbol *root;
@@ -805,11 +737,7 @@ void scope_term()
 
     while (scope_freelist)
     {   sc = scope_freelist->next;
-#if TX86
         free(scope_freelist);
-#else
-        MEM_PH_FREE(scope_freelist);
-#endif
         scope_freelist = sc;
     }
 #endif

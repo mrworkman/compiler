@@ -18,8 +18,6 @@
 
 // Compile with -DSPP (preprocessor), -DSCPP (C/C++ compiler), -DHTOD (.h to .d converter)
 
-#define TX86            1
-
 struct Msgtable
 {
         const char *name;       // handle for compiler
@@ -587,15 +585,7 @@ struct Msgtable msgtable[] =
 
         // This line controls the format for how errors are reported
   { "line_format",
-    #if linux || __APPLE__ || __FreeBSD__ || __OpenBSD__
-        "%s:%d: "
-    #elif TX86
         "%s(%d) : ",                                    /* 119  */
-    #else
-        "File \"%s\"; line %u #",                       /* 119  */
-        "Datei \"%s\"; Zeile %u #",                     /* 119  */
-        "Fichier \"%s\"; ligne %u #",                   /* 119  */
-    #endif
   },
   { "0or1",
         "0 or 1 expected",                              /* 122L */
@@ -1051,11 +1041,7 @@ struct Msgtable msgtable[] =
         "data or code '%s' defined in precompiled header",      /* 146S */
         "Daten oder Code in vorkompiliertem Header definiert",          /* 146S */
         "l'en-t�te pr�compil� contient les donn�es ou le code '%s'",    /* 146S */
-    #if TX86
         "�v���R���p�C���w�b�_�Ƀf�[�^����`����Ă���",                 /* 146S */
-    #else
-        "�v���R���p�C���w�b�_�Ƀf�[�^���R�[�h '%s' ����`����Ă���",   /* 146S */
-    #endif
   },
 
         /* ARM 6.6.3
@@ -1486,7 +1472,6 @@ struct Msgtable msgtable[] =
         "type qualifiers and static can only appear in outermost array of function parameter",
   },
 
-#if TX86
   { "tdb",
         "error accessing type database '%s' %d",                // 196
   },
@@ -1712,53 +1697,6 @@ struct Msgtable msgtable[] =
   { "mfc",
         "#pragma DMC mfc must be before symbols",
   },
-
-#endif
-#if !TX86
-  { "cseg_2big",
-        "code segment too large",                       /* 151cg F*/
-        "Codesegment zu gro�",                  /* 151cg F*/
-        "segment de code trop grand",                   /* 151cg F*/
-        "�R�[�h�Z�O�����g����������",                   /* 151cg F*/
-  },
-  { "ptr_handle",
-        "only pointers to handle based types allowed",  /* 22 S */
-        "Nur Pointer auf Handle-basierte Typen zul�ssig",  /* 22 S */
-        "seuls les pointeurs vers des types � base de descripteur sont permis",  /* 22 S */
-  },
-#endif
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-  { "attribute",
-        "illegal attribute specification",
-        "illegal attribute specification",
-        "illegal attribute specification",
-  },
-  { "skip_attribute",                           /* warning message */
-        "skipping attribute specification %s ",
-        "skipping attribute specification %s ",
-        "skipping attribute specification %s ",
-  },
-  { "warning_message",                          /* warning message */
-        "#%s ",
-        "#%s ",
-        "#%s ",
-  },
-  { "bad_vastart",                              /* warning message */
-        "second parameter %s of 'va_start' not last named argument",
-        "second parameter %s of 'va_start' not last named argument",
-        "second parameter %s of 'va_start' not last named argument",
-  },
-  { "bad_vararg",
-        "va_start not used correctly",
-        "va_start not used correctly",
-        "va_start not used correctly",
-  },
-  { "undefined_inline",                         /* warning message */
-        "static inline %s not defined",
-        "static inline %s not defined",
-        "static inline %s not defined",
-  },
-#endif
 
 //////////////////////////////////////////////////////////////////
 // C++ messages
@@ -2125,17 +2063,10 @@ struct Msgtable msgtable[] =
 
         /* ARM 3.4      */
   { "main_type",
-    #if TX86
         "main(), WinMain() or LibMain() cannot be static or inline",    // CPP+35
         "main(), WinMain() oder LibMain() k�nnen nicht 'static' oder 'inline' sein",    // CPP+35
         "main(), WinMain() et LibMain() ne doivent pas �tre de type static ou inline",  // CPP+35
         "main()�AWinMain() ����� LibMain() �� static �ɂ� inline �ɂ����邱�Ƃ͂ł��Ȃ�",      // CPP+35
-    #else
-        "main() cannot be static or inline",                    /* CPP+35 */
-        "main() kann nicht 'static' oder 'inline' sein",                        /* CPP+35 */
-        "main() ne doit pas �tre de type static ou inline",                     /* CPP+35 */
-        "main() �� inline �ɂ����邱�Ƃ͂ł��Ȃ�",      // CPP+35
-    #endif
   },
 
         /* Cannot find constructor whose parameters match
@@ -2546,16 +2477,10 @@ struct Msgtable msgtable[] =
 
         /* ARM 9.4      */
   { "local_static",
-    #if TX86
         "local class cannot have static data member '%s'",      /* CPP+80 */
         "Lokale Klasse kann kein statisches Datenglied '%s' haben",     /* CPP+80 */
         "une classe locale ne doit pas comporter de membre de type donn�e statique",    /* CPP+80 */
         "���[�J���N���X�ɂ� static �f�[�^�����o '%s' ���܂ނ��Ƃ͂ł��Ȃ�",     /* CPP+80 */
-    #else
-        "local class cannot have static data or non-inline function member '%s'",       /* CPP+80 */
-        "Lok. Klasse kann kein stat. oder nicht-inline Funktionsglied '%s' haben",      /* CPP+80 */
-        "une classe locale ne doit pas comporter de membre de type donn�e statique ou fonction non inline",     /* CPP+80 */
-    #endif
   },
 
         /* ARM 12.3.2
@@ -2616,25 +2541,12 @@ struct Msgtable msgtable[] =
         "const �ւ̃|�C���^�� delete �ł��Ȃ�",         /* CPP+86 */
   },
 #endif
-#if TX86
   { "colcol_exp",
         "'::' expected",                                // CPP+89
         "'::' erwartet",                                // CPP+89
         "'::' requis",                                  // CPP+89
         "'::' ������܂���",                            // CPP+89
   },
-#else
-  { "ptr_ref",
-        "pointers and references to references are illegal", /* CPP+97 */
-        "Pointer und Referenzen auf Referenzen unzul�ssig", /* CPP+97 */
-        "un pointeur ou une r�f�rence ne doit pas indiquer une autre r�f�rence", /* CPP+97 */
-  },
-  { "mult_decl",
-        "Only one identifier is allowed to appear in a declaration appearing in a conditional expression", /* CPP+98 */
-        "Nur ein Bezeichner erlaubt in Deklaration in konditionalem Ausdruck", /* CPP+98 */
-        "Un seul identificateur autoris� dans une d�claration figurant dans une expression conditionnelle", /* CPP+98 */
-  },
-#endif
         // ARM 15.4
         // void func() throw(int);
         // void func() throw(unsigned); <- error, different specification

@@ -34,30 +34,19 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#if TX86
 extern char switch_E;
 static blklst * last_blsave;
-#else
-INITIALIZED_STATIC_DEF blklst * last_blsave;
-#endif
 STATIC void freeblk(blklst *);
 
-#if TX86
 static blklst *bl_freelist = NULL;      /* pointer to next free blk     */
-#endif
 
 static Srcpos lastpos = {
 0,      // line number
-#if TX86
 0,      // file number
-#else
--1,     // file number
-#endif
 };      // last filename/line seen
 static unsigned char lastpos_flag;
 static bool uselastpos;
 
-#if TX86
 blklst * bl = NULL;     /* current block pointer                */
 unsigned char * btextp = NULL;  // set to bl->BLtextp
 
@@ -69,7 +58,6 @@ int elinmax = 0;                /* # of chars in buffer eline[]         */
 int elini = 0;                  /* index into eline[]                   */
 int elinnum = 1;                /* expanded line number                 */
 int expflag = 0;                /* != 0 means not expanding list file   */
-#endif
 
 #if linux
 #define FPUTC(c,fp) fputc_unlocked(c,fp)
@@ -281,11 +269,7 @@ void expinsert(int c)
 
 void expbackup()
 {
-#if TX86
     if (config.flags2 & CFG2expand && expflag == 0 && elini != 0)
-#else
-    if (config.flags2 & CFG2expand && EXPANDING_LISTING() && elini != 0)
-#endif
     {
         //printf("expbackup()\n");
         eline[--elini] = 0;
@@ -1071,12 +1055,8 @@ Lagain:
                 {
                     if (readln())       /* read in next line            */
                     {
-#if HTOD
-                        htod_writeline();
-#else
                         if (flst && !(config.flags2 & CFG2expand))
                             wrtlst(flst);       /* send line to .LST file */
-#endif
                     }
                     else
                         goto L1;
@@ -1107,43 +1087,6 @@ L2:
 /*****************************************
  */
 
-#if 1
-#if 1 && TX86 && __DMC__
-
-__declspec(naked) unsigned egchar()
-{
-    _asm
-    {
-        xor     EAX,EAX
-        mov     ECX,btextp
-        mov     DL,switch_E
-        mov     AL,[ECX]
-        inc     ECX
-        mov     byte ptr xc,AL
-        test    AL,AL
-        mov     btextp,ECX
-        jle     L1
-L2:     cmp     DL,AH
-        jne     L3
-        ret
-
-L1:     jz      L4
-        cmp     AL,0FFh
-        jne     L2
-L4:
-        dec     btextp
-        jmp     egchar2
-
-L3:     push    EAX
-        call    explist
-        add     ESP,4
-        mov     EAX,xc
-        ret
-    }
-}
-
-#else
-
 unsigned egchar()
 {
     //printf("egchar(xc='%c')\n",xc);
@@ -1159,11 +1102,6 @@ unsigned egchar()
     }
     return egchar2();
 }
-
-#endif
-#endif
-
-
 
 /***********************************************
  * Install a block, of the type specified
@@ -1197,12 +1135,8 @@ void insblk(unsigned char *text, int typ, list_t aargs, int nargs, macro_t *m)
     }
     else
     {
-#if TX86
         p = (blklst *) MEM_PH_CALLOC(sizeof(blklst));
                                         /* Needed in PH for pragma once */
-#else
-        p = (blklst *) MEM_PARC_CALLOC(sizeof(blklst));
-#endif
     }
     p->BLtyp = typ;                     /* = BLxxxx                     */
     p->BLtext = text;                   /* text of block                */
@@ -1210,10 +1144,6 @@ void insblk(unsigned char *text, int typ, list_t aargs, int nargs, macro_t *m)
     switch (typ)
     {
         case BLfile:
-#if TX86
-#else
-                        p->BLtext = (unsigned char *) MEM_PARC_CALLOC(80);
-#endif
                                                 /* text not in PH */
                         p->BLtextmax = 80;
                         afopen((char *) text,p,flag);   /* open input file */
@@ -1261,12 +1191,8 @@ void insblk2(unsigned char *text, int typ)
     }
     else
     {
-#if TX86
         p = (blklst *) MEM_PH_CALLOC(sizeof(blklst));
                                         // Needed in PH for pragma once
-#else
-        p = (blklst *) MEM_PARC_CALLOC(sizeof(blklst));
-#endif
     }
     p->BLtyp = typ;                     // = BLxxxx
     p->BLtext = text;                   // text of block
@@ -1310,10 +1236,6 @@ STATIC void freeblk(blklst *p)
                 lastpos_flag = p->BLflags & BLsystem;
                 uselastpos = true;
                 util_free(p->BLbuf);
-#if TX86
-#else
-                MEM_PARC_FREE(p->BLtext);       /* free file data       */
-#endif
 #if IMPLIED_PRAGMA_ONCE
                 // See if file was totally wrapped in #ifndef xxx #define xxx ... #endif
                 if (p->BLinc_once_id)
@@ -1345,11 +1267,7 @@ STATIC void freeblk(blklst *p)
                 break;
 
         case BLstr:
-#if TX86
                 parc_free(p->BLtext);
-#else
-                MEM_PARC_FREE(p->BLtext);
-#endif
                 break;
         case BLarg:                             /* don't free BLtext    */
         case BLrtext:
@@ -1375,12 +1293,7 @@ STATIC void freeblk(blklst *p)
 
 Srcpos getlinnum()
 {       blklst *b;
-
-#if TX86
         b = cstate.CSfilblk;
-#else
-        b = blklst_getfileblock();
-#endif
         // If past end of file, use last known position
         return b ? b->BLsrcpos : lastpos;
 }
@@ -1388,8 +1301,6 @@ Srcpos getlinnum()
 /**************************
  * Terminate.
  */
-
-#if TX86
 
 void blklst_term()
 {
@@ -1404,68 +1315,6 @@ void blklst_term()
     }
 #endif
 }
-
-#endif
-
-
-#if !TX86
-void blklst_reinit(void)
-{
-        last_blsave = NULL;
-        bl_freelist = NULL;
-        btextp = NULL;          // block list text pointer
-        bl = NULL;
-        eline = NULL;
-        elinmax = 0;
-        elini = 0;
-        elinnum = 1;
-        expflag = 0;
-        xc = ' ';
-
-}
-#endif
-
-#if !TX86 && BROWSER
-/*****************************
- * Determine current file and line number.
- * If file is different, a new filename is output.
- * Returns:
- *      line number
- */
-
-unsigned blklst_linnum()
-{   blklst *b;
-
-    if (config.flags2 & CFG2browse)
-    {
-        b = blklst_getfileblock();
-        if (b)
-        {
-#if !SPP
-            outfilename(blklst_filename(b),b->BLcondlin);
-#endif
-            return b->BLsrcpos.Slinnum;
-        }
-    }
-    return lastpos.Slinnum;
-}
-
-/*******************************
- * Set conditional line number for current block.
- */
-
-void blklst_setcondlin()
-{   blklst *b;
-
-    if (config.flags2 & CFG2browse)
-    {
-        b = blklst_getfileblock();
-        if (b)
-            b->BLcondlin = b->BLsrcpos.Slinnum;
-    }
-}
-
-#endif
 
 /********************************
  * Pretty-print

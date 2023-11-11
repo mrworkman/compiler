@@ -42,34 +42,6 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#if MARS
-// Error numbers
-enum ASMERRMSGS
-{
-    EM_bad_float_op,
-    EM_bad_addr_mode,
-    EM_align,
-    EM_opcode_exp,
-    EM_prefix,
-    EM_eol,
-    EM_bad_operand,
-    EM_ident_exp,
-    EM_not_struct,
-    EM_nops_expected,
-    EM_bad_op,
-    EM_const_init,
-    EM_unknown_tag,
-    EM_ambig_ref,
-    EM_undefined,
-    EM_pointer,
-    EM_colon,
-    EM_rbra,
-    EM_rpar,
-    EM_ptr_exp,
-    EM_num,
-};
-#endif
-
 // Additional tokens for the inline assembler
 typedef enum
 {
@@ -125,11 +97,7 @@ typedef struct _ASM_STATE
         unsigned char bAsm_block ;
         unsigned char ucItype;  // Instruction type
 
-#if MARS
-        Loc loc;
-#else
         Srcpos Asrcpos;
-#endif
         unsigned char bInit;
         symbol * psDollar;
         symbol * psLocalsize;
@@ -749,11 +717,7 @@ TYPE_SIZE_ERROR:
 RETURN_IT:
         if (bRetry && !bFake)
         {
-#if MARS
-            synerr( EM_bad_op, asm_opstr(pop) );
-#else
             warerr( WM_bad_op, asm_opstr(pop) );
-#endif
         }
         return ptbRet;
 }

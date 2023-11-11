@@ -35,8 +35,6 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#if TX86
-
 /*******************************
  * Alternative assert failure.
  */
@@ -57,8 +55,6 @@ void util_assert(const char *file,int line)
 #endif
     err_exit();
 }
-
-#endif /* TX86 */
 
 /****************************
  * Clean up and exit program.
@@ -172,9 +168,8 @@ int ispow2(targ_ullong c)
                 ;
         return i;
 }
-
+
 #if !(linux || __APPLE__ || __FreeBSD__ || __OpenBSD__)
-#if TX86
 
 #if _WIN32
 
@@ -207,7 +202,7 @@ void _STD_controlc()
 
 
 #endif
-
+
 /******************************************************/
 
 /*
@@ -296,9 +291,6 @@ void *util_realloc(void *oldp,unsigned n,unsigned size)
     return p;
 #endif
 }
-#else
-#include "TGutil.c"
-#endif
 
 /***********************************
  * Storage allocation package to malloc memory outside of PH.

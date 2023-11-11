@@ -223,9 +223,7 @@ enum
 
 extern  int dfoidx;
 extern  struct CSE *csextab;
-#if TX86
 extern  bool floatreg;
-#endif
 extern  targ_size_t prolog_allocoffset;
 extern  targ_size_t startoffset;
 extern  targ_size_t retoffset;
@@ -369,9 +367,7 @@ void offsetinreg(CodeBuilder& cdb, elem *e, regm_t *pretregs);
 /* cod2.c */
 int movOnly(elem *e);
 regm_t idxregm(code *c);
-#if TARGET_WINDOS
 void opdouble(CodeBuilder& cdb, elem *e, regm_t *pretregs, unsigned clib);
-#endif
 void WRcodlst (code *c );
 void getoffset(CodeBuilder& cdb, elem *e, unsigned reg);
 
@@ -509,9 +505,7 @@ void cnvt87(CodeBuilder& cdb, elem *e , regm_t *pretregs );
 void neg87(CodeBuilder& cdb, elem *e , regm_t *pretregs);
 void neg_complex87(CodeBuilder& cdb, elem *e, regm_t *pretregs);
 void cdind87(CodeBuilder& cdb,elem *e,regm_t *pretregs);
-#if TX86
 extern int stackused;
-#endif
 void cload87(CodeBuilder& cdb, elem *e, regm_t *pretregs);
 void cdd_u64(CodeBuilder& cdb, elem *e, regm_t *pretregs);
 void cdd_u32(CodeBuilder& cdb, elem *e, regm_t *pretregs);
@@ -598,7 +592,6 @@ struct seg_data
     targ_size_t          SDoffset;      // starting offset for data
     int                  SDalignment;   // power of 2
 
-#if OMFOBJ
     bool isfarseg;
     int segidx;                         // internal object file segment number
     int lnameidx;                       // lname idx of segment name
@@ -607,7 +600,6 @@ struct seg_data
     targ_size_t origsize;               // original size
     long seek;                          // seek position in output file
     Ledatarec *ledata;                  // current one we're filling in
-#endif
 
 #if 1 //ELFOBJ || MACHOBJ
     IDXSEC               SDshtidx;      // section header table index

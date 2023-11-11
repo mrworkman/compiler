@@ -20,14 +20,13 @@
 #include        <stdarg.h>
 
 #include        "cc.h"
+#include        "code.h"
 #include        "type.h"
 #include        "el.h"
 #include        "list.h"
 #include        "mem.h"
 #include        "oper.h"
 #include        "type.h"
-
-#include        "code.h"
 
 #include        "global.h"
 #include        "go.h"
@@ -447,7 +446,7 @@ elem * el_alloctmp(tym_t ty)
 {
   symbol *s;
 
-  assert(MARS || !PARSER);
+  assert(!PARSER);
   s = symbol_generate(SCauto,type_fake(ty));
   symbol_add(s);
   s->Sfl = FLauto;
@@ -477,10 +476,6 @@ elem * el_selecte1(elem *e)
     e1->Ety = e->Ety;
 //    if (tyaggregate(e1->Ety))
 //      e1->Enumbytes = e->Enumbytes;
-#if MARS
-    if (!e1->Ejty)
-        e1->Ejty = e->Ejty;
-#endif
     el_free(e);
     return e1;
 }
@@ -571,38 +566,6 @@ elem * el_copytree(elem *e)
     }
     return d;
 }
-
-/*******************************
- * Replace (e) with ((stmp = e),stmp)
- */
-
-#if MARS
-elem *exp2_copytotemp(elem *e)
-{
-    //printf("exp2_copytotemp()\n");
-    elem_debug(e);
-    tym_t ty = tybasic(e->Ety);
-    type *t;
-#if MARS
-    if ((ty == TYstruct || ty == TYarray) && e->ET)
-        t = e->ET;
-    else
-#endif
-        t = type_fake(ty);
-    Symbol *stmp = symbol_genauto(t);
-    elem *eeq = el_bin(OPeq,e->Ety,el_var(stmp),e);
-    elem *er = el_bin(OPcomma,e->Ety,eeq,el_var(stmp));
-    if (ty == TYstruct || ty == TYarray)
-    {
-        eeq->Eoper = OPstreq;
-        eeq->ET = e->ET;
-        eeq->E1->ET = e->ET;
-        er->ET = e->ET;
-        er->E2->ET = e->ET;
-    }
-    return er;
-}
-#endif
 
 /*************************
  * Similar to el_copytree(e). But if e has any side effects, it's replaced
@@ -703,87 +666,6 @@ int el_appears(elem *e,Symbol *s)
     return 0;
 }
 
-#if MARS
-
-/*****************************************
- * Look for symbol that is a base of addressing mode e.
- * Returns:
- *      s       symbol used as base
- *      NULL    couldn't find a base symbol
- */
-
-#if 0
-Symbol *el_basesym(elem *e)
-{   Symbol *s;
-
-    s = NULL;
-    while (1)
-    {   elem_debug(e);
-        switch (e->Eoper)
-        {
-            case OPvar:
-                s = e->EV.sp.Vsym;
-                break;
-            case OPcomma:
-                e = e->E2;
-                continue;
-            case OPind:
-                s = el_basesym(e->E1);
-                break;
-            case OPadd:
-                s = el_basesym(e->E1);
-                if (!s)
-                    s = el_basesym(e->E2);
-                break;
-        }
-        break;
-    }
-    return s;
-}
-#endif
-
-/****************************************
- * Does any definition of lvalue ed appear in e?
- * Returns:
- *      1       yes
- *      0       no
- */
-
-int el_anydef(elem *ed, elem *e)
-{   int op;
-    int edop;
-    Symbol *s;
-    elem *e1;
-
-    edop = ed->Eoper;
-    s = (edop == OPvar) ? ed->EV.sp.Vsym : NULL;
-    while (1)
-    {
-        op = e->Eoper;
-        if (!OTleaf(op))
-        {
-            e1 = e->E1;
-            if (OTdef(op))
-            {
-                if (e1->Eoper == OPvar && e1->EV.sp.Vsym == s)
-                    return 1;
-
-                // This doesn't cover all the cases
-                if (e1->Eoper == edop && el_match(e1,ed))
-                    return 1;
-            }
-            if (OTbinary(op) && el_anydef(ed,e->E2))
-                return 1;
-            e = e1;
-        }
-        else
-            break;
-    }
-    return 0;
-}
-
-#endif
-
 /************************
  * Make a binary operator node.
  */
@@ -817,7 +699,7 @@ elem * el_bin(unsigned op,tym_t ty,elem *e1,elem *e2)
         *(char *)0=0;
 #endif
     assert(op < OPMAX && OTbinary(op) && e1 && e2);
-    assert(MARS || !PARSER);
+    assert(!PARSER);
     elem_debug(e1);
     elem_debug(e2);
     e = el_calloc();
@@ -864,7 +746,7 @@ elem * el_una(unsigned op,tym_t ty,elem *e1)
         dbg_printf("op = x%x, e1 = %p\n",op,e1);
 #endif
     assert(op < OPMAX && OTunary(op) && e1);
-    assert(MARS || !PARSER);
+    assert(!PARSER);
     elem_debug(e1);
     e = el_calloc();
     e->Ety = ty;
@@ -897,7 +779,7 @@ extern "C" // necessary because D <=> C++ mangling of "long long" is not consist
 elem * el_long(tym_t t,targ_llong val)
 { elem *e;
 
-  assert(MARS || !PARSER);
+  assert(!PARSER);
   e = el_calloc();
   e->Eoper = OPconst;
   e->Ety = t;
@@ -957,14 +839,10 @@ void el_toconst(elem *e)
 
 elem * el_settype(elem *e,type *t)
 {
-#if MARS
-    assert(0);
-#else
     assert(PARSER);
     elem_debug(e);
     type_debug(t);
     type_settype(&e->ET,t);
-#endif
     return e;
 }
 
@@ -1003,10 +881,6 @@ void el_replacesym(elem *e,symbol *s1,symbol *s2)
 
 elem * el_typesize(type *t)
 {
-#if MARS
-    assert(0);
-    return NULL;
-#else
     assert(PARSER);
     type_debug(t);
     if (CPP && tybasic(t->Tty) == TYstruct && t->Tflags & TFsizeunknown)
@@ -1032,7 +906,6 @@ elem * el_typesize(type *t)
     }
     else
         return el_longt(tssize,type_size(t));
-#endif
 }
 
 /*****************************
@@ -1074,25 +947,6 @@ elem * el_nelems(type *t)
         enelems = NULL;
     return enelems;
 }
-#endif
-
-/************************************
- * Return != 0 if function has any side effects.
- */
-
-#if MARS
-
-int el_funcsideeff(elem *e)
-{   Symbol *s;
-
-    if (e->Eoper == OPvar &&
-        tyfunc((s = e->EV.sp.Vsym)->Stype->Tty) &&
-        ((s->Sfunc && s->Sfunc->Fflags3 & Fnosideeff) || s == funcsym_p)
-       )
-        return 0;
-    return 1;                   // assume it does have side effects
-}
-
 #endif
 
 /****************************
@@ -1527,167 +1381,11 @@ elem *el_picvar(symbol *s)
  * Make an elem out of a symbol.
  */
 
-#if MARS
+#if SCPP
 elem * el_var(symbol *s)
 {   elem *e;
 
     //printf("el_var(s = '%s')\n", s->Sident);
-    //printf("%x\n", s->Stype->Tty);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (config.flags3 & CFG3pic &&
-        !tyfunc(s->ty()))
-        // Position Independent Code
-        return el_picvar(s);
-#endif
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (config.flags3 & CFG3pic && tyfunc(s->ty()))
-    {
-        switch (s->Sclass)
-        {
-            case SCcomdat:
-            case SCcomdef:
-            case SCglobal:
-            case SCextern:
-                el_alloc_localgot();
-                break;
-        }
-    }
-#endif
-    symbol_debug(s);
-    type_debug(s->Stype);
-    e = el_calloc();
-    e->Eoper = OPvar;
-    e->EV.sp.Vsym = s;
-    type_debug(s->Stype);
-    e->Ety = s->ty();
-    if (s->Stype->Tty & mTYthread)
-    {
-        //printf("thread local %s\n", s->Sident);
-#if TARGET_OSX
-        ;
-#elif TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-        /* For 32 bit:
-         * Generate for var locals:
-         *      MOV reg,GS:[00000000]   // add GS: override in back end
-         *      ADD reg, offset s@TLS_LE
-         *      e => *(&s + *(GS:0))
-         * For var globals:
-         *      MOV reg,GS:[00000000]
-         *      ADD reg, s@TLS_IE
-         *      e => *(s + *(GS:0))
-         * note different fixup
-         *****************************************
-         * For 64 bit:
-         * Generate for var locals:
-         *      MOV reg,FS:s@TPOFF32
-         * For var globals:
-         *      MOV RAX,s@GOTTPOFF[RIP]
-         *      MOV reg,FS:[RAX]
-         *
-         * For address of locals:
-         *      MOV RAX,FS:[00]
-         *      LEA reg,s@TPOFF32[RAX]
-         *      e => &s + *(FS:0)
-         * For address of globals:
-         *      MOV reg,FS:[00]
-         *      MOV RAX,s@GOTTPOFF[RIP]
-         *      ADD reg,RAX
-         *      e => s + *(FS:0)
-         * This leaves us with a problem, as the 'var' version cannot simply have
-         * its address taken, as what is the address of FS:s ? The (not so efficient)
-         * solution is to just use the second address form, and * it.
-         * Turns out that is identical to the 32 bit version, except GS => FS and the
-         * fixups are different.
-         * In the future, we should figure out a way to optimize to the 'var' version.
-         */
-        if (I64)
-            Obj::refGOTsym();
-        elem *e1 = el_calloc();
-        e1->EV.sp.Vsym = s;
-        if (s->Sclass == SCstatic || s->Sclass == SClocstat)
-        {   e1->Eoper = OPrelconst;
-            e1->Ety = TYnptr;
-        }
-        else
-        {
-            e1->Eoper = OPvar;
-            e1->Ety = TYnptr;
-        }
-
-        /* Fake GS:[0000] as a load of _tls_array, and then in the back end recognize
-         * the fake and rewrite it as GS:[0000] (or FS:[0000] for I64), because there is
-         * no way to represent segment overrides in the elem nodes.
-         */
-        elem *e2 = el_calloc();
-        e2->Eoper = OPvar;
-        e2->EV.sp.Vsym = getRtlsym(RTLSYM_TLS_ARRAY);
-        e2->Ety = e2->EV.sp.Vsym->ty();
-
-        e->Eoper = OPind;
-        e->E1 = el_bin(OPadd,e1->Ety,e2,e1);
-        e->E2 = NULL;
-#elif TARGET_WINDOS
-        /*
-            Win32:
-                mov     EAX,FS:__tls_array
-                mov     ECX,__tls_index
-                mov     EAX,[ECX*4][EAX]
-                inc     dword ptr _t[EAX]
-
-                e => *(&s + *(FS:_tls_array + _tls_index * 4))
-
-                If this is an executable app, not a dll, _tls_index
-                can be assumed to be 0.
-
-            Win64:
-
-                mov     EAX,&s
-                mov     RDX,GS:__tls_array
-                mov     ECX,_tls_index[RIP]
-                mov     RCX,[RCX*8][RDX]
-                mov     EAX,[RCX][RAX]
-
-                e => *(&s + *(GS:[80] + _tls_index * 8))
-
-                If this is an executable app, not a dll, _tls_index
-                can be assumed to be 0.
-         */
-        elem *e1,*e2,*ea;
-
-        e1 = el_calloc();
-        e1->Eoper = OPrelconst;
-        e1->EV.sp.Vsym = s;
-        e1->Ety = TYnptr;
-
-        if (config.wflags & WFexe)
-        {
-            // e => *(&s + *(FS:_tls_array))
-            e2 = el_var(getRtlsym(RTLSYM_TLS_ARRAY));
-        }
-        else
-        {
-            e2 = el_bin(OPmul,TYint,el_var(getRtlsym(RTLSYM_TLS_INDEX)),el_long(TYint,REGSIZE));
-            ea = el_var(getRtlsym(RTLSYM_TLS_ARRAY));
-            e2 = el_bin(OPadd,ea->Ety,ea,e2);
-        }
-        e2 = el_una(OPind,TYsize_t,e2);
-
-        e->Eoper = OPind;
-        e->E1 = el_bin(OPadd,e1->Ety,e1,e2);
-        e->E2 = NULL;
-#endif
-    }
-    return e;
-}
-#elif SCPP
-elem * el_var(symbol *s)
-{   elem *e;
-
-    //printf("el_var(s = '%s')\n", s->Sident);
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-    if (config.flags3 & CFG3pic && !tyfunc(s->ty()))
-        return el_picvar(s);
-#endif
     symbol_debug(s);
     type_debug(s->Stype);
     e = el_calloc();
@@ -1699,7 +1397,6 @@ elem * el_var(symbol *s)
         type_debug(t);
         e->ET = t;
         t->Tcount++;
-#if TARGET_WINDOS
         switch (t->Tty & (mTYimport | mTYthread))
         {   case mTYimport:
                 Obj::_import(e);
@@ -1713,9 +1410,6 @@ elem * el_var(symbol *s)
 
                 e => *(&s + *(FS:_tls_array + _tls_index * 4))
          */
-#if MARS
-                assert(0);
-#else
             {   elem *e1,*e2,*ea;
 
                 e1 = el_calloc();
@@ -1733,14 +1427,12 @@ elem * el_var(symbol *s)
                 e->E1 = el_bint(OPadd,e1->ET,e1,e2);
                 e->E2 = NULL;
             }
-#endif
                 break;
             case mTYthread | mTYimport:
                 assert(SCPP);
                 tx86err(EM_thread_and_dllimport,s->Sident);     // can't be both thread and import
                 break;
         }
-#endif
     }
     else
         e->Ety = s->ty();
@@ -1839,12 +1531,8 @@ int ERTOL(elem *e)
 {
     elem_debug(e);
     assert(!PARSER);
-#if TX86
     return OTrtol(e->Eoper) &&
         (!OTopeq(e->Eoper) || config.inline8087 || !tyfloating(e->Ety));
-#else
-    return OTrtol(e->Eoper);
-#endif
 }
 
 /********************************
@@ -1941,7 +1629,6 @@ elem *el_convfloat(elem *e)
 {
     unsigned char buffer[32];
 
-#if TX86
     assert(config.inline8087);
 
     // Do not convert if the constants can be loaded with the special FPU instructions
@@ -2004,15 +1691,6 @@ elem *el_convfloat(elem *e)
             assert(0);
     }
 
-#if 0
-    printf("%gL+%gLi\n", (double)e->EV.Vcldouble.re, (double)e->EV.Vcldouble.im);
-    printf("el_convfloat() %g %g sz=%d\n", e->EV.Vcdouble.re, e->EV.Vcdouble.im, sz);
-printf("el_convfloat(): sz = %d\n", sz);
-unsigned short *p = (unsigned short *)&e->EV.Vcldouble;
-for (int i = 0; i < sz/2; i++) printf("%04x ", p[i]);
-printf("\n");
-#endif
-
     symbol *s  = out_readonly_sym(ty, p, sz);
     el_free(e);
     e = el_var(s);
@@ -2020,7 +1698,6 @@ printf("\n");
     if (e->Eoper == OPvar)
         e->Ety |= mTYconst;
     //printf("s: %s %d:x%x\n", s->Sident, s->Sseg, s->Soffset);
-#endif
     return e;
 }
 
@@ -2033,7 +1710,6 @@ elem *el_convxmm(elem *e)
 {
     unsigned char buffer[sizeof(eve)];
 
-#if TX86
     // Do not convert if the constants can be loaded with the special XMM instructions
 #if 0
     if (loadconst(e))
@@ -2059,7 +1735,6 @@ printf("\n");
     if (e->Eoper == OPvar)
         e->Ety |= mTYconst;
     //printf("s: %s %d:x%x\n", s->Sident, s->Sseg, s->Soffset);
-#endif
     return e;
 }
 
@@ -2208,12 +1883,10 @@ elem *el_convert(elem *e)
             break;
 
         case OPconst:
-#if TX86
             if (tyvector(e->Ety))
                 e = el_convxmm(e);
             else if (tyfloating(e->Ety) && config.inline8087)
                 e = el_convfloat(e);
-#endif
             break;
 
         case OPstring:
@@ -2274,7 +1947,7 @@ elem *el_convert(elem *e)
 elem * el_const(tym_t ty,union eve *pconst)
 {   elem *e;
 
-    assert(MARS || !PARSER);
+    assert(!PARSER);
     e = el_calloc();
     e->Eoper = OPconst;
     e->Ety = ty;
@@ -3201,12 +2874,7 @@ void elem_print(elem *e)
   elem_debug(e);
   if (configv.addlinenumbers)
   {
-#if MARS
-        if (e->Esrcpos.Sfilename)
-            printf("%s(%u) ", e->Esrcpos.Sfilename, e->Esrcpos.Slinnum);
-#else
         e->Esrcpos.print("elem_print");
-#endif
   }
   if (!PARSER)
   {     dbg_printf("cnt=%d ",e->Ecount);
@@ -3399,11 +3067,9 @@ case_tym:
             dbg_printf("%llxLL+%llxLL ", (long long)e->EV.Vcent.msw, (long long)e->EV.Vcent.lsw);
             break;
 
-#if !MARS
         case TYident:
             dbg_printf("'%s' ", e->ET->Tident);
             break;
-#endif
 
         default:
             dbg_printf("Invalid type ");

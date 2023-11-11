@@ -11,7 +11,7 @@
  */
 
 
-#if (SCPP || MARS) && !HTOD
+#if SCPP
 
 #include        <stdio.h>
 #include        <string.h>

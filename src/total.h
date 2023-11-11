@@ -17,8 +17,6 @@
 #include        "exh.h"
 #include        "filespec.h"
 #include        "dt.h"
-#if OMFOBJ
 #include        "cgcv.h"
-#endif
 #include        "allocast.h"
 #include        "outbuf.h"

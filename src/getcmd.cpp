@@ -81,12 +81,6 @@ static void usage()
 }
 #endif
 
-#if linux
-#undef TARGET_LINUX
-#undef TARGET_WINDOS
-#define TARGET_LINUX 1
-#endif
-
 /******************************************************
  * Get & parse the command line. Open necessary files.
  * Input:
@@ -128,11 +122,8 @@ void getcmd(int argc,char **argv)
     config.flags4 |= CFG4enumoverload;
     config.flags4 |= CFG4underscore;
 
-#if HTOD
-    fdmodulename = (char*)"";
-#else
     foutname = (char*)"";
-#endif
+
     if (argc <= 1)
     {
 #if !_WINDLL
@@ -212,9 +203,6 @@ void getcmd(int argc,char **argv)
                     foutname = p;
                 else if (filespeccmp(dotext,ext_dep) == 0)
                     fdepname = p;
-#elif HTOD
-                if (filespeccmp(dotext,ext_dmodule) == 0)
-                    fdmodulename = p;
 #else
 
                 if (filespeccmp(dotext,ext_obj) == 0)
@@ -351,7 +339,6 @@ void getcmd(int argc,char **argv)
                 }
                 break;
 
-#if TX86
             case 'f':
                 switch (*p)
                 {   case 0:
@@ -373,10 +360,8 @@ void getcmd(int argc,char **argv)
                         break;
                 }
                 break;
-#endif
-#if TX86
             case 'g':
-#if SCPP && !HTOD
+#if SCPP
                 for (q = p; 1; p++)
                 {
                     switch (*p)
@@ -471,28 +456,6 @@ void getcmd(int argc,char **argv)
                     }
 #endif
                     break;
-#endif
-#if HTOD
-            case 'h':
-                switch (*p)
-                {
-                    case 'c':           // skip C declarations as comments
-                        config.htodFlags |= HTODFcdecl;
-                        break;
-                    case 'i':           // drill down into #include files
-                        config.htodFlags |= HTODFinclude;
-                        break;
-                    case 's':           // drill down into system #include files
-                        config.htodFlags |= HTODFsysinclude;
-                        break;
-                    case 't':           // drill down into typedefs
-                        config.htodFlags |= HTODFtypedef;
-                        break;
-                    default:
-                        goto badflag;
-                }
-                break;
-#endif
             case 'H':                   /* precompiled headers          */
                     switch (*p)
                     {
@@ -505,7 +468,7 @@ void getcmd(int argc,char **argv)
                             p++;
                             flags = CFG3igninc;
                             goto Lflags3;
-                #if !SPP && !HTOD
+                #if !SPP
                         case 'C':       // don't cache precompiled headers in memory
                             p++;
                             flags = CFG4cacheph;
@@ -650,7 +613,6 @@ void getcmd(int argc,char **argv)
 #endif
                 break;
 
-#if TX86
             case 'm':
                 model = *p++;
                 if (model == '3' && *p == '2')
@@ -749,7 +711,6 @@ void getcmd(int argc,char **argv)
                         goto badflag;
                 }
                 break;
-#endif
 
             case 'o':
 #if SPP
@@ -760,11 +721,7 @@ void getcmd(int argc,char **argv)
                 if (*p == '+' || *p == '-')     // if optimizer switch
                     break;
 #endif
-#if HTOD
-                fdmodulename = p;
-#else
                 foutname = p;
-#endif
                 break;
 
 #if 0
@@ -851,7 +808,6 @@ void getcmd(int argc,char **argv)
                 err_warning_enable(n,on);
                 break;
 
-#if TX86
             case 'W':                   /* generate Windows prolog/epilog */
             {
 #               define WFCOMMON (WFwindows|WFthunk|WFincbp|WFexpdef|WFmacros)
@@ -923,7 +879,6 @@ void getcmd(int argc,char **argv)
                 }
                 break;
             }
-#endif
             case 'x':
 #if 0
                 flags = CFG2noerrmax;
@@ -962,7 +917,6 @@ void getcmd(int argc,char **argv)
                 }
                 break;
 
-#if TX86
             case '0':
             case '2':
             case '3':
@@ -971,7 +925,6 @@ void getcmd(int argc,char **argv)
             case '6':   target = p[-1];
                         scheduler = *p;
                         break;
-#endif
 
 #ifdef DEBUG
             case '-':
@@ -1374,7 +1327,6 @@ void getcmd(int argc,char **argv)
 
     if (!switch_U)                      /* if didn't turn them off      */
     {
-#if TX86
         {   static char i8086[] = "_M_I86?M";
             static char modelc[6] = "SMCLV";
             static char m86[] = "_M_I86";
@@ -1414,7 +1366,6 @@ void getcmd(int argc,char **argv)
                 cpu[0] = target;
             defmac("_M_IX86",cpu);
         }
-#endif
         defmac("__SC__",VERSIONHEX);
         defmac("__ZTC__",VERSIONHEX);
         defmac("__DMC__",VERSIONHEX);
@@ -1514,7 +1465,6 @@ void getcmd(int argc,char **argv)
             predefine("_WINDLL");
     }
 
-#if TX86
     /* ANSI C macros to give memory model and cpu type  */
     {   static char modelmac[MEMMODELS][12] =
                 {"__SMALL__"
@@ -1532,7 +1482,6 @@ void getcmd(int argc,char **argv)
         if (config.inline8087)
             predefine("__INLINE_8087");
     }
-#endif
 
     if (CPP || config.flags3 & CFG3cpp)
     {
@@ -1604,10 +1553,6 @@ void getcmd(int argc,char **argv)
 
     if (ANSI)                           // if strict ANSI C/C++
         fixeddefmac("__STDC__",one);
-
-#if HTOD
-    fixeddefmac("__HTOD__", one);
-#endif
 
     linkage = config.linkage;
 }
@@ -1948,9 +1893,6 @@ void getcmd_term()
     mem_free(flstname);
     mem_free(fsymname); fsymname = NULL;
     mem_free(ftdbname); ftdbname = NULL;
-#endif
-#if HTOD
-    mem_free(fdmodulename);
 #endif
     mem_free(finname);
     list_free(&pathlist,mem_freefp);

@@ -26,12 +26,7 @@ static char __file__[] = __FILE__;      /* for tassert.h                */
 
 Symbol *rtlsym[RTLSYM_MAX];
 
-#if MARS
-// This varies depending on C ABI
-#define FREGSAVED       fregsaved
-#else
 #define FREGSAVED       (mBP | mBX | mSI | mDI)
-#endif
 
 // Helper function for rtlsym_init()
 
@@ -64,13 +59,6 @@ void rtlsym_init()
         t->Tmangle = mTYman_c;
         t->Tcount++;
 
-#if MARS
-        // Variadic function
-        type *tv = type_fake(TYnfunc);
-        tv->Tmangle = mTYman_c;
-        tv->Tcount++;
-#endif
-
         // Only used by dmd1 for RTLSYM_THROW
         type *tw = NULL;
 
@@ -81,24 +69,6 @@ void rtlsym_init()
         RTLSYMS
     }
 }
-
-/*******************************
- * Reset the symbols for the case when we are generating multiple
- * .OBJ files from one compile.
- */
-#if MARS
-
-void rtlsym_reset()
-{
-    clib_inited = 0;            // reset CLIB symbols, too
-    for (size_t i = 0; i < RTLSYM_MAX; i++)
-    {
-        rtlsym[i]->Sxtrnnum = 0;
-        rtlsym[i]->Stypidx = 0;
-    }
-}
-
-#endif
 
 /*******************************
  */

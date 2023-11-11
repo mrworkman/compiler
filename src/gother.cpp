@@ -10,7 +10,7 @@
  * Source:      https://github.com/dlang/dmd/blob/master/src/ddmd/backend/gother.c
  */
 
-#if (SCPP || MARS) && !HTOD
+#if SCPP
 
 #include        <stdio.h>
 #include        <time.h>
@@ -404,20 +404,6 @@ STATIC void chkrd(elem *n,list_t rdlist)
         buf.write(sv->Sident);
         p2 = buf.toString();
         warerr(WM_used_b4_set, p2);     // variable used before set
-    }
-#endif
-#if MARS
-    /* Watch out for:
-        void test()
-        {
-            void[0] x;
-            auto y = x;
-        }
-     */
-    if (type_size(sv->Stype) != 0)
-    {
-        error(n->Esrcpos.Sfilename, n->Esrcpos.Slinnum, n->Esrcpos.Scharnum,
-            "variable %s used before set", sv->Sident);
     }
 #endif
 

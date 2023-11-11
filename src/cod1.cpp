@@ -1266,26 +1266,6 @@ void getlvalue(CodeBuilder& cdb,code *pcs,elem *e,regm_t keepmsk)
     case FLextern:
         if (s->Sident[0] == '_' && memcmp(s->Sident + 1,"tls_array",10) == 0)
         {
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-            // Rewrite as GS:[0000], or FS:[0000] for 64 bit
-            if (I64)
-            {
-                pcs->Irm = modregrm(0, 0, 4);
-                pcs->Isib = modregrm(0, 4, 5);  // don't use [RIP] addressing
-                pcs->IFL1 = FLconst;
-                pcs->IEV1.Vuns = 0;
-                pcs->Iflags = CFfs;
-                pcs->Irex |= REX_W;
-            }
-            else
-            {
-                pcs->Irm = modregrm(0, 0, BPRM);
-                pcs->IFL1 = FLconst;
-                pcs->IEV1.Vuns = 0;
-                pcs->Iflags = CFgs;
-            }
-            break;
-#elif TARGET_WINDOS
             if (I64)
             {   // GS:[88]
                 pcs->Irm = modregrm(0, 0, 4);
@@ -1300,7 +1280,6 @@ void getlvalue(CodeBuilder& cdb,code *pcs,elem *e,regm_t keepmsk)
             {
                 pcs->Iflags |= CFfs;    // add FS: override
             }
-#endif
         }
         if (s->ty() & mTYcs && LARGECODE)
             goto Lfardata;
@@ -1388,32 +1367,12 @@ void getlvalue(CodeBuilder& cdb,code *pcs,elem *e,regm_t keepmsk)
             s->Sflags |= SFLread;               // assume we are doing a read
         break;
     case FLpseudo:
-#if MARS
-    {
-        getregs(cdb,mask[s->Sreglsw]);
-        pcs->Irm = modregrm(3,0,s->Sreglsw & 7);
-        if (s->Sreglsw & 8)
-            pcs->Irex |= REX_B;
-        if (e->EV.sp.Voffset == 1 && sz == 1)
-        {   assert(s->Sregm & BYTEREGS);
-            assert(s->Sreglsw < 4);
-            pcs->Irm |= 4;                  // use 2nd byte of register
-        }
-        else
-        {   assert(!e->EV.sp.Voffset);
-            if (I64 && sz == 1 && s->Sreglsw >= 4)
-                pcs->Irex |= REX;
-        }
-        break;
-    }
-#else
     {
         unsigned u = s->Sreglsw;
         getregs(cdb,pseudomask[u]);
         pcs->Irm = modregrm(3,0,pseudoreg[u] & 7);
         break;
     }
-#endif
     case FLfardata:
     case FLfunc:                                /* reading from code seg */
         if (config.exe & EX_flat)
@@ -2568,7 +2527,7 @@ void callclib(CodeBuilder& cdb,elem *e,unsigned clib,regm_t *pretregs,regm_t kee
             cod3_stackadj(cdb, -nalign);
         calledafunc = 1;
 
-#if SCPP & TX86
+#if SCPP
         if (I16 &&                                   // bug in Optlink for weak references
             config.flags3 & CFG3wkfloat &&
             (cinfo->flags & (INFfloat | INFwkdone)) == INFfloat)
@@ -3274,13 +3233,11 @@ static void funccall(CodeBuilder& cdb,elem *e,unsigned numpara,unsigned numalign
     //printf("funccall(e = %p, *pretregs = %s, numpara = %d, numalign = %d, usefuncarg=%d)\n",e,regm_str(*pretregs),numpara,numalign,usefuncarg);
     calledafunc = 1;
     // Determine if we need frame for function prolog/epilog
-#if TARGET_WINDOS
     if (config.memmodel == Vmodel)
     {
         if (tyfarfunc(funcsym_p->ty()))
             needframe = TRUE;
     }
-#endif
     code cs;
     regm_t retregs;
     Symbol *s;

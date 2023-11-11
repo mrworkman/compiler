@@ -388,7 +388,7 @@ STATIC targ_long mul_exp()
     }
     return e;
 }
-
+
 /******************************
  * Groups right to left.
  * una_exp ::=  * una_exp
@@ -428,20 +428,13 @@ STATIC targ_long una_exp()
                 synerr(EM_rpar);
             stoken();
             break;
-#if !TX86
-        case TKsizeof:
-            if (ANSI && preprocessor)
-                synerr(EM_prep_exp);    // sizeof illegal in preprocessor exp
-            e = exp_sizeof();
-            return 1;           // BUG: this looks like a bug to me! -Walter
-#endif
         default:
             e = primary_exp();
             break;
     }
     return e;
 }
-
+
 /******************************
  * Primary expression.
  * Groups left to right.
@@ -463,13 +456,6 @@ STATIC targ_long primary_exp()
             {   e = pragma_defined();
                 break;
             }
-#if !TX86
-            if (strcmp( tok.TKid, "__option") == 0)
-            {
-                e = pragma_option();
-                break;
-            }
-#endif
             /* If identifier appears here, that is because it
                is an undefined macro.
                Treat as number 0.
@@ -490,62 +476,5 @@ STATIC targ_long primary_exp()
   } /* switch */
   return e;
 }
-
-/****************************
- * Parse and return elem tree for sizeof expressions.
- * Handle __typeinfo expressions also.
- */
-
-#if !TX86
-
-STATIC targ_long exp_sizeof()
-{       unsigned short had_paren = FALSE;
-        int siz=-1;
-
-        stoken();
-        if (tok.TKval == TKlpar)
-        {
-            had_paren = TRUE;
-            stoken();
-        }
-        switch (tok.TKval)
-        {
-            case TKvoid:
-                break;
-// BUG: need to add in TYbool, wchar_t, etc. -Walter
-            case TYchar:
-            case TYschar:
-            case TYuchar:
-            case TYshort:
-            case TYushort:
-            case TYenum:
-            case TYint:
-            case TYuint:
-            case TYlong:
-            case TYulong:
-            case TYllong:
-            case TYullong:
-            case TYfloat:
-            case TYdouble:
-            case TYldouble:
-                siz = _tysize[tok.TKval];
-                break;
-            default:
-                synerr(EM_function);
-        }
-        stoken();
-        if (tok.TKval == TKstar)
-            {
-            siz = tysize(TYfptr);
-            stoken();
-            }
-        if (had_paren && tok.TKval == TKrpar)
-            stoken();
-        if (siz == -1)
-            synerr(EM_function);
-        return siz;
-}
-
-#endif
 
 #endif /* SPP */

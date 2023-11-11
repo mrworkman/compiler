@@ -81,7 +81,6 @@ type *newpointer(type *t)
     type_debug(t);
     switch (tybasic(t->Tty))
     {
-#if TX86
         case TYnfunc:
         case TYnpfunc:
         case TYnsfunc:
@@ -94,9 +93,6 @@ type *newpointer(type *t)
         case TYfsfunc:
         case TYfsysfunc:
         case TYifunc:
-#else
-        case TYpsfunc:
-#endif
         case TYffunc:
         case TYfpfunc:
             tym = TYfptr;
@@ -193,10 +189,8 @@ type *topointer(type *t)
     /* NULL pointers are the result of error recovery   */
     if (t && tybasic(t->Tty) == TYarray)
     {   tn = newpointer(t->Tnext);
-#if TARGET_WINDOS
         if (t->Tty & mTYfar && tybasic(tn->Tty) == TYnptr)
             tn->Tty = (tn->Tty & ~mTYbasic) | TYfptr;
-#endif
         tn->Tcount++;
 
         // Transfer over type-qualifier-list
@@ -222,11 +216,8 @@ type *type_ptr(elem *e,type *t)
         if (typtr(t1->Tty))
             tptr->Tty = t1->Tty;
     }
-#if TX86
-#if TARGET_WINDOS
     else if (e->ET->Tty & mTYfar)
         tptr->Tty = TYfptr;
-#endif
     else if (e->ET->Tty & mTYcs)
         tptr->Tty = TYcptr;
     else if (e->Eoper == OPvar || e->Eoper == OPrelconst)
@@ -244,11 +235,7 @@ type *type_ptr(elem *e,type *t)
                 case SCfastpar:
                 case SCshadowreg:
                 case SCbprel:
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
-                    tptr->Tty = TYnptr;
-#else
                     tptr->Tty = (config.wflags & WFssneds) ? TYsptr : TYnptr;
-#endif
                     break;
                 case SCglobal:
                 case SCstatic:
@@ -261,10 +248,6 @@ type *type_ptr(elem *e,type *t)
             }
         }
     }
-#else
-    else
-        tptr->Tty = TYfptr;
-#endif
     return tptr;
 }
 
@@ -317,16 +300,11 @@ tym_t tym_conv(type *t)
             {
                 case TYffunc:
                 case TYfpfunc:
-#if TX86
                 case TYfsfunc:
                 case TYfsysfunc:
                 case TYifunc:
-#endif
-#if TARGET_WINDOS
                     nty = TYfptr;
                     break;
-#endif
-#if TX86
                 case TYnfunc:
                 case TYnpfunc:
                 case TYnsfunc:
@@ -337,7 +315,6 @@ tym_t tym_conv(type *t)
                 case TYf16func:
                     nty = TYf16ptr;
                     break;
-#endif
                 default:
                     nty = TYuint;
                     break;
@@ -364,12 +341,9 @@ tym_t tym_conv(type *t)
             }
             nty = pointertype;
             break;
-#if TX86
         case TYfref:
-#if TARGET_WINDOS
             nty = TYfptr;
             break;
-#endif
         case TYnref:
             nty = TYnptr;
             break;
@@ -377,7 +351,6 @@ tym_t tym_conv(type *t)
             symbol_debug(s_mptr);
             nty = tybasic(s_mptr->Stype->Tty);
             break;
-#endif
         case TYnullptr:
             nty = pointertype;
             break;
