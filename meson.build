@@ -1,13 +1,14 @@
 project(
     'dmc',
-    'cpp', 'd',
+    'cpp',
+    default_options : ['cpp_std=c++98']
 )
 
 add_project_arguments(
     language : 'cpp'
 )
 
-# dmc.exe entry is in nwc.cpp
+# Program entry is in nwc.cpp
 
 subdir('src')
 tk_includes = include_directories('src/tk')
@@ -30,17 +31,16 @@ msgsx_tgt = custom_target(
     ],
     output: [
         'msgs2.h',
-        'msgs2.cpp',
-        'msgs2.d',
+        'msgtbl.h',
     ]
 )
 
 optabgen_exe = executable(
     'optabgen',
     'src/optabgen.cpp',
-    msgsx_tgt,
     include_directories: tk_includes,
     cpp_args: [
+        '-D_WCHAR_T',
         '-Wno-missing-braces',
         '-Wno-char-subscripts',
     ],
@@ -53,25 +53,27 @@ optabgen_tgt = custom_target(
         optabgen_exe
     ],
     output: [
-        'elxxx.c',
-        'cdxxx.c',
-        'optab.c',
-        'debtab.c',
-        'fltables.c',
-        'tytab.c',
+        'elxxx.h',
+        'cdxxx.h',
+        'optab.h',
+        'debtab.h',
+        'fltables.h',
+        'tytab.h',
     ]
 )
 
 executable(
     'scppn',
+    msgsx_tgt,
+    optabgen_tgt,
     sources,
-#    msgsx_tgt,
-    # optabgen_tgt,
     include_directories: [
         tk_includes,
+        include_directories('.'),
     ],
     cpp_args: [
         '-DSCPP',
+        '-D_WCHAR_T',
         '-Wno-missing-braces',
         '-Wno-sometimes-uninitialized',
         '-Wno-unused-variable',
@@ -83,13 +85,15 @@ executable(
 executable(
     'sppn',
     sources,
-    #    msgsx_tgt,
-    # optabgen_tgt,
+    msgsx_tgt,
+    optabgen_tgt,
     include_directories: [
         tk_includes,
+        include_directories('.'),
     ],
     cpp_args: [
         '-DSCPP',
+        '-D_WCHAR_T',
         '-Wno-missing-braces',
         '-Wno-sometimes-uninitialized',
         '-Wno-unused-variable',

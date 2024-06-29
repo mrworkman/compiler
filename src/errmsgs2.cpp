@@ -21,7 +21,7 @@
 static char __file__[] = __FILE__;      /* for tassert.h                */
 #include        "tassert.h"
 
-#include        "msgs2.cpp"
+#include        "msgtbl.h"
 
 void errmsgs_init();
 

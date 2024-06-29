@@ -2384,7 +2384,6 @@ STATIC void checkAllowedUniversal(unsigned uc)
  *      tok_ident[]     holds the identifier
  */
 
-/* it's in loadline.c   */
 void inident()
 {
     int err = FALSE;

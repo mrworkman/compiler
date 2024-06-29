@@ -5004,7 +5004,7 @@ STATIC elem * elparam(elem *e, goal_t goal)
 STATIC elem * optelem(elem *e, goal_t goal)
 { elem *e1,*e2;
   unsigned op;
-#include "elxxx.c"                      /* jump table                   */
+#include "elxxx.h"                      /* jump table                   */
 
 beg:
     //{ printf("xoptelem: %p ",e); WROP(e->Eoper); dbg_printf(" goal x%x\n", goal); }

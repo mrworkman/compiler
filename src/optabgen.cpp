@@ -165,7 +165,7 @@ FILE *fdeb;
 int main()
 {
     printf("OPTABGEN... generating files\n");
-    fdeb = fopen("debtab.c","w");
+    fdeb = fopen("debtab.h","w");
     dooptab();
     dotab();
     fltables();
@@ -235,7 +235,7 @@ void dooptab()
 #undef X2
 #undef X1
 
-        f = fopen("optab.c","w");
+        f = fopen("optab.h","w");
         fprintf(f,"extern \"C\" { unsigned char optab1[OPMAX] =\n\t{");
         for (i = 0; i < OPMAX; i++)
         {       if ((i & 7) == 0)
@@ -598,14 +598,14 @@ void dotab()
         fprintf(fdeb,"\t\"%s\",\n",debtab[i]);
   fprintf(fdeb,"\t\"%s\"\n\t};\n",debtab[i]);
 
-  f = fopen("cdxxx.c","w");
+  f = fopen("cdxxx.h","w");
   fprintf(f,"void (*cdxxx[OPMAX]) (CodeBuilder&,elem *,regm_t *) = \n\t{\n");
   for (i = 0; i < OPMAX - 1; i++)
         fprintf(f,"\t%s,\n",cdxxx[i]);
   fprintf(f,"\t%s\n\t};\n",cdxxx[i]);
   fclose(f);
 
-  f = fopen("elxxx.c","w");
+  f = fopen("elxxx.h","w");
   fprintf(f,"static elem *(*elxxx[OPMAX]) (elem *, goal_t) = \n\t{\n");
   for (i = 0; i < OPMAX - 1; i++)
         fprintf(f,"\t%s,\n",elxxx[i]);
@@ -728,7 +728,7 @@ void fltables()
             }
         }
 
-        f = fopen("fltables.c","w");
+        f = fopen("fltables.h","w");
 
         fprintf(f,"const char datafl[FLMAX] = \n\t{ ");
         for (i = 0; i < FLMAX - 1; i++)
@@ -982,7 +982,7 @@ void dotytab()
 #undef T1
 #undef T2
 
-    f = fopen("tytab.c","w");
+    f = fopen("tytab.h","w");
 
     fprintf(f,"unsigned tytab[] =\n{ ");
     for (i = 0; i < arraysize(tytab); i++)

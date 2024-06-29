@@ -26,8 +26,8 @@
 #include        "parser.h"
 #endif
 
-#include        "optab.c"
-#include        "tytab.c"
+#include        "optab.h"
+#include        "tytab.h"
 
 /* Global flags:
  */

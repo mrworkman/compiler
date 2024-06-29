@@ -2493,7 +2493,7 @@ elem_print(e);
  *      pointer to code sequence generated
  */
 
-#include "cdxxx.c"                      /* jump table                   */
+#include "cdxxx.h"                      /* jump table                   */
 
 void codelem(CodeBuilder& cdb,elem *e,regm_t *pretregs,bool constflag)
 {

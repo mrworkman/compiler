@@ -19,7 +19,6 @@ sources = files(
     'ini.cpp',
     'init.cpp',
     'inline.cpp',
-    'loadline.d',
     'msc.cpp',
     'nspace.cpp',
     'nwc.cpp',

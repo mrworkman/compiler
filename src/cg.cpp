@@ -23,7 +23,7 @@
 
 ///////////////////// GLOBALS /////////////////////
 
-#include        "fltables.c"
+#include        "fltables.h"
 
 targ_size_t     framehandleroffset;     // offset of C++ frame handler
 

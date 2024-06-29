@@ -72,21 +72,21 @@ struct Msgtable msgtable[] =
 -w[n]  suppression des avertissements n\n\
 -x  d�sactivation erreurs",
 
-#pragma dbcs(push,1)
-"�`��:\n\
-        SPP ���� [-o�o��] {-D[�}�N��[=�l]]}\n\
-            [-m(smclv)] {-(AjJuvwx)} {-I�p�X}\n\
-����    �\�[�X�t�@�C����\n\
--A  ����ANSI (�g���L�[���[�h�Ȃ�)       -D  �}�N����`\n\
--I  #include�����p�X                    -j  2�o�C�g����\n\
--J  �����Ȃ���char\n\
--ms  �R�[�h�A�f�[�^�����X���[��         -mm  �R�[�h=���[�W�A�f�[�^=�X���[��\n\
--mc  �R�[�h=�X���[���A�f�[�^=���[�W     -ml  �R�[�h�A�f�[�^�������[�W\n\
--mv  vcm���f��\n\
--o  �o�̓t�@�C����(.i)\n\
--u  ����`�}�N�����`���Ȃ�            -v  �ڍ׏��o��\n\
--w[n]  �x��n�𔭍s���Ȃ�                -x  �ő�G���[���𖳌��ɂ���",
-#pragma dbcs(pop)
+//#pragma dbcs(push,1)
+//"�`��:\n\
+//        SPP ���� [-o�o��] {-D[�}�N��[=�l]]}\n\
+//            [-m(smclv)] {-(AjJuvwx)} {-I�p�X}\n\
+//����    �\�[�X�t�@�C����\n\
+//-A  ����ANSI (�g���L�[���[�h�Ȃ�)       -D  �}�N����`\n\
+//-I  #include�����p�X                    -j  2�o�C�g����\n\
+//-J  �����Ȃ���char\n\
+//-ms  �R�[�h�A�f�[�^�����X���[��         -mm  �R�[�h=���[�W�A�f�[�^=�X���[��\n\
+//-mc  �R�[�h=�X���[���A�f�[�^=���[�W     -ml  �R�[�h�A�f�[�^�������[�W\n\
+//-mv  vcm���f��\n\
+//-o  �o�̓t�@�C����(.i)\n\
+//-u  ����`�}�N�����`���Ȃ�            -v  �ڍ׏��o��\n\
+//-w[n]  �x��n�𔭍s���Ȃ�                -x  �ő�G���[���𖳌��ɂ���",
+//#pragma dbcs(pop)
 #else
         "C/C++ Compiler",                                               // 0
         0,
@@ -97,9 +97,9 @@ struct Msgtable msgtable[] =
         "unrecognized parameter '%s'",                  /*  1 C */
         "Unbekannter Parameter '%s'",                   /*  1 C */
         "param�tre '%s' non reconnu",                   /*  1 C */
-        #pragma dbcs(push,1)
-        "�s���p�����[�^ '%s'",                          /*  1 C */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�s���p�����[�^ '%s'",                          /*  1 C */
+//        #pragma dbcs(pop)
   },
   { "eof",
         "premature end of source file",                 /*  2   */
@@ -115,9 +115,9 @@ struct Msgtable msgtable[] =
         "number %s is too large",                       /*  3   */
         "Zahl %s ist zu gro�",                          /*  3   */
         "nombre %s trop �lev�",                         /*  3   */
-        #pragma dbcs(push,1)
-        "���l %s ���傫������",                         /*  3   */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "���l %s ���傫������",                         /*  3   */
+//        #pragma dbcs(pop)
   },
   { "string2big",
         "max of %u characters in string exceeded",              /*  4   */
@@ -1100,9 +1100,9 @@ struct Msgtable msgtable[] =
         "possible unintended assignment",               /* 100 W */
         "M�glicherweise unbeabsichtigte Zuweisung",     /* 100 W */
         "pr�sence possible d'une affectation non voulue",               /* 100 W */
-        #pragma dbcs(push,1)
-        "���������̉\��������",                     /* 100 W */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "���������̉\��������",                     /* 100 W */
+//        #pragma dbcs(pop)
   },
   { "type_mismatch",
         "type mismatch",                                /* 76 S */
@@ -1255,9 +1255,9 @@ struct Msgtable msgtable[] =
         "voids have no value; ctors, dtors and invariants have no return value", // 106
         "Voids haben keinen Wert, Ctors und Dtors haben keinen R�ckgabewert", /* 106 */
         "les void sont d�pourvus de valeur, les ctor et dtor ne renvoient pas de valeur", /* 106 */
-        #pragma dbcs(push,1)
-        "void �ɂ͒l���Ȃ��A�\�z�q�A���Ŏq�ɂ͖߂�l���Ȃ�", /* 106 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "void �ɂ͒l���Ȃ��A�\�z�q�A���Ŏq�ɂ͖߂�l���Ȃ�", /* 106 */
+//        #pragma dbcs(pop)
   },
         /* Precompiled headers must be compiled with same
            switches as when it is used.
@@ -1823,9 +1823,9 @@ struct Msgtable msgtable[] =
         "not an overloadable operator token",           /* CPP+8 */
         "Kein �berlagerbares Operator-Token",           /* CPP+8 */
         "il ne s'agit pas d'un t�moin d'op�rateur chargeable",          /* CPP+8 */
-        #pragma dbcs(push,1)
-        "�I�[�o�[���[�h�\�ȉ��Z�q�ł͂Ȃ�",                   /* CPP+8 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�I�[�o�[���[�h�\�ȉ��Z�q�ł͂Ȃ�",                   /* CPP+8 */
+//        #pragma dbcs(pop)
   },
   { "opovl_function",
         "operator overload must be a function",         /* CPP+9 */
@@ -1890,9 +1890,9 @@ struct Msgtable msgtable[] =
         "illegal constructor or destructor or invariant declaration",   // CPP+15
         "Unzul�ssige Constructor- oder Destructor-Deklaration", /* CPP+15 */
         "d�claration de constructeur ou de destructeur non valide",     /* CPP+15 */
-        #pragma dbcs(push,1)
-        "�\�z�q�܂��͏��Ŏq�̐錾���s��",                       /* CPP+15 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�\�z�q�܂��͏��Ŏq�̐錾���s��",                       /* CPP+15 */
+//        #pragma dbcs(pop)
   },
 
         /* Attempted to reference a member of a class without
@@ -1928,9 +1928,9 @@ struct Msgtable msgtable[] =
         "can't handle constructor in this context",     /* CPP+19 */
         "Constructor kann in diesem Kontext nicht behandelt werden",    /* CPP+19 */
         "constructeur non utilisable dans ce contexte", /* CPP+19 */
-        #pragma dbcs(push,1)
-        "�����ō\�z�q���w�肵�Ă͂Ȃ�Ȃ�",             /* CPP+19 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�����ō\�z�q���w�肵�Ă͂Ȃ�Ȃ�",             /* CPP+19 */
+//        #pragma dbcs(pop)
   },
 
         /* More than one member-initializer appears for member %s.      */
@@ -2017,9 +2017,9 @@ struct Msgtable msgtable[] =
         "argument of type '%s' to copy constructor",            // CPP+30
         "Argument vom Typ '%s' f�r Copy Constructor",           // CPP+30
         "utilisez un argument de type '%s' avec le constructeur de copie",              // CPP+30
-        #pragma dbcs(push,1)
-        "�R�s�[�\�z�q�̈����̌^ '%s' ���s��",           // CPP+30
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�R�s�[�\�z�q�̈����̌^ '%s' ���s��",           // CPP+30
+//        #pragma dbcs(pop)
   },
 
         /* Initializers for static members must be of the form  */
@@ -2075,9 +2075,9 @@ struct Msgtable msgtable[] =
         "cannot find constructor for class matching %s::%s%s",  // CPP+36
         "Kein Constructor f�r Klasse entsprechend %s::%s%s gefunden",   // CPP+36
         "impossible de trouver un constructeur correspondant � %s::%s%s",       // CPP+36
-        #pragma dbcs(push,1)
-        "%s::%s%s �ƈ�v����N���X�̍\�z�q��������Ȃ�",      // CPP+36
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "%s::%s%s �ƈ�v����N���X�̍\�z�q��������Ȃ�",      // CPP+36
+//        #pragma dbcs(pop)
   },
 
         /* Base classes cannot appear more than once as a direct base class */
@@ -2154,9 +2154,9 @@ struct Msgtable msgtable[] =
         "'%s' is not a constructor",                    /* CPP+44 */
         "'%s' ist kein Constructor",                    /* CPP+44 */
         "'%s' n'est pas un constructeur",                       /* CPP+44 */
-        #pragma dbcs(push,1)
-        "'%s' �͍\�z�q�ł͂Ȃ�",                        /* CPP+44 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "'%s' �͍\�z�q�ł͂Ȃ�",                        /* CPP+44 */
+//        #pragma dbcs(pop)
   },
   { "base_memmodel",
         "base class '%s' has different ambient memory model",   /* CPP+45 */
@@ -2209,9 +2209,9 @@ struct Msgtable msgtable[] =
         "no constructor allowed for class '%s'",        /* CPP+49 */
         "Kein Constructor zul�ssig f�r Klasse '%s'",    /* CPP+49 */
         "constructeur non utilisable avec la classe '%s'",      /* CPP+49 */
-        #pragma dbcs(push,1)
-        "�N���X '%s' �ɂ͍\�z�q���`�ł��Ȃ�", /* CPP+49 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�N���X '%s' �ɂ͍\�z�q���`�ł��Ȃ�", /* CPP+49 */
+//        #pragma dbcs(pop)
   },
 
         /* If multiple classes exist as base classes, and it is         */
@@ -2249,9 +2249,9 @@ struct Msgtable msgtable[] =
         "union members cannot have ctors or dtors",     /* CPP+53 */
         "Union-Glieder k�nnen keine Ctors oder Dtors haben",    /* CPP+53 */
         "les membres d'une union ne doivent pas comporter de ctor ou de dtor",  /* CPP+53 */
-        #pragma dbcs(push,1)
-        "union �ɂ͍\�z�q�܂��͏��Ŏq�̂�����̂��܂ނ��Ƃ͂ł��Ȃ�",   /* CPP+53 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "union �ɂ͍\�z�q�܂��͏��Ŏq�̂�����̂��܂ނ��Ƃ͂ł��Ȃ�",   /* CPP+53 */
+//        #pragma dbcs(pop)
   },
 
         /* The second operand of the binary operators   */
@@ -2299,9 +2299,9 @@ struct Msgtable msgtable[] =
         "member '%s' is const but there is no constructor",     /* CPP+58 */
         "Glied '%s' ist eine Konstante, aber es gibt keinen Constructor",       /* CPP+58 */
         "le membre '%s' est une constante mais aucun constructeur n'est pr�sent",       /* CPP+58 */
-        #pragma dbcs(push,1)
-        "�����o '%s' �� const �Ȃ̂ɍ\�z�q���Ȃ�",      /* CPP+58 */
-        #pragma dbcs(pop)
+//        #pragma dbcs(push,1)
+//        "�����o '%s' �� const �Ȃ̂ɍ\�z�q���Ȃ�",      /* CPP+58 */
+//        #pragma dbcs(pop)
   },
   { "static_mem_func",
         "member functions cannot be static",                    /* CPP+59 */
@@ -2980,6 +2980,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    fprintf(fp,"#pragma once\n");
     fprintf(fp,"enum EM\n{");
     for (i = 0; i < sizeof(msgtable) / sizeof(msgtable[0]); i++)
     {
@@ -2989,30 +2990,14 @@ int main()
 
     fclose(fp);
 
-    /////////////////////////////////////
-
-    fp = fopen("msgs2.d","w");
-    if (!fp)
-    {   printf("can't open msgs2.d\n");
-        exit(EXIT_FAILURE);
-    }
-
-    fprintf(fp,"enum\n{");
-    for (i = 0; i < sizeof(msgtable) / sizeof(msgtable[0]); i++)
-    {
-        fprintf(fp,"\tEM_%s=%d,\n",msgtable[i].name,i);
-    }
-    fprintf(fp,"}\n");
-
-    fclose(fp);
-
     //////////////////////////////////////
-    fp = fopen("msgs2.cpp","w");
+    fp = fopen("msgtbl.h","w");
     if (!fp)
     {   printf("can't open msgs2.c\n");
         exit(EXIT_FAILURE);
     }
 
+    fprintf(fp, "#pragma once\n");
     fprintf(fp,"const char *msgtbl[][%d] =\n{",LANG_CNT);
     for (i = 0; i < sizeof(msgtable) / sizeof(msgtable[0]); i++)
     {   unsigned char *p;
